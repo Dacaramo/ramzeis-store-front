@@ -1,0 +1,105 @@
+{
+  "header": {
+    "navbar": {
+      "home-link": {
+        "text": "Inicio"
+      },
+      "products-link": {
+        "text": "Productos"
+      }
+    },
+    "language-select": {
+      "placeholder": "Idioma",
+      "options": {
+        "english": "Inglés",
+        "spanish": "Español"
+      }
+    },
+    "search-bar": {
+      "placeholder": "Buscar productos"
+    }
+  },
+  "footer": {
+    "contact-section": {
+      "heading": "Contacto",
+      "phone-link": {
+        "text": "<notable>Teléfono:</notable> +57 3106358522"
+      },
+      "email-link": {
+        "text": "<notable>Correo electrónico:</notable> dankramirez@outlook.com"
+      },
+      "location-link": {
+        "text": "<notable>Ubicación:</notable> Bogotá, Colombia 🇨🇴"
+      }
+    },
+    "information-section": {
+      "heading": "Servicio al cliente",
+      "faq-link": {
+        "text": "Preguntas frecuentes"
+      },
+      "policies-link": {
+        "text": "Políticas"
+      }
+    },
+    "quick-links-section": {
+      "heading": "Enlaces rápidos",
+      "instagram-link": {
+        "text": "Encuéntranos en Instagram"
+      },
+      "tiktok-link": {
+        "text": "Encuéntranos en Tik Tok"
+      },
+      "ramzeis-link": {
+        "text": "Visita ramzeis.com"
+      }
+    }
+  },
+  "home-page": {
+    "advantages-section": {
+      "premium-products-section": {
+        "heading": "Productos premium",
+        "description": "Ofrecemos la mejor calidad en cada artículo que vendemos"
+      },
+      "unique-products-section": {
+        "heading": "Productos únicos",
+        "description": "Todos nuestros productos son únicos, no los encontrarás en ningún otro lugar"
+      },
+      "multiple-payment-options-section": {
+        "heading": "Opciones de pago múltiples",
+        "description": "Aceptamos múltiples opciones de pago para que pagues como desees"
+      }
+    }
+  },
+  "products-page": {
+    "reviews-text": "Reseñas",
+    "add-to-cart-button": {
+      "text": "Agregar al carrito"
+    },
+    "add-to-wish-list": {
+      "text": "Agregar a la lista de deseos"
+    },
+    "quantity-select": {
+      "placeholder": "Elegir cantidad"
+    },
+    "details-section": {
+      "heading": "Detalles"
+    },
+    "features-section": {
+      "heading": "Características"
+    },
+    "shipping-section": {
+      "heading": "Envío"
+    },
+    "reviews-section": {
+      "heading": "Reseñas"
+    }
+  },
+  "faq-page": {
+    "heading": "Preguntas frecuentes",
+    "description": "He aquí las preguntas que más hace la gente sobre Ramzeis Store",
+    "bottom-section": {
+      "heading": "Todavía necesitas ayuda? Contáctanos!",
+      "description": "Para contactarnos envíanos un email a dankramirez@outlook.com o escríbenos a nuestras redes sociales."
+    }
+  }
+}

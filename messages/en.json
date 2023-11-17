@@ -1,0 +1,105 @@
+{
+  "header": {
+    "navbar": {
+      "home-link": {
+        "text": "Home"
+      },
+      "products-link": {
+        "text": "Products"
+      }
+    },
+    "language-select": {
+      "placeholder": "Language",
+      "options": {
+        "english": "English",
+        "spanish": "Spanish"
+      }
+    },
+    "search-bar": {
+      "placeholder": "Search products"
+    }
+  },
+  "footer": {
+    "contact-section": {
+      "heading": "Contact",
+      "phone-link": {
+        "text": "<notable>Phone:</notable> +57 3106358522"
+      },
+      "email-link": {
+        "text": "<notable>Email:</notable> dankramirez@outlook.com"
+      },
+      "location-link": {
+        "text": "<notable>Location:</notable> Bogotá, Colombia 🇨🇴"
+      }
+    },
+    "information-section": {
+      "heading": "Customer service",
+      "faq-link": {
+        "text": "FAQ"
+      },
+      "policies-link": {
+        "text": "Policies"
+      }
+    },
+    "quick-links-section": {
+      "heading": "Quick links",
+      "instagram-link": {
+        "text": "Find us on Instagram"
+      },
+      "tiktok-link": {
+        "text": "Find us on Tik Tok"
+      },
+      "ramzeis-link": {
+        "text": "Visit ramzeis.com"
+      }
+    }
+  },
+  "home-page": {
+    "advantages-section": {
+      "premium-products-section": {
+        "heading": "Premium products",
+        "description": "We offer the best quality on every single item we sell"
+      },
+      "unique-products-section": {
+        "heading": "Unique products",
+        "description": "All of our products are unique, you can't find them anywhere else"
+      },
+      "multiple-payment-options-section": {
+        "heading": "Multiple payment options",
+        "description": "We accept multiple payment options so you are free to pay as you want"
+      }
+    }
+  },
+  "products-page": {
+    "reviews-text": "Reviews",
+    "add-to-cart-button": {
+      "text": "Add to cart"
+    },
+    "add-to-wish-list": {
+      "text": "Add to Wishlist"
+    },
+    "quantity-select": {
+      "placeholder": "Choose quantity"
+    },
+    "details-section": {
+      "heading": "Details"
+    },
+    "features-section": {
+      "heading": "Features"
+    },
+    "shipping-section": {
+      "heading": "Shipping"
+    },
+    "reviews-section": {
+      "heading": "Reviews"
+    }
+  },
+  "faq-page": {
+    "heading": "Frequently Asked Questions",
+    "description": "Here are the questions most frequently asked about Ramzeis Store.",
+    "bottom-section": {
+      "heading": "Still need help? Contact us!",
+      "description": "To contact us, send us an email at dankramirez@outlook.com or contact us on our social media."
+    }
+  }
+}
