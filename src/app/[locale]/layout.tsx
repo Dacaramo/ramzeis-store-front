@@ -111,6 +111,7 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
               }
               options={categoryDropdownOptions}
             />
+            <span className='text-tiny'>{t('header.separator-span')}</span>
             <div className='relative text-tiny'>
               <input
                 className='input input-sm w-[300px] hover:w-[350px] focus:w-[350px] transition-all bg-base-200 outline-none'

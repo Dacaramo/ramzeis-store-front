@@ -20,6 +20,10 @@
         "posters": "Posters"
       }
     },
+    "separator-span": "O",
+    "search-bar": {
+      "placeholder": "Comprar por nombre de producto"
+    },
     "navbar": {
       "home-link": {
         "text": "Inicio"
@@ -34,9 +38,6 @@
         "global": "Global <EarthGlobeIcon></EarthGlobeIcon>",
         "colombia": "Colombia <ColombianFlagIcon></ColombianFlagIcon>"
       }
-    },
-    "search-bar": {
-      "placeholder": "Buscar productos"
     }
   },
   "footer": {
