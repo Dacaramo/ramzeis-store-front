@@ -21,6 +21,15 @@ module.exports = {
         icterine: '#F6F740',
         pear: '#C1DF1F',
       },
+      fontSize: {
+        tiny: '0.875rem',
+        mid: '1.25rem',
+        giant: '5rem',
+      },
+      spacing: {
+        'sm-control-padding': '0.75rem',
+        'sm-control-height': '2rem',
+      },
     },
   },
   daisyui: {

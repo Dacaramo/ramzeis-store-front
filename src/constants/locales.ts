@@ -1,1 +1,1 @@
-export const availableLocales = ['en', 'es'];
+export const availableLocales = ['en', 'es-CO'];
