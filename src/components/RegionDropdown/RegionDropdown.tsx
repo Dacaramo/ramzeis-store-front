@@ -7,14 +7,14 @@ interface Props {
 
 const RegionDropdown: FC<Props> = ({ placeholder, options }) => {
   return (
-    <details className='dropdown dropdown-bottom dropdown-end'>
-      <summary
+    <div className='dropdown dropdown-bottom dropdown-end dropdown-hover'>
+      <div
         tabIndex={0}
         role='button'
         className='btn btn-sm font-normal bg-base-200'
       >
         {placeholder}
-      </summary>
+      </div>
       <ul
         tabIndex={0}
         className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'
@@ -27,7 +27,7 @@ const RegionDropdown: FC<Props> = ({ placeholder, options }) => {
           );
         })}
       </ul>
-    </details>
+    </div>
   );
 };
 
