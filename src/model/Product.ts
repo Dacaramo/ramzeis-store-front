@@ -16,6 +16,7 @@ import {
   omit,
   maxValue,
   merge,
+  length,
 } from 'valibot';
 import { hexColorSchema } from './Color';
 import { localeSchema } from './otherSchemas';
@@ -92,6 +93,14 @@ export const productSchema = object(
         minLength(2, 'The details array must have at least 2 items'),
         maxLength(8, 'The details array must have 8 items or less'),
       ]
+    ),
+    previewImages: array(
+      string('Every item inside the previewImages array must be an string', [
+        url(
+          'Every item inside the previewImages array must come in a valid url format'
+        ),
+      ]),
+      [length(2, 'The previewImages array must always have 2 items')]
     ),
     hexColor: hexColorSchema,
     price: productPriceSchema,
