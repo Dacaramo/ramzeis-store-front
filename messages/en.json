@@ -25,11 +25,8 @@
       "placeholder": "Shop by product name"
     },
     "navbar": {
-      "home-link": {
-        "text": "Home"
-      },
-      "products-link": {
-        "text": "Products"
+      "my-profile-link": {
+        "text": "My profile"
       }
     },
     "region-dropdown": {

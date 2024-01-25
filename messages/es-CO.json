@@ -25,11 +25,8 @@
       "placeholder": "Comprar por nombre de producto"
     },
     "navbar": {
-      "home-link": {
-        "text": "Inicio"
-      },
-      "products-link": {
-        "text": "Productos"
+      "my-profile-link": {
+        "text": "Mi perfil"
       }
     },
     "region-dropdown": {

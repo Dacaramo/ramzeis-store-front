@@ -125,18 +125,12 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
             </div>
           </div>
           <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-            <nav className={`flex flex-row ${navbarGapClasses}`}>
+            <nav className={`flex flex-row text-tiny ${navbarGapClasses}`}>
               <Link
-                href='/'
+                href='/my-profile'
                 className={`${linkClasses}`}
               >
-                {t('header.navbar.home-link.text')}
-              </Link>
-              <Link
-                href='/products'
-                className={`${linkClasses}`}
-              >
-                {t('header.navbar.products-link.text')}
+                {t('header.navbar.my-profile-link.text')}
               </Link>
             </nav>
             <RegionDropdown
