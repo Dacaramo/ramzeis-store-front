@@ -166,7 +166,9 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
             <ThemeButton />
           </div>
         </header>
-        <main className='flex flex-col'>{children}</main>
+        <main className={`flex flex-col ${xRootPaddingClasses}`}>
+          {children}
+        </main>
         <footer className=''></footer>
       </body>
     </html>

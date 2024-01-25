@@ -30,6 +30,10 @@ module.exports = {
         'sm-control-padding': '0.75rem',
         'sm-control-height': '2rem',
       },
+      boxShadow: {
+        'classic-lg': '12px 10px 4px 0 rgba(0, 0, 0, 0.20)',
+        'classic-sm': '6px 5px 4px 0 rgba(0, 0, 0, 0.20)',
+      },
     },
   },
   daisyui: {
