@@ -1,4 +1,27 @@
-import { string, Input, picklist, regex } from 'valibot';
+import {
+  string,
+  Input,
+  picklist,
+  regex,
+  number,
+  integer,
+  minValue,
+  maxValue,
+  record,
+  unknown,
+} from 'valibot';
+
+export const limitSchema = number('The limit must be a number', [
+  integer('The limit must be an integer'),
+  minValue(1, 'The limit must be greater than 0'),
+  maxValue(100, 'The limit must be less or equal to 100'),
+]);
+
+export const exclusiveStartKeySchema = record(
+  string(),
+  unknown(),
+  'The exclusiveStartKey must be of type Record<string, unknown>'
+);
 
 export const sortSchema = picklist(
   ['asc', 'desc'],

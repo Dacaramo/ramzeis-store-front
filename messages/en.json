@@ -89,27 +89,22 @@
     }
   },
   "products-page": {
-    "reviews-text": "Reviews",
-    "add-to-cart-button": {
-      "text": "Add to cart"
-    },
-    "add-to-wish-list": {
-      "text": "Add to Wishlist"
-    },
-    "quantity-select": {
-      "placeholder": "Choose quantity"
-    },
-    "details-section": {
-      "heading": "Details"
-    },
-    "features-section": {
-      "heading": "Features"
-    },
-    "shipping-section": {
-      "heading": "Shipping"
-    },
-    "reviews-section": {
-      "heading": "Reviews"
+    "filter-section": {
+      "price-filter": {
+        "general-label": "Filter by price",
+        "min-price-label": "Minimum price",
+        "max-price-label": "Maximum price",
+        "min-price-placeholder": "Min.",
+        "max-price-placeholder": "Max."
+      },
+      "price-sort": {
+        "general-label": "Order by price",
+        "asc-button-text": "From cheap to expensive",
+        "desc-button-text": "From expensive to cheap"
+      },
+      "color-filter": {
+        "general-label": " Filter by color"
+      }
     }
   },
   "faq-page": {

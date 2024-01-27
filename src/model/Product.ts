@@ -17,9 +17,14 @@ import {
   maxValue,
   merge,
   length,
+  picklist,
 } from 'valibot';
 import { hexColorSchema } from './Color';
-import { localeSchema } from './otherSchemas';
+import {
+  exclusiveStartKeySchema,
+  limitSchema,
+  localeSchema,
+} from './otherSchemas';
 
 export const productIdSchema = special<`product|${string}`>(
   (value) => (value as string).startsWith('product|'),
@@ -31,10 +36,17 @@ export const productPriceSchema = number('The price must be a number', [
   maxValue(50000, 'The price must be less or equal to 50000 cents'),
 ]);
 
-export const isVisibleSchema = boolean('The isVisible must be a boolean');
+export const productIsVisibleSchema = boolean(
+  'The isVisible must be a boolean'
+);
 
-export const isForDropshippingSchema = boolean(
+export const productIsForDropshippingSchema = boolean(
   'The isForDropshipping must be a boolean'
+);
+
+export const productSortSchema = picklist(
+  ['asc', 'desc'],
+  'The sort must be one of the following values: asc, desc'
 );
 
 export const productSchema = object(
@@ -104,7 +116,7 @@ export const productSchema = object(
     ),
     hexColor: hexColorSchema,
     price: productPriceSchema,
-    isVisible: isVisibleSchema,
+    isVisible: productIsVisibleSchema,
     availableSizes: optional(
       array(
         string('The items inside the availableSizes array must be strings'),
@@ -126,13 +138,16 @@ export const productSchema = object(
     supportedLocales: array(localeSchema, [
       minLength(1, 'The supportedLocales must have at least 1 item'),
     ]),
-    isForDropshipping: isForDropshippingSchema,
+    isForDropshipping: productIsForDropshippingSchema,
   },
   'The product must be an object of type Record<string, {pk: string; name: string; slides: Array<Object>; details: Object; hexColor: string; price: number; isVisible: boolean; availableSizes?: Array<Object>; categoryId: string; subcategoryId: string; stock: number; supportedLocales: Array<string>; isForDropshipping: boolean}>'
 );
 
-export const productFilteringValuesSchema = partial(
+export const productFilterValuesSchema = partial(
   object({
+    limit: limitSchema,
+    exclusiveStartKey: exclusiveStartKeySchema,
+    sort: productSortSchema,
     search: string('The search must be a string'),
     categoryId:
       string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
@@ -145,8 +160,8 @@ export const productFilteringValuesSchema = partial(
     maxPrice: number('The maxPrice must be a number', [
       minValue(0, 'The maxPrice must be greater than or equal to 0'),
     ]),
-    isVisible: isVisibleSchema,
-    isForDropshipping: isForDropshippingSchema,
+    isVisible: productIsVisibleSchema,
+    isForDropshipping: productIsForDropshippingSchema,
   })
 );
 
@@ -181,7 +196,8 @@ export const productCategorySchema = merge([
 
 export type Product = Input<typeof productSchema>;
 export type ProductId = Input<typeof productIdSchema>;
-export type ProductFilteringValues = Input<typeof productFilteringValuesSchema>;
+export type ProductFilterValues = Input<typeof productFilterValuesSchema>;
 export type ProductPatch = Input<typeof productPatchSchema>;
 export type ProductCategory = Input<typeof productCategorySchema>;
 export type ProductSubcategory = Input<typeof productSubcategorySchema>;
+export type ProductSort = Input<typeof productSortSchema>;

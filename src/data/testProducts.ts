@@ -416,7 +416,7 @@ const testProducts: Array<Product> = [
     isForDropshipping: true,
   },
   {
-    pk: 'product|123',
+    pk: 'product|999',
     name: 'Air Purifier with HEPA Filter',
     slides: [
       {
@@ -462,7 +462,7 @@ const testProducts: Array<Product> = [
     isForDropshipping: true,
   },
   {
-    pk: 'product|789',
+    pk: 'product|888',
     name: 'Mechanical keyboard',
     slides: [
       {
@@ -554,7 +554,7 @@ const testProducts: Array<Product> = [
     isForDropshipping: true,
   },
   {
-    pk: 'product|999',
+    pk: 'product|99976',
     name: 'Cozy Cat Hoodie',
     slides: [
       {

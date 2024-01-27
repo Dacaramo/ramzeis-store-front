@@ -5,6 +5,7 @@ import '../globals.css';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
+  gapForBetweenSectionsClasses,
   xRootPaddingClasses,
   yRootPaddingClasses,
 } from '@/src/constants/classes';
@@ -160,7 +161,9 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
             <ThemeButton />
           </div>
         </header>
-        <main className={`flex flex-col ${xRootPaddingClasses}`}>
+        <main
+          className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
+        >
           {children}
         </main>
         <footer className=''></footer>

@@ -3,11 +3,13 @@
 import { FC, useEffect, useState } from 'react';
 import DarkIcon from '../icons/DarkIcon';
 import LightIcon from '../icons/LightIcon';
+import { ColorTheme } from '@/src/constants/colors';
+import { themeChangeEvent } from '@/src/events/themeEvents';
 
 interface Props {}
 
 const ThemeButton: FC<Props> = () => {
-  const [theme, setTheme] = useState<string>('fantasy');
+  const [theme, setTheme] = useState<ColorTheme>('fantasy');
 
   const handleClick = () => {
     setTheme((prevTheme) => {
@@ -17,12 +19,13 @@ const ThemeButton: FC<Props> = () => {
 
   useEffect(() => {
     document.querySelector('html')?.setAttribute('data-theme', theme);
+    window.dispatchEvent(themeChangeEvent);
   }, [theme]);
 
   return (
     <button
       className='btn btn-sm btn-circle'
-      data-toggle-theme='fantasy,synthwave'
+      data-toggle-theme='fantasy,night'
       data-act-class='ACTIVECLASS'
     >
       <label className='w-full h-full swap swap-rotate text-xl'>
