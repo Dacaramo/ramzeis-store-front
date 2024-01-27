@@ -19,7 +19,13 @@ import { navbarGapClasses } from '@/src/constants/classes';
 import CategoryDropdown from '@/src/components/CategoryDropdown/CategoryDropdown';
 import ArrowDownIcon from '@/src/components/icons/ArrowDownIcon';
 
-const jost = Jost({ variable: '--font-jost', subsets: ['latin'] });
+const jost = Jost({
+  variable: '--font-jost',
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['arial', 'sans-serif', 'monospace'],
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
