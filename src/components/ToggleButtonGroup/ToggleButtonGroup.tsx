@@ -1,11 +1,14 @@
 'use client';
 
 import { gapForBetweenFilterComponents } from '@/src/constants/classes';
-import { FC, ReactNode, CSSProperties, useEffect, useState, ComponentProps } from 'react';
-import { ColorTheme } from '@/src/constants/colors';
+import { FC, ReactNode, CSSProperties } from 'react';
 import { colors } from '@/src/constants/colors';
+import useTheme from '@/src/hooks/useTheme';
 
-export interface ToggleButtonDefinition  { key: string; value: ReactNode }
+export interface ToggleButtonDefinition {
+  key: string;
+  value: ReactNode;
+}
 
 interface Props {
   containerClassName?: string;
@@ -22,8 +25,6 @@ const ToggleButtonGroup: FC<Props> = ({
   selectedKey,
   onButtonClicked: handleClickOnButton,
 }) => {
-  const [theme, setTheme] = useState<ColorTheme>('fantasy');
-
   const getButtonStyles = (key: string): CSSProperties => {
     return {
       backgroundColor:
@@ -34,29 +35,7 @@ const ToggleButtonGroup: FC<Props> = ({
     };
   };
 
-  useEffect(() => {
-    const themeFromDocument =
-      (document
-        .querySelector('html')
-        ?.getAttribute('data-theme') as ColorTheme) ?? 'fantasy';
-    setTheme(themeFromDocument);
-  }, [getButtonStyles]);
-
-  useEffect(() => {
-    const handleThemeChange = () => {
-      const newTheme =
-        (document
-          .querySelector('html')
-          ?.getAttribute('data-theme') as ColorTheme) ?? 'fantasy';
-      setTheme(newTheme);
-    };
-
-    window.addEventListener('theme-change-event', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('theme-change-event', handleThemeChange);
-    };
-  }, []);
+  const theme = useTheme([getButtonStyles]);
 
   return (
     <div
