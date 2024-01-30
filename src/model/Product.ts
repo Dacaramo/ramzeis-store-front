@@ -19,7 +19,6 @@ import {
   length,
   picklist,
 } from 'valibot';
-import { hexColorSchema } from './Color';
 import {
   exclusiveStartKeySchema,
   limitSchema,
@@ -114,7 +113,8 @@ export const productSchema = object(
       ]),
       [length(2, 'The previewImages array must always have 2 items')]
     ),
-    hexColor: hexColorSchema,
+    colorId:
+      string() /* Advanced schema obtained at execution time from S3 bucket json file colors.json*/,
     price: productPriceSchema,
     isVisible: productIsVisibleSchema,
     availableSizes: optional(
@@ -153,7 +153,8 @@ export const productFilterValuesSchema = partial(
       string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
     subcategoryId:
       string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
-    hexColor: hexColorSchema,
+    colorId:
+      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
     minPrice: number('The minPrice must be a number', [
       minValue(0, 'The minPrice must be greater than or equal to 0'),
     ]),
@@ -194,6 +195,23 @@ export const productCategorySchema = merge([
   }),
 ]);
 
+export const hexCodeSchema = special<`#${string}`>(
+  (value) => /^#[0-9a-fA-F]{6}$/i.test(value as string),
+  'The hexColor must be a string representing a hexadecimal color'
+);
+
+export const productColorSchema = object(
+  {
+    id: string('The id must be a string'),
+    name: string('The name must be a string', [
+      minLength(1, 'The name must have at least 1 character'),
+      maxLength(200, 'The name must have at most 200 characters'),
+    ]),
+    hexCode: hexCodeSchema,
+  },
+  'The color must be an object of type Record<string, {name: string; hexColor: string}>'
+);
+
 export type Product = Input<typeof productSchema>;
 export type ProductId = Input<typeof productIdSchema>;
 export type ProductFilterValues = Input<typeof productFilterValuesSchema>;
@@ -201,3 +219,5 @@ export type ProductPatch = Input<typeof productPatchSchema>;
 export type ProductCategory = Input<typeof productCategorySchema>;
 export type ProductSubcategory = Input<typeof productSubcategorySchema>;
 export type ProductSort = Input<typeof productSortSchema>;
+export type ProductColor = Input<typeof productColorSchema>;
+export type HexCode = Input<typeof hexCodeSchema>;

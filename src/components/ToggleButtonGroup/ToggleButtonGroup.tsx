@@ -14,7 +14,7 @@ interface Props {
   containerClassName?: string;
   buttonsClassName?: string;
   buttons: Array<ToggleButtonDefinition>;
-  selectedKey?: string;
+  selectedButtonKey?: string;
   onButtonClicked: (clickedButton: ToggleButtonDefinition) => void;
 }
 
@@ -22,16 +22,16 @@ const ToggleButtonGroup: FC<Props> = ({
   containerClassName = '',
   buttonsClassName = '',
   buttons,
-  selectedKey,
+  selectedButtonKey,
   onButtonClicked: handleClickOnButton,
 }) => {
   const getButtonStyles = (key: string): CSSProperties => {
     return {
       backgroundColor:
-        key === selectedKey ? colors[theme]['base-content'] : undefined,
-      color: key === selectedKey ? colors[theme]['base-200'] : undefined,
+        key === selectedButtonKey ? colors[theme]['base-content'] : undefined,
+      color: key === selectedButtonKey ? colors[theme]['base-200'] : undefined,
       borderColor:
-        key === selectedKey ? colors[theme]['base-content'] : undefined,
+        key === selectedButtonKey ? colors[theme]['base-content'] : undefined,
     };
   };
 

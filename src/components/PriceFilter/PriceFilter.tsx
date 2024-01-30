@@ -69,7 +69,7 @@ const PriceFilter: FC<Props> = ({
         containerClassName='mt-[3.5px]'
         buttonsClassName='basis-[75px]'
         buttons={readyToClickRangeButtonDefinitions}
-        selectedKey={JSON.stringify(p.priceRangeValue)}
+        selectedButtonKey={JSON.stringify(p.priceRangeValue)}
         onButtonClicked={handleClickOnToggleButton}
       />
     </fieldset>
