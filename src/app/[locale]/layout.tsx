@@ -18,6 +18,8 @@ import EarthGlobeIcon from '@/src/components/icons/EarthGlobeIcon';
 import { navbarGapClasses } from '@/src/constants/classes';
 import CategoryDropdown from '@/src/components/CategoryDropdown/CategoryDropdown';
 import ArrowDownIcon from '@/src/components/icons/ArrowDownIcon';
+import ProvidersWrapper from '@/src/components/ProvidersWrapper/ProvidersWrapper';
+import SearchBar from '@/src/components/SearchBar/SearchBar';
 
 const jost = Jost({
   variable: '--font-jost',
@@ -42,58 +44,6 @@ interface Props {
 const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
   const t = useTranslations('');
 
-  const categoriesTranslationKeys = [
-    'for-my-style',
-    'hoodies',
-    'sweatshirts',
-    't-shirts',
-    'accessories',
-    'for-my-setup',
-    'keyboards',
-    'stickers',
-    'mouse-pads',
-    'cases',
-    'stands',
-    'for-the-ambience',
-    'plushes',
-    'pillows',
-    'posters',
-  ] as const;
-  const hrefPerCategory = {
-    'for-my-style': '/products?subcategory=for-my-style',
-    hoodies: '/products?subcategory=hoodies',
-    sweatshirts: '/products?subcategory=sweatshirts',
-    't-shirts': '/products?subcategory=t-shirts',
-    accessories: '/products?subcategory=accessories',
-    'for-my-setup': '/products?subcategory=for-my-setup',
-    keyboards: '/products?subcategory=keyboards',
-    stickers: '/products?subcategory=stickers',
-    'mouse-pads': '/products?subcategory=mouse-pads',
-    cases: '/products?subcategory=cases',
-    stands: '/products?subcategory=stands',
-    'for-the-ambience': '/products?subcategory=for-the-ambience',
-    plushes: '/products?subcategory=plushes',
-    pillows: '/products?subcategory=pillows',
-    posters: '/products?subcategory=posters',
-  };
-
-  const categoryDropdownOptions: ComponentProps<
-    typeof CategoryDropdown
-  >['options'] = categoriesTranslationKeys.map((key) => {
-    return {
-      text: t.rich(`header.category-dropdown.options.${key}`) as string,
-      href: hrefPerCategory[key],
-    };
-  });
-
-  console.log('@@@@@locale', locale);
-
-  const headersList = headers();
-  const activePath = headersList.get('x-invoke-path');
-  const linkClasses = 'hover:text-secondary';
-
-  console.log(headersList);
-
   return (
     <html
       lang={locale}
@@ -102,77 +52,68 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
       <body
         className={`${jost.className} ${yRootPaddingClasses} flex flex-col gap-[25px] font-jost text-mid`}
       >
-        <header
-          className={`${xRootPaddingClasses} flex flex-row justify-between items-center`}
-        >
-          <Link href='/'>
-            RAMZEIS <b>store</b>
-          </Link>
-          <div className={`flex flex-row items-baseline ${navbarGapClasses}`}>
-            <CategoryDropdown
-              placeholder={
-                <>
-                  {t('header.category-dropdown.placeholder')}
-                  <ArrowDownIcon />
-                </>
-              }
-              options={categoryDropdownOptions}
-            />
-            <span className='text-tiny'>{t('header.separator-span')}</span>
-            <div className='relative text-tiny'>
-              <input
-                className='input input-sm w-[300px] hover:w-[350px] focus:w-[350px] transition-all bg-base-200 outline-none'
-                type='text'
-                placeholder={t('header.search-bar.placeholder')}
+        <ProvidersWrapper>
+          <header
+            className={`${xRootPaddingClasses} flex flex-row justify-between items-center`}
+          >
+            <Link href='/'>
+              RAMZEIS <b>store</b>
+            </Link>
+            <div className={`flex flex-row items-baseline ${navbarGapClasses}`}>
+              <CategoryDropdown
+                placeholder={
+                  <>
+                    {t('header.category-dropdown.placeholder')}
+                    <ArrowDownIcon />
+                  </>
+                }
               />
-              <MagnifierIcon
-                className='absolute top-[0.5rem] right-sm-control-padding text-base-content'
-                style={{ pointerEvents: 'none' }}
-              />
+              <span className='text-tiny'>{t('header.separator-span')}</span>
+              <SearchBar placeholder={t('header.search-bar.placeholder')} />
             </div>
-          </div>
-          <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-            <nav className={`flex flex-row text-tiny ${navbarGapClasses}`}>
-              <Link
-                href='/my-profile'
-                className={`${linkClasses}`}
-              >
-                {t('header.navbar.my-profile-link.text')}
-              </Link>
-            </nav>
-            <RegionDropdown
-              placeholder={
-                t.rich('header.region-dropdown.placeholder', {
-                  ColombianFlagIcon: (_) => <ColombianFlagIcon />,
-                  EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                }) as ReactNode
-              }
-              options={[
-                {
-                  text: t.rich('header.region-dropdown.options.global', {
+            <div className={`flex flex-row ${navbarGapClasses} items-center`}>
+              <nav className={`flex flex-row text-tiny ${navbarGapClasses}`}>
+                <Link
+                  href='/my-profile'
+                  className={`hover:text-secondary`}
+                >
+                  {t('header.navbar.my-profile-link.text')}
+                </Link>
+              </nav>
+              <RegionDropdown
+                placeholder={
+                  t.rich('header.region-dropdown.placeholder', {
                     ColombianFlagIcon: (_) => <ColombianFlagIcon />,
                     EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                  }) as string,
-                  href: '/en',
-                },
-                {
-                  text: t.rich('header.region-dropdown.options.colombia', {
-                    ColombianFlagIcon: (_) => <ColombianFlagIcon />,
-                    EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                  }) as string,
-                  href: '/es-CO',
-                },
-              ]}
-            />
-            <ThemeButton />
-          </div>
-        </header>
-        <main
-          className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
-        >
-          {children}
-        </main>
-        <footer className=''></footer>
+                  }) as ReactNode
+                }
+                options={[
+                  {
+                    text: t.rich('header.region-dropdown.options.global', {
+                      ColombianFlagIcon: (_) => <ColombianFlagIcon />,
+                      EarthGlobeIcon: (_) => <EarthGlobeIcon />,
+                    }) as string,
+                    href: '/en',
+                  },
+                  {
+                    text: t.rich('header.region-dropdown.options.colombia', {
+                      ColombianFlagIcon: (_) => <ColombianFlagIcon />,
+                      EarthGlobeIcon: (_) => <EarthGlobeIcon />,
+                    }) as string,
+                    href: '/es-CO',
+                  },
+                ]}
+              />
+              <ThemeButton />
+            </div>
+          </header>
+          <main
+            className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
+          >
+            {children}
+          </main>
+          <footer className=''></footer>
+        </ProvidersWrapper>
       </body>
     </html>
   );
