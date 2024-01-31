@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { FC, ReactNode } from 'react';
+import testProductCategories from '@/src/data/testProductCategories';
 
 interface Props {
   placeholder: ReactNode;
-  options: Array<{ text: string; href: string }>;
 }
 
-const CategoryDropdown: FC<Props> = ({ placeholder, options }) => {
+const CategoryDropdown: FC<Props> = ({ placeholder }) => {
   return (
     <div className='dropdown dropdown-hover'>
       <div
@@ -20,11 +20,25 @@ const CategoryDropdown: FC<Props> = ({ placeholder, options }) => {
         tabIndex={0}
         className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'
       >
-        {options.map((opt) => {
+        {testProductCategories.map((category) => {
           return (
-            <li key={opt.text}>
-              <Link href={opt.href}>{opt.text}</Link>
-            </li>
+            <>
+              <li key={category.id}>
+                <Link
+                  href={category.href}
+                  className='font-bold'
+                >
+                  {category.name}
+                </Link>
+              </li>
+              {category.subcategories.map((subcategory) => {
+                return (
+                  <li key={subcategory.id}>
+                    <Link href={subcategory.href}>{subcategory.name}</Link>
+                  </li>
+                );
+              })}
+            </>
           );
         })}
       </ul>
