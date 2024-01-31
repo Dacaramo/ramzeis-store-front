@@ -14,6 +14,8 @@ import ToggleButtonGroup, {
 import { SliderValueChangeDetails } from '@ark-ui/react/slider';
 import ColorFilter from '../ColorFilter/ColorFilter';
 import { ProductColor } from '@/src/model/Product';
+import { useSearchParams } from 'next/navigation';
+import testProductColors from '@/src/data/testProductColors';
 
 const minAllowedPrice = 0;
 const maxAllowedPrice = 500;
@@ -23,43 +25,6 @@ const readyToClickRanges = [
   [50, 100],
   [100, 200],
   [200, 500],
-];
-const colors: Array<ProductColor> = [
-  {
-    id: 'black',
-    name: 'Black',
-    hexCode: '#000000',
-  },
-  {
-    id: 'white',
-    name: 'White',
-    hexCode: '#FFFFFF',
-  },
-  {
-    id: 'cream',
-    name: 'Cream',
-    hexCode: '#F2E0BF',
-  },
-  {
-    id: 'gray',
-    name: 'Gray',
-    hexCode: '#808080',
-  },
-  {
-    id: 'brown',
-    name: 'Brown',
-    hexCode: '#733F1F',
-  },
-  {
-    id: 'blue',
-    name: 'Blue',
-    hexCode: '#0047AB',
-  },
-  {
-    id: 'green',
-    name: 'Green',
-    hexCode: '#008000',
-  },
 ];
 
 interface Props {
@@ -84,20 +49,30 @@ interface Props {
 }
 
 const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
-  const [productFilterValues, setProductFilterValues] =
-    useState<ProductFilterValues>({
-      sort: 'asc',
-      minPrice: minAllowedPrice,
-      maxPrice: maxAllowedPrice,
-    });
+  const [someProductFilterValues, setSomeProductFilterValues] = useState<
+    Omit<ProductFilterValues, 'categoryId' | 'subcategoryId' | 'search'>
+  >({
+    sort: 'asc',
+    minPrice: minAllowedPrice,
+    maxPrice: maxAllowedPrice,
+  });
+
+  const urlQueryStringParams = useSearchParams();
+
+  const allProductFilterValues: ProductFilterValues = {
+    ...someProductFilterValues,
+    ...Object.fromEntries(urlQueryStringParams.entries()),
+  };
+
+  console.log('@@@@@allProductFilterValues', allProductFilterValues);
 
   const selectedRange = [
-    productFilterValues.minPrice!,
-    productFilterValues.maxPrice!,
+    someProductFilterValues.minPrice!,
+    someProductFilterValues.maxPrice!,
   ];
   const selectedRangeButtonKey = JSON.stringify(selectedRange);
-  const selectedSortButtonKey = productFilterValues.sort!;
-  const selectedColorKey = productFilterValues.colorId;
+  const selectedSortButtonKey = someProductFilterValues.sort!;
+  const selectedColorKey = someProductFilterValues.colorId;
   const sortButtonsDefinitions: Array<ToggleButtonDefinition> = [
     {
       key: 'asc',
@@ -110,7 +85,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
   ];
 
   const handlePriceRangeValueChange = (details: SliderValueChangeDetails) => {
-    setProductFilterValues((prev) => {
+    setSomeProductFilterValues((prev) => {
       return {
         ...prev,
         minPrice: details.value[0],
@@ -121,7 +96,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnRangeButton = (clickedButton: ToggleButtonDefinition) => {
     if (selectedRangeButtonKey === clickedButton.key) {
-      setProductFilterValues((prev) => {
+      setSomeProductFilterValues((prev) => {
         return {
           ...prev,
           minPrice: minAllowedPrice,
@@ -130,7 +105,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
       });
     } else {
       const clickedPriceRange = JSON.parse(clickedButton.key) as Array<number>;
-      setProductFilterValues((prev) => {
+      setSomeProductFilterValues((prev) => {
         return {
           ...prev,
           minPrice: clickedPriceRange[0],
@@ -142,7 +117,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnSortButton = (clickedButton: ToggleButtonDefinition) => {
     if (selectedSortButtonKey !== clickedButton.key) {
-      setProductFilterValues((prev) => {
+      setSomeProductFilterValues((prev) => {
         return {
           ...prev,
           sort: clickedButton.key as ProductSort,
@@ -153,11 +128,11 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnColor = (clickedColor: ProductColor) => {
     if (clickedColor.id === selectedColorKey) {
-      const productFilterValuesCopy = { ...productFilterValues };
+      const productFilterValuesCopy = { ...someProductFilterValues };
       delete productFilterValuesCopy.colorId;
-      setProductFilterValues(productFilterValuesCopy);
+      setSomeProductFilterValues(productFilterValuesCopy);
     } else {
-      setProductFilterValues((prev) => {
+      setSomeProductFilterValues((prev) => {
         return {
           ...prev,
           colorId: clickedColor.id,
@@ -165,8 +140,6 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
       });
     }
   };
-
-  console.log('@@@@@productFilterValues', productFilterValues);
 
   return (
     <div className={`flex flex-col ${gapForBetweenSectionsClasses}`}>
@@ -201,7 +174,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
         />
         <ColorFilter
           generalLabel={t['color-filter']['general-label']}
-          colors={colors}
+          colors={testProductColors}
           selectedColorKey={selectedColorKey}
           onColorClicked={handleClickOnColor}
         />
