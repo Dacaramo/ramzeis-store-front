@@ -1,24 +1,7 @@
 {
   "header": {
     "category-dropdown": {
-      "placeholder": "Shop by category",
-      "options": {
-        "for-my-style": "<strong>For my style</strong>",
-        "hoodies": "Hoodies",
-        "sweatshirts": "Sweatshirts",
-        "t-shirts": "T-shirts",
-        "accessories": "Accessories",
-        "for-my-setup": "<strong>For my setup</strong>",
-        "keyboards": "Keyboards",
-        "stickers": "Stickers",
-        "mouse-pads": "Mouse pads",
-        "cases": "Cases",
-        "stands": "Stands",
-        "for-the-ambience": "<strong>For the ambience</strong>",
-        "plushes": "Plushes",
-        "pillows": "Pillows",
-        "posters": "Posters"
-      }
+      "placeholder": "Shop by category"
     },
     "separator-span": "OR",
     "search-bar": {
