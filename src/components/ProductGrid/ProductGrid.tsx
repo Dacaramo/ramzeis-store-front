@@ -16,6 +16,9 @@ import ColorFilter from '../ColorFilter/ColorFilter';
 import { ProductColor } from '@/src/model/Product';
 import { useSearchParams } from 'next/navigation';
 import testProductColors from '@/src/data/testProductColors';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getProducts } from '@/src/clients/axiosClient';
+import { doubleEncodeEsk } from '@/src/utils/encodeEsk';
 
 const minAllowedPrice = 0;
 const maxAllowedPrice = 500;
@@ -49,30 +52,64 @@ interface Props {
 }
 
 const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
-  const [someProductFilterValues, setSomeProductFilterValues] = useState<
-    Omit<ProductFilterValues, 'categoryId' | 'subcategoryId' | 'search'>
-  >({
-    sort: 'asc',
-    minPrice: minAllowedPrice,
-    maxPrice: maxAllowedPrice,
-  });
+  const [productFilterValuesFromHere, setProductFilterValuesFromHere] =
+    useState<
+      Omit<
+        ProductFilterValues,
+        'categoryId' | 'subcategoryId' | 'search' | 'exclusiveStartKey'
+      >
+    >({
+      sort: 'asc',
+      minPrice: minAllowedPrice,
+      maxPrice: maxAllowedPrice,
+      limit: 20,
+    });
+  const [doubleEncodedEsk, setDoubleEncodedEsk] = useState<string | undefined>(
+    undefined
+  );
 
   const urlQueryStringParams = useSearchParams();
 
-  const allProductFilterValues: ProductFilterValues = {
-    ...someProductFilterValues,
-    ...Object.fromEntries(urlQueryStringParams.entries()),
+  const productFilterValuesFromOutside = Object.fromEntries(
+    urlQueryStringParams.entries()
+  ) as { categoryId?: string; subcategoryId?: string; search?: string };
+  const allProductFilterValuesWithoutEsk: Omit<
+    ProductFilterValues,
+    'exclusiveStartKey'
+  > = {
+    ...productFilterValuesFromHere,
+    ...productFilterValuesFromOutside,
   };
 
-  console.log('@@@@@allProductFilterValues', allProductFilterValues);
+  const result = useInfiniteQuery({
+    queryKey: ['products', allProductFilterValuesWithoutEsk],
+    queryFn: async () => {
+      const listResponse = await getProducts({
+        ...allProductFilterValuesWithoutEsk,
+        encodedExclusiveStartKey: doubleEncodedEsk,
+      });
+      if (listResponse.lastEvaluatedKey) {
+        setDoubleEncodedEsk(doubleEncodeEsk(listResponse.lastEvaluatedKey));
+      }
+      return listResponse;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _pages, lastPageParam) => {
+      if (!lastPage.lastEvaluatedKey) {
+        return null;
+      } else {
+        return lastPageParam + 1;
+      }
+    },
+  });
 
   const selectedRange = [
-    someProductFilterValues.minPrice!,
-    someProductFilterValues.maxPrice!,
+    productFilterValuesFromHere.minPrice!,
+    productFilterValuesFromHere.maxPrice!,
   ];
   const selectedRangeButtonKey = JSON.stringify(selectedRange);
-  const selectedSortButtonKey = someProductFilterValues.sort!;
-  const selectedColorKey = someProductFilterValues.colorId;
+  const selectedSortButtonKey = productFilterValuesFromHere.sort!;
+  const selectedColorKey = productFilterValuesFromHere.colorId;
   const sortButtonsDefinitions: Array<ToggleButtonDefinition> = [
     {
       key: 'asc',
@@ -85,7 +122,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
   ];
 
   const handlePriceRangeValueChange = (details: SliderValueChangeDetails) => {
-    setSomeProductFilterValues((prev) => {
+    setProductFilterValuesFromHere((prev) => {
       return {
         ...prev,
         minPrice: details.value[0],
@@ -96,7 +133,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnRangeButton = (clickedButton: ToggleButtonDefinition) => {
     if (selectedRangeButtonKey === clickedButton.key) {
-      setSomeProductFilterValues((prev) => {
+      setProductFilterValuesFromHere((prev) => {
         return {
           ...prev,
           minPrice: minAllowedPrice,
@@ -105,7 +142,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
       });
     } else {
       const clickedPriceRange = JSON.parse(clickedButton.key) as Array<number>;
-      setSomeProductFilterValues((prev) => {
+      setProductFilterValuesFromHere((prev) => {
         return {
           ...prev,
           minPrice: clickedPriceRange[0],
@@ -117,7 +154,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnSortButton = (clickedButton: ToggleButtonDefinition) => {
     if (selectedSortButtonKey !== clickedButton.key) {
-      setSomeProductFilterValues((prev) => {
+      setProductFilterValuesFromHere((prev) => {
         return {
           ...prev,
           sort: clickedButton.key as ProductSort,
@@ -128,11 +165,11 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   const handleClickOnColor = (clickedColor: ProductColor) => {
     if (clickedColor.id === selectedColorKey) {
-      const productFilterValuesCopy = { ...someProductFilterValues };
+      const productFilterValuesCopy = { ...productFilterValuesFromHere };
       delete productFilterValuesCopy.colorId;
-      setSomeProductFilterValues(productFilterValuesCopy);
+      setProductFilterValuesFromHere(productFilterValuesCopy);
     } else {
-      setSomeProductFilterValues((prev) => {
+      setProductFilterValuesFromHere((prev) => {
         return {
           ...prev,
           colorId: clickedColor.id,
