@@ -1,4 +1,4 @@
-import { FC, ReactNode, ComponentProps } from 'react';
+import { FC, ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import '../globals.css';
@@ -10,8 +10,6 @@ import {
   yRootPaddingClasses,
 } from '@/src/constants/classes';
 import ThemeButton from '@/src/components/ThemeButton/ThemeButton';
-import { headers } from 'next/headers';
-import MagnifierIcon from '@/src/components/icons/MagnifierIcon';
 import RegionDropdown from '@/src/components/RegionDropdown/RegionDropdown';
 import ColombianFlagIcon from '@/src/components/icons/ColombianFlagIcon';
 import EarthGlobeIcon from '@/src/components/icons/EarthGlobeIcon';

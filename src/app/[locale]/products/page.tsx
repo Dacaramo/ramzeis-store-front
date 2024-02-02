@@ -7,9 +7,14 @@ interface Props {
   params: {
     locale: string;
   };
+  searchParams: {
+    category?: string;
+    subcategory?: string;
+    search?: string;
+  };
 }
 
-const ProductsPage: FC<Props> = ({ params: { locale } }) => {
+const ProductsPage: FC<Props> = ({ params: { locale }, searchParams }) => {
   const t = useTranslations('products-page.filter-section');
 
   return (
