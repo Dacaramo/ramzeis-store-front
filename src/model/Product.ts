@@ -19,11 +19,8 @@ import {
   length,
   picklist,
 } from 'valibot';
-import {
-  exclusiveStartKeySchema,
-  limitSchema,
-  localeSchema,
-} from './otherSchemas';
+import { encodedExclusiveStartKeySchema, limitSchema } from './otherSchemas';
+import { localeIdSchema } from './Locale';
 
 export const productIdSchema = special<`product|${string}`>(
   (value) => (value as string).startsWith('product|'),
@@ -113,8 +110,7 @@ export const productSchema = object(
       ]),
       [length(2, 'The previewImages array must always have 2 items')]
     ),
-    colorId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file colors.json*/,
+    colorId: string(),
     price: productPriceSchema,
     isVisible: productIsVisibleSchema,
     availableSizes: optional(
@@ -124,10 +120,8 @@ export const productSchema = object(
         [minLength(2, 'The availableSizes array must contain at least 2 items')]
       )
     ),
-    categoryId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
-    subcategoryId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
+    categoryId: string(),
+    subcategoryId: string(),
     stock: number('The stock must be a string', [
       integer('The stock must be an integer'),
       minValue(
@@ -135,8 +129,8 @@ export const productSchema = object(
         'The stock must be greater than or equal to -1 (-1 means that the product has unlimited stock)'
       ),
     ]),
-    supportedLocales: array(localeSchema, [
-      minLength(1, 'The supportedLocales must have at least 1 item'),
+    supportedLocaleIds: array(localeIdSchema, [
+      minLength(1, 'The supportedLocaleIds must have at least 1 item'),
     ]),
     isForDropshipping: productIsForDropshippingSchema,
   },
@@ -146,20 +140,19 @@ export const productSchema = object(
 export const productFilterValuesSchema = partial(
   object({
     limit: limitSchema,
-    exclusiveStartKey: exclusiveStartKeySchema,
+    encodedExclusiveStartKey: encodedExclusiveStartKeySchema,
     sort: productSortSchema,
     search: string('The search must be a string'),
-    categoryId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
-    subcategoryId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
-    colorId:
-      string() /* Advanced schema obtained at execution time from S3 bucket json file productCategories.json*/,
+    categoryId: string(),
+    subcategoryId: string(),
+    colorId: string(),
     minPrice: number('The minPrice must be a number', [
-      minValue(0, 'The minPrice must be greater than or equal to 0'),
+      minValue(0, 'The minPrice must be greater than or equal to 0 cents'),
+      maxValue(50000, 'The minPrice must be less or equal to 50000 cents'),
     ]),
     maxPrice: number('The maxPrice must be a number', [
-      minValue(0, 'The maxPrice must be greater than or equal to 0'),
+      minValue(0, 'The maxPrice must be greater than or equal to 0 cents'),
+      maxValue(50000, 'The maxPrice must be less or equal to 50000 cents'),
     ]),
     isVisible: productIsVisibleSchema,
     isForDropshipping: productIsForDropshippingSchema,
