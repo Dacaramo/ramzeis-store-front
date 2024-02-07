@@ -4,7 +4,12 @@ import Link from 'next/link';
 import CategoryDropdown from '../CategoryDropdown/CategoryDropdown';
 import SearchBar from '../SearchBar/SearchBar';
 import ArrowDownIcon from '../icons/ArrowDownIcon';
-import { useTranslations } from 'next-intl';
+import {
+  NextIntlClientProvider,
+  useTranslations,
+  useMessages,
+  AbstractIntlMessages,
+} from 'next-intl';
 import RegionDropdown from '../RegionDropdown/RegionDropdown';
 import ColombianFlagIcon from '../icons/ColombianFlagIcon';
 import EarthGlobeIcon from '../icons/EarthGlobeIcon';
@@ -15,6 +20,13 @@ interface Props {}
 
 const Header: FC<Props> = ({}) => {
   const t = useTranslations('');
+  const messages = useMessages();
+  const headerMessages = messages?.header as AbstractIntlMessages | undefined;
+  const authDropdownMessages = headerMessages?.['auth-dropdown'] as
+    | AbstractIntlMessages
+    | undefined;
+
+  console.log(authDropdownMessages);
 
   return (
     <header
@@ -36,124 +48,9 @@ const Header: FC<Props> = ({}) => {
         <SearchBar placeholder={t('header.search-bar.placeholder')} />
       </div>
       <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-        <AuthDropdown
-          translations={{
-            authenticated: {
-              placeholder: t('header.auth-dropdown.authenticated.placeholder'),
-            },
-            unauthenticated: {
-              placeholder: t(
-                'header.auth-dropdown.unauthenticated.placeholder'
-              ),
-              'toggle-button-group': {
-                options: {
-                  login: t(
-                    'header.auth-dropdown.unauthenticated.toggle-button-group.options.login'
-                  ),
-                  'sign-up': t(
-                    'header.auth-dropdown.unauthenticated.toggle-button-group.options.sign-up'
-                  ),
-                },
-              },
-              'or-sign-up-text': t.rich(
-                'header.auth-dropdown.unauthenticated.or-sign-up-text',
-                {
-                  link: (value) => (
-                    <span className='link link-secondary'>{value}</span>
-                  ),
-                }
-              ),
-              'or-login-text': t.rich(
-                'header.auth-dropdown.unauthenticated.or-login-text',
-                {
-                  link: (value) => (
-                    <span className='link link-secondary'>{value}</span>
-                  ),
-                }
-              ),
-              'google-sign-up-text': t(
-                'header.auth-dropdown.unauthenticated.google-sign-up-text'
-              ),
-              'google-login-text': t(
-                'header.auth-dropdown.unauthenticated.google-login-text'
-              ),
-              'divider-text': t(
-                'header.auth-dropdown.unauthenticated.divider-text'
-              ),
-              'email-input': {
-                label: t(
-                  'header.auth-dropdown.unauthenticated.email-input.label'
-                ),
-                placeholder: t(
-                  'header.auth-dropdown.unauthenticated.email-input.placeholder'
-                ),
-                'error-text': t(
-                  'header.auth-dropdown.unauthenticated.email-input.error-text'
-                ),
-              },
-              'phone-input': {
-                label: t(
-                  'header.auth-dropdown.unauthenticated.phone-input.label'
-                ),
-                placeholder: t(
-                  'header.auth-dropdown.unauthenticated.phone-input.placeholder'
-                ),
-                'error-text': t(
-                  'header.auth-dropdown.unauthenticated.phone-input.error-text'
-                ),
-              },
-              'password-input': {
-                label: t(
-                  'header.auth-dropdown.unauthenticated.password-input.label'
-                ),
-                placeholder: t(
-                  'header.auth-dropdown.unauthenticated.password-input.placeholder'
-                ),
-                'error-text': t(
-                  'header.auth-dropdown.unauthenticated.password-input.error-text'
-                ),
-              },
-              'confirm-password-input': {
-                label: t(
-                  'header.auth-dropdown.unauthenticated.confirm-password-input.label'
-                ),
-                placeholder: t(
-                  'header.auth-dropdown.unauthenticated.confirm-password-input.placeholder'
-                ),
-              },
-              'terms-and-conditions-text': t.rich(
-                'header.auth-dropdown.unauthenticated.terms-and-conditions-text',
-                {
-                  Link: (value) => (
-                    <Link
-                      className='link link-secondary'
-                      href='/'
-                    >
-                      {value}
-                    </Link>
-                  ),
-                }
-              ),
-              'login-button-text': t(
-                'header.auth-dropdown.unauthenticated.login-button-text'
-              ),
-              'sign-up-button-text': t(
-                'header.auth-dropdown.unauthenticated.sign-up-button-text'
-              ),
-              alert: {
-                'passwords-mismatch-text': t(
-                  'header.auth-dropdown.unauthenticated.alert.passwords-mismatch-text'
-                ),
-                'login-success-text': t(
-                  'header.auth-dropdown.unauthenticated.alert.login-success-text'
-                ),
-                'sign-up-success-text': t(
-                  'header.auth-dropdown.unauthenticated.alert.sign-up-success-text'
-                ),
-              },
-            },
-          }}
-        />
+        <NextIntlClientProvider messages={authDropdownMessages}>
+          <AuthDropdown />
+        </NextIntlClientProvider>
         <RegionDropdown
           placeholder={
             t.rich('header.region-dropdown.placeholder', {

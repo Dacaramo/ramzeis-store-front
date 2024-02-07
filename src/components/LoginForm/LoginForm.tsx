@@ -7,24 +7,12 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 import { LoginFormData, loginFormDataSchema } from '@/src/model/otherSchemas';
 import { colors } from '@/src/constants/colors';
 import { errorSpanClasses, inputClasses } from '@/src/constants/classes';
+import { useTranslations } from 'next-intl';
 
-interface Props {
-  translations: {
-    'email-input': {
-      label: string;
-      placeholder: string;
-      'error-text': string;
-    };
-    'password-input': {
-      label: string;
-      placeholder: string;
-      'error-text': string;
-    };
-    'login-button-text': string;
-  };
-}
+interface Props {}
 
-const LoginForm: FC<Props> = ({ translations: t }) => {
+const LoginForm: FC<Props> = ({}) => {
+  const t = useTranslations('unauthenticated');
   const theme = useTheme([]);
   const loginForm = useForm<LoginFormData>({
     resolver: valibotResolver(loginFormDataSchema),
@@ -53,14 +41,14 @@ const LoginForm: FC<Props> = ({ translations: t }) => {
           htmlFor='login-email-input'
           className='ml-sm-control-padding self-start text-tiny'
         >
-          {t['email-input'].label}
+          {t('email-input.label')}
         </label>
         <input
           {...loginForm.register('email')}
           id='login-email-input'
           style={loginForm.formState.errors.email ? inputStyles : {}}
           className={`${inputClasses}`}
-          placeholder={t['email-input'].placeholder}
+          placeholder={t('email-input.placeholder')}
         />
         {loginForm.formState.errors.email && (
           <span className={`${errorSpanClasses}`}>
@@ -73,7 +61,7 @@ const LoginForm: FC<Props> = ({ translations: t }) => {
           htmlFor='login-password-input'
           className='ml-sm-control-padding self-start text-tiny'
         >
-          {t['password-input'].label}
+          {t('password-input.label')}
         </label>
         <input
           {...loginForm.register('password')}
@@ -81,7 +69,7 @@ const LoginForm: FC<Props> = ({ translations: t }) => {
           type='password'
           style={loginForm.formState.errors.password ? inputStyles : {}}
           className={`${inputClasses}`}
-          placeholder={t['password-input'].placeholder}
+          placeholder={t('password-input.placeholder')}
         />
         {loginForm.formState.errors.password && (
           <span className={`${errorSpanClasses}`}>
@@ -93,7 +81,7 @@ const LoginForm: FC<Props> = ({ translations: t }) => {
         type='submit'
         className='w-full btn btn-sm'
       >
-        {t['login-button-text']}
+        {t('login-button-text')}
       </button>
     </form>
   );
