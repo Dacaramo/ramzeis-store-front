@@ -7,9 +7,50 @@
     "search-bar": {
       "placeholder": "Comprar por nombre de producto"
     },
-    "navbar": {
-      "my-profile-link": {
-        "text": "Mi perfil"
+    "auth-dropdown": {
+      "authenticated": {
+        "placeholder": "Mi perfil"
+      },
+      "unauthenticated": {
+        "placeholder": "Acceso",
+        "toggle-button-group": {
+          "options": {
+            "login": "Accede",
+            "sign-up": "Crea cuenta"
+          }
+        },
+        "or-login-text": "¿Ya tienes una cuenta? <link>Inicia sesión</link>",
+        "or-sign-up-text": "¿No tienes una cuenta? <link>Regístrate</link>",
+        "google-login-text": "Inicia sesión con Google",
+        "google-sign-up-text": "Regístrate con Google",
+        "divider-text": "O",
+        "email-input": {
+          "label": "Email",
+          "placeholder": "algo@ejemplo.com",
+          "error-text": "Eso no parece ser un email válido"
+        },
+        "phone-input": {
+          "label": "Teléfono móvil",
+          "placeholder": "Escribe tu número",
+          "error-text": "Eso no parece ser un número válido"
+        },
+        "password-input": {
+          "label": "Contraseña",
+          "placeholder": "Escribe tu contraseña",
+          "error-text": "La contraseña debe tener al menos 12 caracteres, 1 número, 1 carácter especial, 1 letra mayúscula y 1 letra minúscula"
+        },
+        "confirm-password-input": {
+          "label": "Confirmar contraseña",
+          "placeholder": "Confirma tu contraseña"
+        },
+        "terms-and-conditions-text": "He leído la <Link>política de términos y condiciones</Link> y estoy de acuerdo con ella",
+        "login-button-text": "Accede a tu cuenta",
+        "sign-up-button-text": "Crea tu cuenta",
+        "alert": {
+          "passwords-mismatch-text": "Las contraseñas no coinciden",
+          "login-success-text": "Has iniciado sesión exitosamente",
+          "sign-up-success-text": "Cuenta creada exitosamente"
+        }
       }
     },
     "region-dropdown": {
@@ -20,41 +61,7 @@
       }
     }
   },
-  "footer": {
-    "contact-section": {
-      "heading": "Contacto",
-      "phone-link": {
-        "text": "<notable>Teléfono:</notable> +57 3106358522"
-      },
-      "email-link": {
-        "text": "<notable>Correo electrónico:</notable> dankramirez@outlook.com"
-      },
-      "location-link": {
-        "text": "<notable>Ubicación:</notable> Bogotá, Colombia 🇨🇴"
-      }
-    },
-    "information-section": {
-      "heading": "Servicio al cliente",
-      "faq-link": {
-        "text": "Preguntas frecuentes"
-      },
-      "policies-link": {
-        "text": "Políticas"
-      }
-    },
-    "quick-links-section": {
-      "heading": "Enlaces rápidos",
-      "instagram-link": {
-        "text": "Encuéntranos en Instagram"
-      },
-      "tiktok-link": {
-        "text": "Encuéntranos en Tik Tok"
-      },
-      "ramzeis-link": {
-        "text": "Visita ramzeis.com"
-      }
-    }
-  },
+  "footer": {},
   "home-page": {
     "advantages-section": {
       "premium-products-section": {

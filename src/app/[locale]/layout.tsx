@@ -2,22 +2,14 @@ import { FC, ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import '../globals.css';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
   gapForBetweenSectionsClasses,
   xRootPaddingClasses,
   yRootPaddingClasses,
 } from '@/src/constants/classes';
-import ThemeButton from '@/src/components/ThemeButton/ThemeButton';
-import RegionDropdown from '@/src/components/RegionDropdown/RegionDropdown';
-import ColombianFlagIcon from '@/src/components/icons/ColombianFlagIcon';
-import EarthGlobeIcon from '@/src/components/icons/EarthGlobeIcon';
-import { navbarGapClasses } from '@/src/constants/classes';
-import CategoryDropdown from '@/src/components/CategoryDropdown/CategoryDropdown';
-import ArrowDownIcon from '@/src/components/icons/ArrowDownIcon';
 import ProvidersWrapper from '@/src/components/ProvidersWrapper/ProvidersWrapper';
-import SearchBar from '@/src/components/SearchBar/SearchBar';
+import Header from '@/src/components/Header/Header';
 
 const jost = Jost({
   variable: '--font-jost',
@@ -51,60 +43,7 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
         className={`${jost.className} ${yRootPaddingClasses} flex flex-col gap-[25px] font-jost text-mid`}
       >
         <ProvidersWrapper>
-          <header
-            className={`${xRootPaddingClasses} flex flex-row justify-between items-center`}
-          >
-            <Link href='/'>
-              RAMZEIS <b>store</b>
-            </Link>
-            <div className={`flex flex-row items-baseline ${navbarGapClasses}`}>
-              <CategoryDropdown
-                placeholder={
-                  <>
-                    {t('header.category-dropdown.placeholder')}
-                    <ArrowDownIcon />
-                  </>
-                }
-              />
-              <span className='text-tiny'>{t('header.separator-span')}</span>
-              <SearchBar placeholder={t('header.search-bar.placeholder')} />
-            </div>
-            <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-              <nav className={`flex flex-row text-tiny ${navbarGapClasses}`}>
-                <Link
-                  href='/my-profile'
-                  className={`hover:text-secondary`}
-                >
-                  {t('header.navbar.my-profile-link.text')}
-                </Link>
-              </nav>
-              <RegionDropdown
-                placeholder={
-                  t.rich('header.region-dropdown.placeholder', {
-                    ColombianFlagIcon: (_) => <ColombianFlagIcon />,
-                    EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                  }) as ReactNode
-                }
-                options={[
-                  {
-                    text: t.rich('header.region-dropdown.options.global', {
-                      ColombianFlagIcon: (_) => <ColombianFlagIcon />,
-                      EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                    }) as string,
-                    href: '/en',
-                  },
-                  {
-                    text: t.rich('header.region-dropdown.options.colombia', {
-                      ColombianFlagIcon: (_) => <ColombianFlagIcon />,
-                      EarthGlobeIcon: (_) => <EarthGlobeIcon />,
-                    }) as string,
-                    href: '/es-CO',
-                  },
-                ]}
-              />
-              <ThemeButton />
-            </div>
-          </header>
+          <Header />
           <main
             className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
           >

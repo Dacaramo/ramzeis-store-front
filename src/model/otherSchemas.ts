@@ -6,6 +6,14 @@ import {
   minValue,
   maxValue,
   regex,
+  object,
+  email,
+  custom,
+  startsWith,
+  forward,
+  Input,
+  boolean,
+  value,
 } from 'valibot';
 
 export const tableNameSchema = string(
@@ -58,3 +66,65 @@ export const localeSchema = string('The locale must be a string', [
 export const stripePaymentMethodIdSchema = string(
   'The stripePaymentMethodId must be a string'
 );
+
+export const emailSchema = string('You did not provide an email', [
+  email('This does not look like a valid email format'),
+]);
+
+export const passwordSchema = string('You did not provide a password', [
+  minLength(12, 'The password must have at least 12 characters'),
+  custom(
+    (value) => /\d/.test(value),
+    'The password must have at least 1 number'
+  ),
+  custom(
+    (value) => /[!@#$%^&*(),.?":{}|<>]/.test(value),
+    'The password must have at least 1 special character'
+  ),
+  custom(
+    (value) => /[A-Z]/.test(value),
+    'The password must have at least 1 uppercase letter'
+  ),
+  custom(
+    (value) => /[a-z]/.test(value),
+    'The password must have at least 1 lowercase letter'
+  ),
+]);
+
+export const signUpFormDataSchema = object(
+  {
+    email: emailSchema,
+    phone: string('You did not provide a phone number', [
+      regex(
+        /^\+(?:[0-9] ?){6,14}[0-9]$/,
+        'This does not look like a valid phone number'
+      ),
+    ]),
+    password: passwordSchema,
+    confirmedPassword: string('You did not confirm your password'),
+    areTermsAndConditionsAccepted: boolean([
+      value(
+        true,
+        'You must accept the terms and conditions in order to create an account'
+      ),
+    ]),
+  },
+  'signUpFormData must be an object',
+  [
+    forward(
+      custom(
+        (obj) => obj.password === obj.confirmedPassword,
+        'The passwords did not match'
+      ),
+      ['confirmedPassword']
+    ),
+  ]
+);
+
+export const loginFormDataSchema = object({
+  email: emailSchema,
+  password: string('You did not provide a password'),
+});
+
+export type SignUpFormData = Input<typeof signUpFormDataSchema>;
+export type LoginFormData = Input<typeof loginFormDataSchema>;

@@ -2,7 +2,6 @@ import { createElement } from 'react';
 import { getRequestConfig } from 'next-intl/server';
 import { availableLocales } from './constants/locales';
 import { notFound } from 'next/navigation';
-import { RichTranslationValues } from 'next-intl';
 import { ReactNode } from 'react';
 export default getRequestConfig(async ({ locale }) => {
   if (!availableLocales.includes(locale)) notFound();

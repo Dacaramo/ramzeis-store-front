@@ -12,13 +12,13 @@ const CategoryDropdown: FC<Props> = ({ placeholder }) => {
       <div
         tabIndex={0}
         role='button'
-        className='btn btn-sm font-normal bg-base-200'
+        className='btn btn-sm max-w-[280px] font-normal bg-base-200'
       >
         {placeholder}
       </div>
       <ul
         tabIndex={0}
-        className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'
+        className='dropdown-content z-[1] menu p-2 max-w-[280px] bg-base-100 rounded-box shadow-classic-sm'
       >
         {testProductCategories.map((category) => {
           return (

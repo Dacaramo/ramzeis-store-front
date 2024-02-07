@@ -7,9 +7,50 @@
     "search-bar": {
       "placeholder": "Shop by product name"
     },
-    "navbar": {
-      "my-profile-link": {
-        "text": "My profile"
+    "auth-dropdown": {
+      "authenticated": {
+        "placeholder": "My profile"
+      },
+      "unauthenticated": {
+        "placeholder": "Access",
+        "toggle-button-group": {
+          "options": {
+            "login": "Login",
+            "sign-up": "Sign up"
+          }
+        },
+        "or-login-text": "You have an account already? <link>Login</link> instead",
+        "or-sign-up-text": "You don't have an account? <link>Sign up</link> instead",
+        "google-login-text": "Login with Google",
+        "google-sign-up-text": "Sign up with Google",
+        "divider-text": "OR",
+        "email-input": {
+          "label": "Email",
+          "placeholder": "something@example.com",
+          "error-text": "That doesn't look like an email"
+        },
+        "phone-input": {
+          "label": "Phone",
+          "placeholder": "Type your number",
+          "error-text": "That doesn't look like a valid phone number"
+        },
+        "password-input": {
+          "label": "Password",
+          "placeholder": "Type your password",
+          "error-text": "The password must have at least 12 characters, 1 number, 1 special character, 1 uppercase letter and 1 lowercase letter"
+        },
+        "confirm-password-input": {
+          "label": "Confirm password",
+          "placeholder": "Confirm your password"
+        },
+        "terms-and-conditions-text": "I read the <Link>terms and conditions policy</Link> and I agree with it",
+        "login-button-text": "Login to your account",
+        "sign-up-button-text": "Sign up for an account",
+        "alert": {
+          "passwords-mismatch-text": "Passwords do not match",
+          "login-success-text": "You have logged in successfully",
+          "sign-up-success-text": "Account created successfully"
+        }
       }
     },
     "region-dropdown": {
@@ -20,41 +61,7 @@
       }
     }
   },
-  "footer": {
-    "contact-section": {
-      "heading": "Contact",
-      "phone-link": {
-        "text": "<b>Phone:</b> +57 3106358522"
-      },
-      "email-link": {
-        "text": "<b>Email:</b> dankramirez@outlook.com"
-      },
-      "location-link": {
-        "text": "<b>Location:</b> Bogotá, Colombia 🇨🇴"
-      }
-    },
-    "information-section": {
-      "heading": "Customer service",
-      "faq-link": {
-        "text": "FAQ"
-      },
-      "policies-link": {
-        "text": "Policies"
-      }
-    },
-    "quick-links-section": {
-      "heading": "Quick links",
-      "instagram-link": {
-        "text": "Find us on Instagram"
-      },
-      "tiktok-link": {
-        "text": "Find us on Tik Tok"
-      },
-      "ramzeis-link": {
-        "text": "Visit ramzeis.com"
-      }
-    }
-  },
+  "footer": {},
   "home-page": {
     "advantages-section": {
       "premium-products-section": {
