@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, createElement } from 'react';
 import { xRootPaddingClasses, navbarGapClasses } from '@/src/constants/classes';
 import Link from 'next/link';
 import CategoryDropdown from '../CategoryDropdown/CategoryDropdown';
@@ -26,8 +26,6 @@ const Header: FC<Props> = ({}) => {
     | AbstractIntlMessages
     | undefined;
 
-  console.log(authDropdownMessages);
-
   return (
     <header
       className={`${xRootPaddingClasses} flex flex-row justify-between items-center`}
@@ -48,7 +46,19 @@ const Header: FC<Props> = ({}) => {
         <SearchBar placeholder={t('header.search-bar.placeholder')} />
       </div>
       <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-        <NextIntlClientProvider messages={authDropdownMessages}>
+        <NextIntlClientProvider
+          messages={authDropdownMessages}
+          defaultTranslationValues={{
+            strong: async (value) => {
+              'use server';
+              return (await createElement('strong', null, value)) as ReactNode;
+            },
+            b: async (value) => {
+              'use server';
+              return (await createElement('b', null, value)) as ReactNode;
+            },
+          }}
+        >
           <AuthDropdown />
         </NextIntlClientProvider>
         <RegionDropdown

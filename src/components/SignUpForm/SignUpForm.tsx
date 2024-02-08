@@ -2,15 +2,15 @@
 
 import 'react-international-phone/style.css';
 
+import { CSSProperties, FC, ComponentProps, useState } from 'react';
 import { errorSpanClasses, inputClasses } from '@/src/constants/classes';
 import { colors } from '@/src/constants/colors';
 import useTheme from '@/src/hooks/useTheme';
 import { SignUpFormData, signUpFormDataSchema } from '@/src/model/otherSchemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
-import { CSSProperties, FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ControlledPhoneInput from '../ControlledPhoneInput/ControlledPhoneInput';
-import { signUp } from 'aws-amplify/auth';
+import { signUp, confirmSignUp } from 'aws-amplify/auth';
 import Alert from '../Alert/Alert';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -18,6 +18,10 @@ import Link from 'next/link';
 interface Props {}
 
 const SignUpForm: FC<Props> = ({}) => {
+  const [alertProps, setAlertProps] = useState<
+    ComponentProps<typeof Alert> | undefined
+  >(undefined);
+
   const t = useTranslations('unauthenticated');
   const theme = useTheme([]);
   const signUpForm = useForm<SignUpFormData>({
@@ -40,21 +44,39 @@ const SignUpForm: FC<Props> = ({}) => {
         password: data.password,
         options: {
           userAttributes: {
+            name: 'none',
+            picture: 'none',
             phone_number: data.phone,
           },
         },
       });
       if (signUpResponse.nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-        signUpForm.setError('root', {
-          message:
-            'CONFIRM YOUR ACCOUNT: Go to your email and click on the link we sended to you to confirm your account',
-        });
-      } else if (signUpResponse.nextStep.signUpStep === 'DONE') {
-        signUpForm.setError('root', {
-          message: 'Account confirmed successfully!',
+        setAlertProps({
+          type: 'alert-warning',
+          text: t.rich('alert.confirm-account-text', {
+            email: data.email,
+          }),
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      const e = error as Error;
+      setAlertProps({
+        type: 'alert-error',
+        text: t(`alert.exceptions.${e.name}`),
+      });
+    }
+  };
+
+  const handleWindowFocus = () => {
+    if (
+      signUpForm.formState.isSubmitted &&
+      signUpForm.formState.isSubmitSuccessful
+    ) {
+      setAlertProps({
+        type: 'alert-success',
+        text: t('alert.sign-up-success-text'),
+      });
+    }
   };
 
   const handleClickOnCheckBox = () => {
@@ -183,16 +205,16 @@ const SignUpForm: FC<Props> = ({}) => {
         <button
           type='submit'
           className='w-full btn btn-sm'
+          disabled={signUpForm.formState.isSubmitting}
         >
-          {t('sign-up-button-text')}
+          {signUpForm.formState.isSubmitting ? (
+            <span className='loading loading-infinity'></span>
+          ) : (
+            t('sign-up-button-text')
+          )}
         </button>
       </form>
-      {signUpForm.formState.errors.root && (
-        <Alert
-          text={signUpForm.formState.errors.root.message ?? ''}
-          type='alert-error'
-        />
-      )}
+      {alertProps && <Alert {...alertProps} />}
     </>
   );
 };

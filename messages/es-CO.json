@@ -47,6 +47,10 @@
         "login-button-text": "Accede a tu cuenta",
         "sign-up-button-text": "Crea tu cuenta",
         "alert": {
+          "exceptions": {
+            "UsernameExistsException": "Ya hay un usuario registrado con ese email"
+          },
+          "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Dale click al link que te enviamos a {email}",
           "passwords-mismatch-text": "Las contraseñas no coinciden",
           "login-success-text": "Has iniciado sesión exitosamente",
           "sign-up-success-text": "Cuenta creada exitosamente"
@@ -101,7 +105,7 @@
     "heading": "Preguntas frecuentes",
     "description": "He aquí las preguntas que más hace la gente sobre Ramzeis Store",
     "bottom-section": {
-      "heading": "Todavía necesitas ayuda? Contáctanos!",
+      "heading": "Todavía necesitas ayuda? Contáctenos!",
       "description": "Para contactarnos envíanos un email a dankramirez@outlook.com o escríbenos a nuestras redes sociales."
     }
   }

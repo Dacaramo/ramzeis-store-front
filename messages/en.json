@@ -47,6 +47,10 @@
         "login-button-text": "Login to your account",
         "sign-up-button-text": "Sign up for an account",
         "alert": {
+          "exceptions": {
+            "UsernameExistsException": "There is already an account with that email"
+          },
+          "confirm-account-text": "<strong>Confirm your account</strong>: Click the link we send to {email}",
           "passwords-mismatch-text": "Passwords do not match",
           "login-success-text": "You have logged in successfully",
           "sign-up-success-text": "Account created successfully"
