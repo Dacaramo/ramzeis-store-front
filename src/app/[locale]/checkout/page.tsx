@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-const page: FC<Props> = ({ params: { locale } }) => {
+const CheckoutPage: FC<Props> = ({ params: { locale } }) => {
   return (
     <Elements stripe={stripePromise}>
       <CheckoutForm />
@@ -23,4 +23,4 @@ const page: FC<Props> = ({ params: { locale } }) => {
   );
 };
 
-export default page;
+export default CheckoutPage;

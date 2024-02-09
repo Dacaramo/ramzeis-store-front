@@ -48,12 +48,17 @@
         "sign-up-button-text": "Crea tu cuenta",
         "alert": {
           "exceptions": {
-            "UsernameExistsException": "Ya hay un usuario registrado con ese email"
+            "UsernameExistsException": "Ya hay un usuario registrado con ese email",
+            "AutoSignInException": "A habido un error durante el proceso automático de acceso",
+            "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}",
+            "SessionWithoutPreviousSignIn": "No se puede obtener una sesión para el usuario, fetchAuthSession() se llamó sin haber llamado previamente a signIn() o a autoSignIn()",
+            "MissingIdToken": "El idToken que supuestamente debería estar dentro de la propiedad tokens de la respuesta dada por fetchAuthSession() es undefined, este es un error proveniente de AWS Cognito o del Amplify SDK"
           },
           "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Dale click al link que te enviamos a {email}",
           "passwords-mismatch-text": "Las contraseñas no coinciden",
           "login-success-text": "Has iniciado sesión exitosamente",
-          "sign-up-success-text": "Cuenta creada exitosamente"
+          "sign-up-success-text": "Cuenta creada exitosamente",
+          "confirm-button": "Confirmar"
         }
       }
     },

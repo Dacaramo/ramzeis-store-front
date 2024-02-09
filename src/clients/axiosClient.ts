@@ -6,10 +6,24 @@ import {
   ProductColor,
   ProductFilterValues,
 } from '../model/Product';
+import { Buyer } from '../model/Buyer';
 
 export const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
+
+export const createBuyer = async (
+  buyerEmail: Buyer['pk'],
+  buyerAgreements: Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
+  buyerCartDetails?: Buyer['buyerCartDetails']
+): Promise<Buyer> => {
+  const { data } = await axiosClient.post<Buyer>('/buyer', {
+    buyerEmail,
+    buyerCartDetails,
+    buyerAgreements,
+  });
+  return data;
+};
 
 export const getProducts = async (
   productFilterValues: ProductFilterValues

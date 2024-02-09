@@ -48,12 +48,17 @@
         "sign-up-button-text": "Sign up for an account",
         "alert": {
           "exceptions": {
-            "UsernameExistsException": "There is already an account with that email"
+            "UsernameExistsException": "There is already an account with that email",
+            "AutoSignInException": "There was an error during auto sign in",
+            "UnknownException": "Unknown error please talk to support and give them the following error code: {exception}",
+            "SessionWithoutPreviousSignIn": "Can't get a session for the user, fetchAuthSession() was called without previously calling signIn() or autoSignIn()",
+            "MissingIdToken": "The idToken that was supposed to be found inside the tokens props of the fetchAuthSession() response is undefined, this is an error from AWS Cognito or the Amplify SDK"
           },
           "confirm-account-text": "<strong>Confirm your account</strong>: Click the link we send to {email}",
           "passwords-mismatch-text": "Passwords do not match",
           "login-success-text": "You have logged in successfully",
-          "sign-up-success-text": "Account created successfully"
+          "sign-up-success-text": "Account created successfully",
+          "confirm-button": "Confirm"
         }
       }
     },

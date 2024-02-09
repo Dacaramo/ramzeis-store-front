@@ -8,6 +8,8 @@ import ToggleButtonGroup, {
 import LoginForm from '../LoginForm/LoginForm';
 import SignUpForm from '../SignUpForm/SignUpForm';
 import { useTranslations } from 'next-intl';
+import { useStore } from '@/src/zustand/store';
+import Link from 'next/link';
 
 interface Props {}
 
@@ -15,8 +17,9 @@ const AuthDropdown: FC<Props> = ({}) => {
   const [action, setAction] = useState<'login' | 'sign-up'>('login');
 
   const t = useTranslations();
-
-  const isAuthenticated = true;
+  const isAuthenticated = useStore((state) => {
+    return state.user.isAuthenticated;
+  });
 
   const handleClickOnToggleButton = (clickedButton: ToggleButtonDefinition) => {
     if (clickedButton.key !== action) {
@@ -32,16 +35,22 @@ const AuthDropdown: FC<Props> = ({}) => {
      */
   };
 
+  console.log('@@@@@isAuthenticated', isAuthenticated);
+
   return (
     <details className='dropdown dropdown-end'>
-      <summary
-        role='button'
-        className='flex justify-center items-center h-sm-control-height font-normal text-tiny hover:text-secondary'
-      >
-        {isAuthenticated
-          ? t('authenticated.placeholder')
-          : t('unauthenticated.placeholder')}
-      </summary>
+      {isAuthenticated ? (
+        <Link href='/profile'>{t('authenticated.placeholder')}</Link>
+      ) : (
+        <summary
+          role='button'
+          className='flex justify-center items-center h-sm-control-height font-normal text-tiny hover:text-secondary'
+        >
+          {isAuthenticated
+            ? t('authenticated.placeholder')
+            : t('unauthenticated.placeholder')}
+        </summary>
+      )}
       <div
         tabIndex={0}
         className='w-[280px] dropdown-content flex flex-col items-center z-[1] rounded-md bg-base-100'
@@ -63,19 +72,6 @@ const AuthDropdown: FC<Props> = ({}) => {
         />
         <div className='flex flex-col gap-sm-control-padding p-sm-control-padding w-full rounded-b-md border border-base-content'>
           {action === 'login' ? <LoginForm /> : <SignUpForm />}
-          <div className='divider m-0 text-tiny'>
-            {t('unauthenticated.divider-text')}
-          </div>
-          <button
-            type='button'
-            className='w-full btn btn-sm text-tiny'
-            onClick={handleClickOnGoogleButton}
-          >
-            {action === 'login'
-              ? t('unauthenticated.google-login-text')
-              : t('unauthenticated.google-sign-up-text')}
-            <GoogleIcon />
-          </button>
         </div>
       </div>
     </details>

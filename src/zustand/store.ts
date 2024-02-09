@@ -1,8 +1,8 @@
-import { createStore } from 'zustand';
+import { create } from 'zustand';
 import { Buyer } from '../model/Buyer';
 import { Product, ProductId } from '../model/Product';
 
-export interface User {
+export interface UserData {
   email: Buyer['pk'];
   phone: string;
   name: string | 'none';
@@ -11,24 +11,39 @@ export interface User {
   agreements: Buyer['buyerAgreements'];
 }
 
+export interface UserTokens {
+  idToken: string;
+  accessToken: string;
+}
+
+export interface User {
+  isAuthenticated: boolean;
+  data?: UserData;
+  tokens?: UserTokens;
+}
+
 interface StoreState {
-  user?: User;
+  user: User;
   cart: {
     details: Buyer['buyerCartDetails'];
     products: Array<Product>;
   };
   setUser: (user: User) => void;
-  addProduct: (
+  addProductToCart: (
     detail: Buyer['buyerCartDetails'][string],
     product: Product
   ) => void;
-  removeProduct: (productId: ProductId) => void;
+  removeProductFromCart: (productId: ProductId) => void;
   clearCart: () => void;
 }
 
-export const useStore = createStore<StoreState>()((set) => {
+export const useStore = create<StoreState>()((set) => {
   return {
-    user: undefined,
+    user: {
+      isAuthenticated: false,
+      data: undefined,
+      tokens: undefined,
+    },
     cart: {
       details: {},
       products: [],
@@ -40,7 +55,7 @@ export const useStore = createStore<StoreState>()((set) => {
         };
       });
     },
-    addProduct: (
+    addProductToCart: (
       detail: Buyer['buyerCartDetails'][string],
       product: Product
     ) => {
@@ -56,7 +71,7 @@ export const useStore = createStore<StoreState>()((set) => {
         };
       });
     },
-    removeProduct: (productId: ProductId) => {
+    removeProductFromCart: (productId: ProductId) => {
       return set((state) => {
         const newDetails = { ...state.cart.details };
         delete newDetails[productId];
