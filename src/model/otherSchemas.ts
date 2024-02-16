@@ -126,5 +126,33 @@ export const loginFormDataSchema = object({
   password: string('You did not provide a password'),
 });
 
+export const changePasswordFormDataSchema = object(
+  {
+    currentPassword: string('You did not provide the current password'),
+    newPassword: passwordSchema,
+    confirmedNewPassword: string('You did not confirm your new password'),
+  },
+  'changePasswordFormData must be an object',
+  [
+    forward(
+      custom(
+        (obj) => obj.newPassword === obj.confirmedNewPassword,
+        'The passwords did not match'
+      ),
+      ['confirmedNewPassword']
+    ),
+  ]
+);
+
+export class CustomError extends Error {
+  name: string;
+
+  constructor(name: string, message: string) {
+    super(message);
+    this.name = name;
+    Object.setPrototypeOf(this, CustomError.prototype);
+  }
+}
 export type SignUpFormData = Input<typeof signUpFormDataSchema>;
 export type LoginFormData = Input<typeof loginFormDataSchema>;
+export type ChangePasswordData = Input<typeof changePasswordFormDataSchema>;

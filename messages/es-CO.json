@@ -43,6 +43,9 @@
           "label": "Confirmar contraseña",
           "placeholder": "Confirma tu contraseña"
         },
+        "confirmation-code-input": {
+          "placeholder": "Tu código de confirmación"
+        },
         "terms-and-conditions-text": "He leído la <Link>política de términos y condiciones</Link> y estoy de acuerdo con ella",
         "login-button-text": "Accede a tu cuenta",
         "sign-up-button-text": "Crea tu cuenta",
@@ -52,7 +55,11 @@
             "AutoSignInException": "A habido un error durante el proceso automático de acceso",
             "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}",
             "SessionWithoutPreviousSignIn": "No se puede obtener una sesión para el usuario, fetchAuthSession() se llamó sin haber llamado previamente a signIn() o a autoSignIn()",
-            "MissingIdToken": "El idToken que supuestamente debería estar dentro de la propiedad tokens de la respuesta dada por fetchAuthSession() es undefined, este es un error proveniente de AWS Cognito o del Amplify SDK"
+            "MissingIdToken": "El idToken que supuestamente debería estar dentro de la propiedad tokens de la respuesta dada por fetchAuthSession() es undefined, este es un error proveniente de AWS Cognito o del Amplify SDK",
+            "ExpiredCodeException": "El código de confirmación ha expirado, por favor refresque la página e intente hace sign up de nuevo",
+            "CodeMismatchException": "El código no es válido",
+            "CodeDeliveryFailureException": "AWS SES no fue capaz de enviar el código al email especificado, una posible razón es que el email especificado no esté verificado y que AWS SES esté corriendo en modo sandbox y no en modo de producción",
+            "NotAuthorizedException": "Email o contraseña incorrectos"
           },
           "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Dale click al link que te enviamos a {email}",
           "passwords-mismatch-text": "Las contraseñas no coinciden",
@@ -112,6 +119,61 @@
     "bottom-section": {
       "heading": "Todavía necesitas ayuda? Contáctenos!",
       "description": "Para contactarnos envíanos un email a dankramirez@outlook.com o escríbenos a nuestras redes sociales."
+    }
+  },
+  "profile-page-nav": {
+    "manage-my-profile-link-text": "Gestionar mi perfil",
+    "payment-methods-link-text": "Métodos de pago",
+    "addresses-link-text": "Direcciones",
+    "reviews-link-text": "Reseñas",
+    "orders-link-text": "Ordenes",
+    "sign-out-link-text": "Salir"
+  },
+  "manage-my-profile-page": {
+    "change-my-password-section": {
+      "title-text": "Cambiar mi contraseña",
+      "description-text": "Tu nueva contraseña debe cumplir con los siguientes criterios:",
+      "criteria-list": {
+        "twelve-chars": "Al menos 12 caracteres",
+        "at-least-one-number": "Al menos un número",
+        "at-least-one-special": "Al menos un caracter especial (! @ # $ % ...)",
+        "at-least-one-uppercase": "Al menos una letra mayúscula",
+        "at-least-one-lowercase": "Al menos una letra minúscula"
+      },
+      "current-password-input": {
+        "label": "Contraseña actual",
+        "placeholder": "Escribe tu contraseña actual"
+      },
+      "new-password-input": {
+        "label": "Nueva contraseña",
+        "placeholder": "Escribe tu nueva contraseña"
+      },
+      "confirmed-new-password-input": {
+        "label": "Confirma tu nueva contraseña",
+        "placeholder": "Confirma tu nueva contraseña"
+      },
+      "button-text": "Cambia tu contraseña",
+      "alert": {
+        "exceptions": {
+          "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}"
+        },
+        "passwords-mismatch-text": "Las contraseñas no coinciden"
+      }
+    },
+    "delete-my-account-section": {
+      "title-text": "Borrar mi cuenta",
+      "danger-zone-section": {
+        "title-text": "Zona de peligro",
+        "description-text": "Una vez que elimines tu cuenta no podrás recuperarla, todo se perderá por completo. Si realmente deseas continuar, escribe <b>I want to delete my account</b> en la entrada de texto y haga clic en el botón confirmar eliminación.",
+        "input-placeholder": "I want to delete my account",
+        "button-text": "Confirmar eliminación",
+        "alert": {
+          "exceptions": {
+            "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}",
+            "InvalidTextException": "El texto que a escrito no coincide con \"I want to delete my account\""
+          }
+        }
+      }
     }
   }
 }

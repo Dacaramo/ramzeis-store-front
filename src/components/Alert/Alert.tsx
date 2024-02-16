@@ -85,7 +85,13 @@ const Alert: FC<Props> = ({ text, type = '', icon, additionalContent }) => {
       {type === ''
         ? iconToDisplay['alert-info']
         : iconToDisplay[type as AlertType]}
-      <span>{text}</span>
+      <span
+        style={{
+          wordBreak: 'break-word',
+        }}
+      >
+        {text}
+      </span>
       {additionalContent}
     </div>
   );

@@ -4,9 +4,9 @@ import { Product, ProductId } from '../model/Product';
 
 export interface UserData {
   email: Buyer['pk'];
-  phone: string;
-  name: string | 'none';
-  picture: string | 'none';
+  phone?: string | 'none';
+  name?: string | 'none';
+  picture?: string | 'none';
   stripeCustomerId: Buyer['buyerStripeCustomerId'];
   agreements: Buyer['buyerAgreements'];
 }
@@ -35,6 +35,8 @@ interface StoreState {
   ) => void;
   removeProductFromCart: (productId: ProductId) => void;
   clearCart: () => void;
+  setCartDetails: (details: Buyer['buyerCartDetails']) => void;
+  setCartProducts: (products: Array<Product>) => void;
 }
 
 export const useStore = create<StoreState>()((set) => {
@@ -91,6 +93,26 @@ export const useStore = create<StoreState>()((set) => {
           cart: {
             details: {},
             products: [],
+          },
+        };
+      });
+    },
+    setCartDetails: (details: Buyer['buyerCartDetails']) => {
+      return set((_) => {
+        return {
+          cart: {
+            details,
+            products: [],
+          },
+        };
+      });
+    },
+    setCartProducts: (products: Array<Product>) => {
+      return set((state) => {
+        return {
+          cart: {
+            ...state.cart,
+            products,
           },
         };
       });

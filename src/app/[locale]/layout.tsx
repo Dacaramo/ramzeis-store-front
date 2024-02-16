@@ -3,11 +3,6 @@ import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import '../globals.css';
 import { useTranslations } from 'next-intl';
-import {
-  gapForBetweenSectionsClasses,
-  xRootPaddingClasses,
-  yRootPaddingClasses,
-} from '@/src/constants/classes';
 import ProvidersWrapper from '@/src/components/ProvidersWrapper/ProvidersWrapper';
 import Header from '@/src/components/Header/Header';
 
@@ -40,15 +35,11 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
       data-theme='fantasy'
     >
       <body
-        className={`${jost.className} ${yRootPaddingClasses} flex flex-col gap-[25px] font-jost text-mid`}
+        className={`${jost.className} h-[100vh] pt-[25px] flex flex-col gap-[25px] font-jost text-mid`}
       >
         <ProvidersWrapper>
           <Header />
-          <main
-            className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
-          >
-            {children}
-          </main>
+          {children}
           <footer className=''></footer>
         </ProvidersWrapper>
       </body>

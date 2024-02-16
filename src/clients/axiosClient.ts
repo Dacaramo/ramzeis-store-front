@@ -17,12 +17,21 @@ export const createBuyer = async (
   buyerAgreements: Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
   buyerCartDetails?: Buyer['buyerCartDetails']
 ): Promise<Buyer> => {
-  const { data } = await axiosClient.post<Buyer>('/buyer', {
+  const { data } = await axiosClient.post<Buyer>('/buyers', {
     buyerEmail,
     buyerCartDetails,
     buyerAgreements,
   });
   return data;
+};
+
+export const getBuyer = async (buyerEmail: Buyer['pk']): Promise<Buyer> => {
+  const { data } = await axiosClient.get<Buyer>(`/buyers/${buyerEmail}`);
+  return data;
+};
+
+export const deleteBuyer = async (buyerEmail: Buyer['pk']): Promise<void> => {
+  await axiosClient.delete(`/buyers/${buyerEmail}`);
 };
 
 export const getProducts = async (

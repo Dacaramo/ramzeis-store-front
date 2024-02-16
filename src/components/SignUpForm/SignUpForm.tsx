@@ -21,14 +21,17 @@ import {
   confirmSignUp,
   fetchAuthSession,
   signUp,
+  signOut,
 } from 'aws-amplify/auth';
 import Alert from '../Alert/Alert';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useStore } from '@/src/zustand/store';
+import { User, useStore } from '@/src/zustand/store';
 import { createBuyer } from '@/src/clients/axiosClient';
 import { Buyer } from '@/src/model/Buyer';
 import GoogleIcon from '../icons/GoogleIcon';
+import { getDeviceDetails } from '@/src/utils/getDeviceDetails';
+import useLocalStorage from '@/src/hooks/useLocalStorage';
 
 interface Props {}
 
@@ -42,6 +45,7 @@ const SignUpForm: FC<Props> = ({}) => {
   const [confirmationCode, setConfirmationCode] = useState<string>('');
   const [isConfirmationLoading, setIsConfirmationLoading] =
     useState<boolean>(false);
+  const [buyer, setBuyer] = useState<Buyer | undefined>(undefined);
 
   const t = useTranslations('unauthenticated');
   const theme = useTheme([]);
@@ -54,12 +58,13 @@ const SignUpForm: FC<Props> = ({}) => {
   const setUser = useStore(({ setUser }) => {
     return setUser;
   });
+  const { setUserInLocalStorage, getCartFromLocalStorage } = useLocalStorage();
 
   const inputStyles: CSSProperties = {
     borderColor: colors[theme].error,
   };
 
-  const handleChangeOnConfirmationCodeInput = (
+  const handleChangeOnConfirmationCodeInput = async (
     e: ReactChangeEvent<HTMLInputElement>
   ) => {
     setConfirmationCode(e.target.value);
@@ -75,16 +80,10 @@ const SignUpForm: FC<Props> = ({}) => {
         confirmationCode,
       });
 
-      console.log('@@@@@confirmationResponse', confirmationResponse);
-
       if (
         confirmationResponse.nextStep.signUpStep === 'COMPLETE_AUTO_SIGN_IN'
       ) {
-        setIsConfirmationLoading(false);
-        const response = await autoSignIn();
-
-        console.log('@@@@@autoSignInResponse', response);
-
+        await autoSignIn();
         const { tokens } = await fetchAuthSession();
         if (!tokens) {
           setAlertProps({
@@ -97,50 +96,35 @@ const SignUpForm: FC<Props> = ({}) => {
             text: t('alert.exceptions.MissingIdToken'),
           });
         }
-        const buyer = await createBuyer(
-          signUpFormData.email,
-          [
-            {
-              documentName: 'Terms and conditions',
-              documentVersion: '1.0.0',
-              acceptanceTimestamp: new Date().toISOString(),
-            },
-          ] as Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
-          JSON.parse(
-            localStorage.getItem('cartDetails') ?? '{}'
-          ) as Buyer['buyerCartDetails']
-        );
-        setUser({
+        setAlertProps(undefined);
+        setIsConfirmationLoading(false);
+        const user: User = {
           isAuthenticated: true,
           data: {
             email: signUpFormData.email,
             phone: signUpFormData.phone,
             name: 'none',
             picture: 'none',
-            stripeCustomerId: buyer.buyerStripeCustomerId,
-            agreements: buyer.buyerAgreements,
+            stripeCustomerId: buyer!.buyerStripeCustomerId,
+            agreements: buyer!.buyerAgreements,
           },
           tokens: {
             idToken: tokens!.idToken!.toString(),
             accessToken: tokens!.accessToken.toString(),
           },
-        });
-        setAlertProps({
-          type: 'alert-success',
-          text: t('alert.sign-up-success-text'),
-          icon: <span className='loading loading-ring loading-md'></span>,
-        });
-        setTimeout(() => {
-          setAlertProps(undefined);
-          signUpForm.reset();
-        }, 3000);
+        };
+        setUser(user);
+        setUserInLocalStorage(user);
+        signUpForm.reset();
       }
     } catch (error) {
       const e = error as Error;
-      console.log(e);
+      await signOut();
       setAlertProps({
         type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
+        text: t(`alert.exceptions.${e.name}`).startsWith(
+          'unauthenticated.alert.exceptions'
+        )
           ? t('alert.exceptions.UnknownException', {
               exception: e.name,
             })
@@ -166,6 +150,23 @@ const SignUpForm: FC<Props> = ({}) => {
           autoSignIn: true,
         },
       });
+      setBuyer(
+        await createBuyer(
+          data.email,
+          [
+            {
+              documentName: 'Terms and conditions',
+              documentVersion: '1.0.0',
+              acceptanceTimestamp: new Date().toISOString(),
+              acceptanceDeviceDetails: getDeviceDetails() as Record<
+                string,
+                unknown
+              >,
+            },
+          ] as Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
+          getCartFromLocalStorage()
+        )
+      );
       if (signUpResponse.nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
         setAlertProps({
           type: 'alert-warning',
@@ -179,7 +180,9 @@ const SignUpForm: FC<Props> = ({}) => {
       const e = error as Error;
       setAlertProps({
         type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
+        text: t(`alert.exceptions.${e.name}`).startsWith(
+          'unauthenticated.alert.exceptions'
+        )
           ? t('alert.exceptions.UnknownException', {
               exception: e.name,
             })

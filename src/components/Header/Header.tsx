@@ -4,27 +4,22 @@ import Link from 'next/link';
 import CategoryDropdown from '../CategoryDropdown/CategoryDropdown';
 import SearchBar from '../SearchBar/SearchBar';
 import ArrowDownIcon from '../icons/ArrowDownIcon';
-import {
-  NextIntlClientProvider,
-  useTranslations,
-  useMessages,
-  AbstractIntlMessages,
-} from 'next-intl';
+import { useTranslations, useMessages, AbstractIntlMessages } from 'next-intl';
 import RegionDropdown from '../RegionDropdown/RegionDropdown';
 import ColombianFlagIcon from '../icons/ColombianFlagIcon';
 import EarthGlobeIcon from '../icons/EarthGlobeIcon';
 import ThemeButton from '../ThemeButton/ThemeButton';
 import AuthDropdown from '../AuthDropdown/AuthDropdown';
+import TranslationsProvider from '../TranslationsProvider/TranslationsProvider';
 
 interface Props {}
 
 const Header: FC<Props> = ({}) => {
   const t = useTranslations('');
   const messages = useMessages();
-  const headerMessages = messages?.header as AbstractIntlMessages | undefined;
-  const authDropdownMessages = headerMessages?.['auth-dropdown'] as
-    | AbstractIntlMessages
-    | undefined;
+  const authDropdownMessages = (messages.header as AbstractIntlMessages)[
+    'auth-dropdown'
+  ] as AbstractIntlMessages;
 
   return (
     <header
@@ -46,21 +41,9 @@ const Header: FC<Props> = ({}) => {
         <SearchBar placeholder={t('header.search-bar.placeholder')} />
       </div>
       <div className={`flex flex-row ${navbarGapClasses} items-center`}>
-        <NextIntlClientProvider
-          messages={authDropdownMessages}
-          defaultTranslationValues={{
-            strong: async (value) => {
-              'use server';
-              return (await createElement('strong', null, value)) as ReactNode;
-            },
-            b: async (value) => {
-              'use server';
-              return (await createElement('b', null, value)) as ReactNode;
-            },
-          }}
-        >
+        <TranslationsProvider scopedMessages={authDropdownMessages}>
           <AuthDropdown />
-        </NextIntlClientProvider>
+        </TranslationsProvider>
         <RegionDropdown
           placeholder={
             t.rich('header.region-dropdown.placeholder', {

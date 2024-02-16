@@ -43,6 +43,9 @@
           "label": "Confirm password",
           "placeholder": "Confirm your password"
         },
+        "confirmation-code-input": {
+          "placeholder": "Your confirmation code"
+        },
         "terms-and-conditions-text": "I read the <Link>terms and conditions policy</Link> and I agree with it",
         "login-button-text": "Login to your account",
         "sign-up-button-text": "Sign up for an account",
@@ -52,7 +55,11 @@
             "AutoSignInException": "There was an error during auto sign in",
             "UnknownException": "Unknown error please talk to support and give them the following error code: {exception}",
             "SessionWithoutPreviousSignIn": "Can't get a session for the user, fetchAuthSession() was called without previously calling signIn() or autoSignIn()",
-            "MissingIdToken": "The idToken that was supposed to be found inside the tokens props of the fetchAuthSession() response is undefined, this is an error from AWS Cognito or the Amplify SDK"
+            "MissingIdToken": "The idToken that was supposed to be found inside the tokens props of the fetchAuthSession() response is undefined, this is an error from AWS Cognito or the Amplify SDK",
+            "ExpiredCodeException": "The confirmation code has expired, please refresh the page and try to sign up again",
+            "CodeMismatchException": "Invalid code",
+            "CodeDeliveryFailureException": "AWS SES was unable to deliver the code to the specified email, one possible reason may be because the specified email is not verified and the AWS SES service is running on sandbox mode, not production mode",
+            "NotAuthorizedException": "Incorrect email or password"
           },
           "confirm-account-text": "<strong>Confirm your account</strong>: Click the link we send to {email}",
           "passwords-mismatch-text": "Passwords do not match",
@@ -112,6 +119,61 @@
     "bottom-section": {
       "heading": "Still need help? Contact us!",
       "description": "To contact us, send us an email at dankramirez@outlook.com or contact us on our social media."
+    }
+  },
+  "profile-page-nav": {
+    "manage-my-profile-link-text": "Manage my profile",
+    "payment-methods-link-text": "Payment methods",
+    "addresses-link-text": "Addresses",
+    "reviews-link-text": "Reviews",
+    "orders-link-text": "Orders",
+    "sign-out-link-text": "Sign out"
+  },
+  "manage-my-profile-page": {
+    "change-my-password-section": {
+      "title-text": "Change my password",
+      "description-text": "Your new password must meet the following criteria:",
+      "criteria-list": {
+        "twelve-chars": "At least 12 characters",
+        "at-least-one-number": "At least one number",
+        "at-least-one-special": "At least one special character (! @ # $ % ...)",
+        "at-least-one-uppercase": "At least one uppercase letter",
+        "at-least-one-lowercase": "At least one lowercase letter"
+      },
+      "current-password-input": {
+        "label": "Current password",
+        "placeholder": "Type your current password"
+      },
+      "new-password-input": {
+        "label": "New password",
+        "placeholder": "Type your new password"
+      },
+      "confirmed-new-password-input": {
+        "label": "Confirm new password",
+        "placeholder": "Confirm your new password"
+      },
+      "button-text": "Change password",
+      "alert": {
+        "exceptions": {
+          "UnknownException": "Unknown error please talk to support and give them the following error code: {exception}"
+        },
+        "passwords-mismatch-text": "Passwords do not match"
+      }
+    },
+    "delete-my-account-section": {
+      "title-text": "Delete my account",
+      "danger-zone-section": {
+        "title-text": "Danger zone",
+        "description-text": "Once you delete your account you won't be able to get it back, everything will be completely lost. If you really want to proceed please write <b>I want to delete my account</b> on the text input and click on the confirm deletion button.",
+        "input-placeholder": "I want to delete my account",
+        "button-text": "Confirm deletion",
+        "alert": {
+          "exceptions": {
+            "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}",
+            "InvalidTextException": "The provided text does not match \"I want to delete my account\""
+          }
+        }
+      }
     }
   }
 }

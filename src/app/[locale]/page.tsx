@@ -4,6 +4,10 @@ import GemIcon from '@/src/components/icons/GemIcon';
 import StarIcon from '@/src/components/icons/StarIcon';
 import CardIcon from '@/src/components/icons/CardIcon';
 import { FC } from 'react';
+import {
+  gapForBetweenSectionsClasses,
+  xRootPaddingClasses,
+} from '@/src/constants/classes';
 
 interface Props {
   params: {
@@ -35,7 +39,9 @@ const HomePage: FC<Props> = ({ params: { locale } }) => {
   ];
 
   return (
-    <>
+    <main
+      className={`flex flex-col ${xRootPaddingClasses} ${gapForBetweenSectionsClasses}`}
+    >
       <ul className='flex flex-row justify-evenly items-center'>
         {cards.map((card) => {
           return (
@@ -46,7 +52,7 @@ const HomePage: FC<Props> = ({ params: { locale } }) => {
           );
         })}
       </ul>
-    </>
+    </main>
   );
 };
 
