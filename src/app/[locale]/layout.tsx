@@ -5,6 +5,12 @@ import '../globals.css';
 import { useTranslations } from 'next-intl';
 import ProvidersWrapper from '@/src/components/ProvidersWrapper/ProvidersWrapper';
 import Header from '@/src/components/Header/Header';
+import { Amplify } from 'aws-amplify';
+import { amplifyConfig } from '@/src/aws/amplifyConfig';
+
+Amplify.configure(amplifyConfig, {
+  ssr: true,
+});
 
 const jost = Jost({
   variable: '--font-jost',

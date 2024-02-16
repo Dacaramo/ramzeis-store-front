@@ -3,6 +3,7 @@ import { getRequestConfig } from 'next-intl/server';
 import { availableLocales } from './constants/locales';
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
+
 export default getRequestConfig(async ({ locale }) => {
   if (!availableLocales.includes(locale)) notFound();
   return {

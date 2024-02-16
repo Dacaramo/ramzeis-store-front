@@ -1,8 +1,16 @@
 import ChangePasswordForm from '@/src/components/ChangePasswordForm/ChangePasswordForm';
 import DeleteAccountForm from '@/src/components/DeleteAccountForm/DeleteAccountForm';
 import TranslationsProvider from '@/src/components/TranslationsProvider/TranslationsProvider';
-import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
+import { AbstractIntlMessages } from 'next-intl';
 import { FC } from 'react';
+import { cookies } from 'next/headers';
+import { fetchAuthSession } from 'aws-amplify/auth/server';
+import { runWithAmplifyServerContext } from '@/src/aws/amplifyServerUtils';
+import { redirect } from 'next/navigation';
+import { getMessages, getTranslations } from 'next-intl/server';
+
+/* This page always dynamically renders per request. It is possible that on Next.js 14 this is not needed since Next.js will deduce if this page is dynamically render based on the used APIs*/
+export const dynamic = 'force-dynamic';
 
 interface Props {
   params: {
@@ -10,9 +18,9 @@ interface Props {
   };
 }
 
-const page: FC<Props> = ({ params: { locale } }) => {
-  const t = useTranslations('manage-my-profile-page');
-  const messages = useMessages();
+const ManageMyProfilePage: FC<Props> = async ({ params: { locale } }) => {
+  const t = await getTranslations('manage-my-profile-page');
+  const messages = await getMessages();
 
   const changePasswordFormMessages = (
     messages['manage-my-profile-page'] as AbstractIntlMessages
@@ -25,6 +33,15 @@ const page: FC<Props> = ({ params: { locale } }) => {
   const sectionClasses =
     'px-[30px] py-[15px] flex flex-col gap-[15px] text-tiny border-b';
   const h2Classes = 'font-bold';
+
+  const session = await runWithAmplifyServerContext({
+    nextServerContext: { cookies },
+    operation: (contextSpec) => fetchAuthSession(contextSpec),
+  });
+
+  if (!session.tokens) {
+    redirect('/');
+  }
 
   return (
     <div className={`w-full gap-[100px]`}>
@@ -78,4 +95,4 @@ const page: FC<Props> = ({ params: { locale } }) => {
   );
 };
 
-export default page;
+export default ManageMyProfilePage;
