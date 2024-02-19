@@ -147,7 +147,7 @@ export const changePasswordFormDataSchema = object(
 export class CustomError extends Error {
   name: string;
 
-  constructor(name: string, message: string) {
+  constructor(name: string, message: string = '') {
     super(message);
     this.name = name;
     Object.setPrototypeOf(this, CustomError.prototype);

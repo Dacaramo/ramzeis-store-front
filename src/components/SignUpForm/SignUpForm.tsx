@@ -14,51 +14,42 @@ import { colors } from '@/src/constants/colors';
 import useTheme from '@/src/hooks/useTheme';
 import { SignUpFormData, signUpFormDataSchema } from '@/src/model/otherSchemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form';
 import ControlledPhoneInput from '../ControlledPhoneInput/ControlledPhoneInput';
-import {
-  autoSignIn,
-  confirmSignUp,
-  fetchAuthSession,
-  signUp,
-  signOut,
-} from 'aws-amplify/auth';
+import { signOut as amplifySignOut } from 'aws-amplify/auth';
 import Alert from '../Alert/Alert';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { User, useStore } from '@/src/zustand/store';
-import { createBuyer } from '@/src/clients/axiosClient';
-import { Buyer } from '@/src/model/Buyer';
 import GoogleIcon from '../icons/GoogleIcon';
-import { getDeviceDetails } from '@/src/utils/getDeviceDetails';
-import useLocalStorage from '@/src/hooks/useLocalStorage';
+import useAuth from '@/src/hooks/useAuth';
 
-interface Props {}
+interface Props {
+  form: UseFormReturn<SignUpFormData>;
+  alertProps?: ComponentProps<typeof Alert>;
+  onSubmit: SubmitHandler<SignUpFormData>;
+}
 
-const SignUpForm: FC<Props> = ({}) => {
+const SignUpForm: FC<Props> = ({
+  form,
+  alertProps,
+  onSubmit: handleSubmit,
+}) => {
   const [step, setStep] = useState<'submit-pending' | 'confirmation-pending'>(
     'submit-pending'
   );
-  const [alertProps, setAlertProps] = useState<
-    ComponentProps<typeof Alert> | undefined
-  >(undefined);
   const [confirmationCode, setConfirmationCode] = useState<string>('');
   const [isConfirmationLoading, setIsConfirmationLoading] =
     useState<boolean>(false);
-  const [buyer, setBuyer] = useState<Buyer | undefined>(undefined);
 
   const t = useTranslations('unauthenticated');
   const theme = useTheme([]);
-  const signUpForm = useForm<SignUpFormData>({
-    defaultValues: {
-      areTermsAndConditionsAccepted: false,
-    },
-    resolver: valibotResolver(signUpFormDataSchema),
-  });
-  const setUser = useStore(({ setUser }) => {
-    return setUser;
-  });
-  const { setUserInLocalStorage, getCartFromLocalStorage } = useLocalStorage();
+  // const signUpForm = useForm<SignUpFormData>({
+  //   defaultValues: {
+  //     areTermsAndConditionsAccepted: false,
+  //   },
+  //   resolver: valibotResolver(signUpFormDataSchema),
+  // });
+  const { signUp, confirmAccount } = useAuth();
 
   const inputStyles: CSSProperties = {
     borderColor: colors[theme].error,
@@ -70,131 +61,64 @@ const SignUpForm: FC<Props> = ({}) => {
     setConfirmationCode(e.target.value);
   };
 
-  const handleClickOnConfirmCodeButton = async (
-    signUpFormData: SignUpFormData
-  ) => {
-    try {
-      setIsConfirmationLoading(true);
-      const confirmationResponse = await confirmSignUp({
-        username: signUpFormData.email,
-        confirmationCode,
-      });
+  // const handleClickOnConfirmCodeButton = async (
+  //   signUpFormData: SignUpFormData
+  // ) => {
+  //   try {
+  //     setIsConfirmationLoading(true);
+  //     await confirmAccount(signUpFormData.email, confirmationCode);
+  //   } catch (error) {
+  //     const e = error as Error;
 
-      if (
-        confirmationResponse.nextStep.signUpStep === 'COMPLETE_AUTO_SIGN_IN'
-      ) {
-        await autoSignIn();
-        const { tokens } = await fetchAuthSession();
-        if (!tokens) {
-          setAlertProps({
-            type: 'alert-error',
-            text: t('alert.exceptions.SessionWithoutPreviousSignIn'),
-          });
-        } else if (!tokens.idToken) {
-          setAlertProps({
-            type: 'alert-error',
-            text: t('alert.exceptions.MissingIdToken'),
-          });
-        }
-        setAlertProps(undefined);
-        setIsConfirmationLoading(false);
-        const user: User = {
-          isAuthenticated: true,
-          data: {
-            email: signUpFormData.email,
-            phone: signUpFormData.phone,
-            name: 'none',
-            picture: 'none',
-            stripeCustomerId: buyer!.buyerStripeCustomerId,
-            agreements: buyer!.buyerAgreements,
-          },
-          tokens: {
-            idToken: tokens!.idToken!.toString(),
-            accessToken: tokens!.accessToken.toString(),
-          },
-        };
-        setUser(user);
-        setUserInLocalStorage(user);
-        signUpForm.reset();
-      }
-    } catch (error) {
-      const e = error as Error;
-      await signOut();
-      setAlertProps({
-        type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`alert.exceptions.${e.name}`),
-      });
-      setIsConfirmationLoading(false);
-    }
-  };
+  //     await amplifySignOut();
 
-  const handleSignUpFormSubmit: SubmitHandler<SignUpFormData> = async (
-    data: SignUpFormData
-  ) => {
-    try {
-      const signUpResponse = await signUp({
-        username: data.email,
-        password: data.password,
-        options: {
-          userAttributes: {
-            name: 'none',
-            picture: 'none',
-            phone_number: data.phone,
-          },
-          autoSignIn: true,
-        },
-      });
-      setBuyer(
-        await createBuyer(
-          data.email,
-          [
-            {
-              documentName: 'Terms and conditions',
-              documentVersion: '1.0.0',
-              acceptanceTimestamp: new Date().toISOString(),
-              acceptanceDeviceDetails: getDeviceDetails() as Record<
-                string,
-                unknown
-              >,
-            },
-          ] as Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
-          getCartFromLocalStorage()
-        )
-      );
-      if (signUpResponse.nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-        setAlertProps({
-          type: 'alert-warning',
-          text: t.rich('alert.confirm-account-text', {
-            email: data.email,
-          }),
-        });
-        setStep('confirmation-pending');
-      }
-    } catch (error) {
-      const e = error as Error;
-      setAlertProps({
-        type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`alert.exceptions.${e.name}`),
-      });
-    }
-  };
+  //     setAlertProps({
+  //       type: 'alert-error',
+  //       text: t(`alert.exceptions.${e.name}`).startsWith(
+  //         'unauthenticated.alert.exceptions'
+  //       )
+  //         ? t('alert.exceptions.UnknownException', {
+  //             exception: e.name,
+  //           })
+  //         : t(`alert.exceptions.${e.name}`),
+  //     });
+  //     setIsConfirmationLoading(false);
+  //   }
+  // };
+
+  // const handleSignUpFormSubmit: SubmitHandler<SignUpFormData> = async (
+  //   data: SignUpFormData
+  // ) => {
+  //   try {
+  //     await signUp(data.email, data.phone, data.password);
+
+  //     setAlertProps({
+  //       type: 'alert-warning',
+  //       text: t.rich('alert.confirm-account-text', {
+  //         email: data.email,
+  //       }),
+  //     });
+  //     setStep('confirmation-pending');
+  //   } catch (error) {
+  //     const e = error as Error;
+
+  //     setAlertProps({
+  //       type: 'alert-error',
+  //       text: t(`alert.exceptions.${e.name}`).startsWith(
+  //         'unauthenticated.alert.exceptions'
+  //       )
+  //         ? t('alert.exceptions.UnknownException', {
+  //             exception: e.name,
+  //           })
+  //         : t(`alert.exceptions.${e.name}`),
+  //     });
+  //   }
+  // };
 
   const handleClickOnCheckBox = () => {
-    signUpForm.setValue(
+    form.setValue(
       'areTermsAndConditionsAccepted',
-      !signUpForm.getValues().areTermsAndConditionsAccepted
+      !form.getValues().areTermsAndConditionsAccepted
     );
   };
 
@@ -209,7 +133,7 @@ const SignUpForm: FC<Props> = ({}) => {
       {step === 'submit-pending' && (
         <form
           className='flex flex-col gap-sm-control-padding'
-          onSubmit={signUpForm.handleSubmit(handleSignUpFormSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           autoComplete='off'
         >
           <div className='flex flex-col'>
@@ -220,15 +144,15 @@ const SignUpForm: FC<Props> = ({}) => {
               {t('email-input.label')}
             </label>
             <input
-              {...signUpForm.register('email')}
+              {...form.register('email')}
               id='sign-up-email-input'
-              style={signUpForm.formState.errors.email ? inputStyles : {}}
+              style={form.formState.errors.email ? inputStyles : {}}
               className={`${inputClasses}`}
               placeholder={t('email-input.placeholder')}
             />
-            {signUpForm.formState.errors.email && (
+            {form.formState.errors.email && (
               <span className={`${errorSpanClasses}`}>
-                {signUpForm.formState.errors.email.message}
+                {form.formState.errors.email.message}
               </span>
             )}
           </div>
@@ -241,12 +165,12 @@ const SignUpForm: FC<Props> = ({}) => {
             </label>
             <ControlledPhoneInput
               name='phone'
-              control={signUpForm.control}
-              style={signUpForm.formState.errors.phone ? inputStyles : {}}
+              control={form.control}
+              style={form.formState.errors.phone ? inputStyles : {}}
             />
-            {signUpForm.formState.errors.phone && (
+            {form.formState.errors.phone && (
               <span className={`${errorSpanClasses}`}>
-                {signUpForm.formState.errors.phone.message}
+                {form.formState.errors.phone.message}
               </span>
             )}
           </div>
@@ -258,16 +182,16 @@ const SignUpForm: FC<Props> = ({}) => {
               {t('password-input.label')}
             </label>
             <input
-              {...signUpForm.register('password')}
+              {...form.register('password')}
               id='sign-up-password-input'
               type='password'
-              style={signUpForm.formState.errors.password ? inputStyles : {}}
+              style={form.formState.errors.password ? inputStyles : {}}
               className={`${inputClasses}`}
               placeholder={t('password-input.placeholder')}
             />
-            {signUpForm.formState.errors.password && (
+            {form.formState.errors.password && (
               <span className={`${errorSpanClasses}`}>
-                {signUpForm.formState.errors.password.message}
+                {form.formState.errors.password.message}
               </span>
             )}
           </div>
@@ -279,18 +203,16 @@ const SignUpForm: FC<Props> = ({}) => {
               {t('confirm-password-input.label')}
             </label>
             <input
-              {...signUpForm.register('confirmedPassword')}
+              {...form.register('confirmedPassword')}
               id='sign-up-confirm-password-input'
               type='password'
-              style={
-                signUpForm.formState.errors.confirmedPassword ? inputStyles : {}
-              }
+              style={form.formState.errors.confirmedPassword ? inputStyles : {}}
               className={`${inputClasses}`}
               placeholder={t('confirm-password-input.placeholder')}
             />
-            {signUpForm.formState.errors.confirmedPassword && (
+            {form.formState.errors.confirmedPassword && (
               <span className={`${errorSpanClasses}`}>
-                {signUpForm.formState.errors.confirmedPassword.message}
+                {form.formState.errors.confirmedPassword.message}
               </span>
             )}
           </div>
@@ -310,28 +232,23 @@ const SignUpForm: FC<Props> = ({}) => {
               </span>
               <input
                 type='checkbox'
-                value={`${
-                  signUpForm.getValues().areTermsAndConditionsAccepted
-                }`}
+                value={`${form.getValues().areTermsAndConditionsAccepted}`}
                 className='checkbox checkbox-xs checkbox-secondary'
                 onClick={handleClickOnCheckBox}
               />
             </label>
           </div>
-          {signUpForm.formState.errors.areTermsAndConditionsAccepted && (
+          {form.formState.errors.areTermsAndConditionsAccepted && (
             <span className={`${errorSpanClasses}`}>
-              {
-                signUpForm.formState.errors.areTermsAndConditionsAccepted
-                  .message
-              }
+              {form.formState.errors.areTermsAndConditionsAccepted.message}
             </span>
           )}
           <button
             type='submit'
             className='w-full btn btn-sm'
-            disabled={signUpForm.formState.isSubmitting}
+            disabled={form.formState.isSubmitting}
           >
-            {signUpForm.formState.isSubmitting ? (
+            {form.formState.isSubmitting ? (
               <span className='loading loading-infinity'></span>
             ) : (
               t('sign-up-button-text')
@@ -340,7 +257,7 @@ const SignUpForm: FC<Props> = ({}) => {
         </form>
       )}
       {alertProps && <Alert {...alertProps} />}
-      {step === 'confirmation-pending' && (
+      {/* {step === 'confirmation-pending' && (
         <>
           <input
             type='text'
@@ -364,7 +281,7 @@ const SignUpForm: FC<Props> = ({}) => {
             )}
           </button>
         </>
-      )}
+      )} */}
       {step === 'submit-pending' && (
         <>
           <div className='divider m-0 text-tiny'>{t('divider-text')}</div>

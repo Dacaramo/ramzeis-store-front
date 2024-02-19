@@ -7,7 +7,7 @@ import {
   useState,
   ChangeEvent as ReactChangeEvent,
 } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form';
 import useTheme from '@/src/hooks/useTheme';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { LoginFormData, loginFormDataSchema } from '@/src/model/otherSchemas';
@@ -15,39 +15,29 @@ import { colors } from '@/src/constants/colors';
 import { errorSpanClasses, inputClasses } from '@/src/constants/classes';
 import { useTranslations } from 'next-intl';
 import Alert from '../Alert/Alert';
-import {
-  signIn,
-  confirmSignUp,
-  autoSignIn,
-  fetchAuthSession,
-  signOut,
-} from 'aws-amplify/auth';
-import { getBuyer } from '@/src/clients/axiosClient';
-import { User, useStore } from '@/src/zustand/store';
-import useLocalStorage from '@/src/hooks/useLocalStorage';
+import { signOut as amplifySignOut } from 'aws-amplify/auth';
+import useAuth from '@/src/hooks/useAuth';
 
-interface Props {}
+interface Props {
+  form: UseFormReturn<LoginFormData>;
+  alertProps?: ComponentProps<typeof Alert>;
+  onSubmit: SubmitHandler<LoginFormData>;
+}
 
-const LoginForm: FC<Props> = ({}) => {
+const LoginForm: FC<Props> = ({ form, alertProps, onSubmit: handleSubmit }) => {
   const [step, setStep] = useState<'submit-pending' | 'confirmation-pending'>(
     'submit-pending'
   );
-  const [alertProps, setAlertProps] = useState<
-    ComponentProps<typeof Alert> | undefined
-  >(undefined);
   const [confirmationCode, setConfirmationCode] = useState<string>('');
   const [isConfirmationLoading, setIsConfirmationLoading] =
     useState<boolean>(false);
 
   const t = useTranslations('unauthenticated');
   const theme = useTheme([]);
-  const loginForm = useForm<LoginFormData>({
-    resolver: valibotResolver(loginFormDataSchema),
-  });
-  const [setUser, setCartDetails] = useStore((state) => {
-    return [state.setUser, state.setCartDetails];
-  });
-  const { setUserInLocalStorage } = useLocalStorage();
+  // const loginForm = useForm<LoginFormData>({
+  //   resolver: valibotResolver(loginFormDataSchema),
+  // });
+  const { signIn, confirmAccount } = useAuth();
 
   const inputStyles: CSSProperties = {
     borderColor: colors[theme].error,
@@ -59,111 +49,35 @@ const LoginForm: FC<Props> = ({}) => {
     setConfirmationCode(e.target.value);
   };
 
-  const finishLogin = async (data: LoginFormData) => {
-    const { tokens } = await fetchAuthSession();
-    if (!tokens) {
-      setAlertProps({
-        type: 'alert-error',
-        text: t('alert.exceptions.SessionWithoutPreviousSignIn'),
-      });
-    } else if (!tokens.idToken) {
-      setAlertProps({
-        type: 'alert-error',
-        text: t('alert.exceptions.MissingIdToken'),
-      });
-    }
-    const buyer = await getBuyer(data.email);
-    setAlertProps(undefined);
-    setIsConfirmationLoading(false);
-    const user: User = {
-      isAuthenticated: true,
-      data: {
-        email: buyer.pk,
-        stripeCustomerId: buyer.buyerStripeCustomerId,
-        agreements: buyer.buyerAgreements,
-      },
-      tokens: {
-        idToken: tokens!.idToken!.toString(),
-        accessToken: tokens!.accessToken.toString(),
-      },
-    };
-    setUser(user);
-    setCartDetails(buyer.buyerCartDetails);
-    setUserInLocalStorage(user);
-    loginForm.reset();
-  };
+  // const handleClickOnConfirmCodeButton = async (data: LoginFormData) => {
+  //   try {
+  //     setIsConfirmationLoading(true);
+  //     await confirmAccount(data.email, confirmationCode);
+  //   } catch (error) {
+  //     const e = error as Error;
 
-  const handleClickOnConfirmCodeButton = async (data: LoginFormData) => {
-    try {
-      setIsConfirmationLoading(true);
-      const confirmationResponse = await confirmSignUp({
-        username: data.email,
-        confirmationCode,
-      });
-      if (
-        confirmationResponse.nextStep.signUpStep === 'COMPLETE_AUTO_SIGN_IN'
-      ) {
-        await autoSignIn();
-        await finishLogin(data);
-      }
-    } catch (error) {
-      const e = error as Error;
-      await signOut();
-      setAlertProps({
-        type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`alert.exceptions.${e.name}`),
-      });
-      setIsConfirmationLoading(false);
-    }
-  };
+  //     await amplifySignOut();
 
-  const handleLoginFormSubmit: SubmitHandler<LoginFormData> = async (
-    data: LoginFormData
-  ) => {
-    try {
-      const response = await signIn({
-        username: data.email,
-        password: data.password,
-      });
-      if (response.nextStep.signInStep === 'CONFIRM_SIGN_UP') {
-        setAlertProps({
-          type: 'alert-warning',
-          text: t.rich('alert.confirm-account-text', {
-            email: data.email,
-          }),
-        });
-        setStep('confirmation-pending');
-      } else if (response.nextStep.signInStep === 'DONE') {
-        await finishLogin(data);
-      }
-    } catch (error) {
-      const e = error as Error;
-      await signOut();
-      setAlertProps({
-        type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`alert.exceptions.${e.name}`),
-      });
-    }
-  };
+  //     setAlertProps({
+  //       type: 'alert-error',
+  //       text: t(`alert.exceptions.${e.name}`).startsWith(
+  //         'unauthenticated.alert.exceptions'
+  //       )
+  //         ? t('alert.exceptions.UnknownException', {
+  //             exception: e.name,
+  //           })
+  //         : t(`alert.exceptions.${e.name}`),
+  //     });
+  //     setIsConfirmationLoading(false);
+  //   }
+  // };
 
   return (
     <>
       {step === 'submit-pending' && (
         <form
           className='flex flex-col gap-sm-control-padding'
-          onSubmit={loginForm.handleSubmit(handleLoginFormSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           autoComplete='off'
         >
           <div className='flex flex-col'>
@@ -174,15 +88,15 @@ const LoginForm: FC<Props> = ({}) => {
               {t('email-input.label')}
             </label>
             <input
-              {...loginForm.register('email')}
+              {...form.register('email')}
               id='login-email-input'
-              style={loginForm.formState.errors.email ? inputStyles : {}}
+              style={form.formState.errors.email ? inputStyles : {}}
               className={`${inputClasses}`}
               placeholder={t('email-input.placeholder')}
             />
-            {loginForm.formState.errors.email && (
+            {form.formState.errors.email && (
               <span className={`${errorSpanClasses}`}>
-                {loginForm.formState.errors.email.message}
+                {form.formState.errors.email.message}
               </span>
             )}
           </div>
@@ -194,25 +108,25 @@ const LoginForm: FC<Props> = ({}) => {
               {t('password-input.label')}
             </label>
             <input
-              {...loginForm.register('password')}
+              {...form.register('password')}
               id='login-password-input'
               type='password'
-              style={loginForm.formState.errors.password ? inputStyles : {}}
+              style={form.formState.errors.password ? inputStyles : {}}
               className={`${inputClasses}`}
               placeholder={t('password-input.placeholder')}
             />
-            {loginForm.formState.errors.password && (
+            {form.formState.errors.password && (
               <span className={`${errorSpanClasses}`}>
-                {loginForm.formState.errors.password.message}
+                {form.formState.errors.password.message}
               </span>
             )}
           </div>
           <button
             type='submit'
             className='w-full btn btn-sm'
-            disabled={loginForm.formState.isSubmitting}
+            disabled={form.formState.isSubmitting}
           >
-            {loginForm.formState.isSubmitting ? (
+            {form.formState.isSubmitting ? (
               <span className='loading loading-infinity'></span>
             ) : (
               t('login-button-text')
@@ -221,7 +135,7 @@ const LoginForm: FC<Props> = ({}) => {
         </form>
       )}
       {alertProps && <Alert {...alertProps} />}
-      {step === 'confirmation-pending' && (
+      {/* {step === 'confirmation-pending' && (
         <>
           <input
             type='text'
@@ -245,7 +159,7 @@ const LoginForm: FC<Props> = ({}) => {
             )}
           </button>
         </>
-      )}
+      )} */}
     </>
   );
 };

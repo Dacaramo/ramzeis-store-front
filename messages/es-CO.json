@@ -59,9 +59,11 @@
             "ExpiredCodeException": "El código de confirmación ha expirado, por favor refresque la página e intente hace sign up de nuevo",
             "CodeMismatchException": "El código no es válido",
             "CodeDeliveryFailureException": "AWS SES no fue capaz de enviar el código al email especificado, una posible razón es que el email especificado no esté verificado y que AWS SES esté corriendo en modo sandbox y no en modo de producción",
-            "NotAuthorizedException": "Email o contraseña incorrectos"
+            "NotAuthorizedException": "Email o contraseña incorrectos",
+            "UnknownAuthStep": "Etapa desconocida, las únicas etapas válidas relacionadas con autenticación son: CONFIRM_SIGN_UP y DONE",
+            "InvalidParametersException": "Algunos de los campos del formulario pueden tener valores no válidos. Tal vez el teléfono que proporcionó no sea un número de teléfono válido o tal vez el email no tenga un formato de email válido."
           },
-          "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Dale click al link que te enviamos a {email}",
+          "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Escribe el código que te enviamos a",
           "passwords-mismatch-text": "Las contraseñas no coinciden",
           "login-success-text": "Has iniciado sesión exitosamente",
           "sign-up-success-text": "Cuenta creada exitosamente",

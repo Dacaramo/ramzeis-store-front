@@ -47,10 +47,7 @@ const DeleteAccountForm: FC<Props> = ({}) => {
     setIsDeletionLoading(true);
     try {
       if (confirmationText !== 'I want to delete my account') {
-        throw new CustomError(
-          'InvalidTextException',
-          t('alert.exceptions.InvalidTextException')
-        );
+        throw new CustomError('InvalidTextException');
       }
       await deleteUser();
       user.data && (await deleteBuyer(user.data.email));

@@ -7,6 +7,7 @@ import { useStore } from '@/src/zustand/store';
 import useLocalStorage from '@/src/hooks/useLocalStorage';
 import { isTokenExpired } from '@/src/utils/tokens';
 import { amplifyConfig } from '@/src/aws/amplifyConfig';
+import { signOut } from 'aws-amplify/auth';
 
 Amplify.configure(amplifyConfig, {
   ssr: true,
@@ -32,6 +33,7 @@ const ProvidersWrapper: FC<Props> = ({ children }) => {
         setUser(user);
       } else {
         removeUserFromLocalStorage();
+        signOut();
       }
     }
   }, []);
