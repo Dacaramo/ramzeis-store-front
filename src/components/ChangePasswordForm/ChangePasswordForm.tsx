@@ -12,7 +12,7 @@ import { CSSProperties, ComponentProps, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Alert from '../Alert/Alert';
 import { valibotResolver } from '@hookform/resolvers/valibot';
-
+import { updatePassword } from 'aws-amplify/auth';
 interface Props {}
 
 const ChangePasswordForm: FC<Props> = ({}) => {
@@ -22,9 +22,8 @@ const ChangePasswordForm: FC<Props> = ({}) => {
 
   const t = useTranslations();
 
-  console.log('@@@@@t', t);
-
   const {
+    reset,
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -44,11 +43,16 @@ const ChangePasswordForm: FC<Props> = ({}) => {
   const divClasses = 'max-w-[280px]';
   const localInputClasses = 'min-w-[280px]';
 
-  const handleFormSubmission = (data: ChangePasswordData) => {
+  const handleFormSubmission = async (data: ChangePasswordData) => {
     try {
-      console.log(data);
+      await updatePassword({
+        oldPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      reset();
     } catch (error) {
       const e = error as Error;
+      reset();
       setAlertProps({
         type: 'alert-error',
         text: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
@@ -145,7 +149,7 @@ const ChangePasswordForm: FC<Props> = ({}) => {
         <span className='text-tiny invisible'>none</span>
         <button
           type='submit'
-          className='btn btn-sm self-center'
+          className='w-[280px] btn btn-sm self-center'
           disabled={isSubmitting}
         >
           {isSubmitting ? (
