@@ -144,6 +144,15 @@ export const changePasswordFormDataSchema = object(
   ]
 );
 
+export const forgotPasswordStep1FormDataSchema = object({
+  email: emailSchema,
+});
+
+export const forgotPasswordStep2FormDataSchema = object({
+  code: string('You did not provide the code that was sent to your email'),
+  newPassword: string('You did not provide a  new password for your account'),
+});
+
 export class CustomError extends Error {
   name: string;
 
@@ -156,3 +165,9 @@ export class CustomError extends Error {
 export type SignUpFormData = Input<typeof signUpFormDataSchema>;
 export type LoginFormData = Input<typeof loginFormDataSchema>;
 export type ChangePasswordData = Input<typeof changePasswordFormDataSchema>;
+export type ForgotPasswordStep1FormData = Input<
+  typeof forgotPasswordStep1FormDataSchema
+>;
+export type ForgotPasswordStep2FormData = Input<
+  typeof forgotPasswordStep2FormDataSchema
+>;

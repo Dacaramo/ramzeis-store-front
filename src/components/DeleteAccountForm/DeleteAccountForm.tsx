@@ -28,8 +28,8 @@ const DeleteAccountForm: FC<Props> = ({}) => {
   >(undefined);
 
   const t = useTranslations();
-  const [user, setUser] = useStore((state) => {
-    return [state.user, state.setUser];
+  const [user, setUser, setGlobalAlertProps] = useStore((state) => {
+    return [state.user, state.setUser, state.setGlobalAlertProps];
   });
   const { removeUserFromLocalStorage } = useLocalStorage();
   const router = useRouter();
@@ -45,6 +45,7 @@ const DeleteAccountForm: FC<Props> = ({}) => {
   const handleSubmit = async (e: ReactFormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsDeletionLoading(true);
+
     try {
       if (confirmationText !== 'I want to delete my account') {
         throw new CustomError('InvalidTextException');
@@ -55,13 +56,18 @@ const DeleteAccountForm: FC<Props> = ({}) => {
       setUser({
         isAuthenticated: false,
       });
+
+      setGlobalAlertProps({
+        type: 'alert-success',
+        content: t('alert.account-deletion-success-text'),
+      });
       setIsDeletionLoading(false);
       router.push('/');
     } catch (error) {
       const e = error as Error;
       setAlertProps({
         type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
+        content: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
           ? t('alert.exceptions.UnknownException', {
               exception: e.name,
             })

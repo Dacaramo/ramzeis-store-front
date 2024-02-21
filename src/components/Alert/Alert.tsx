@@ -1,4 +1,6 @@
-import { FC, ReactNode } from 'react';
+'use client';
+
+import { ComponentProps, FC, ReactNode } from 'react';
 
 export type AlertType =
   | 'alert-info'
@@ -7,13 +9,23 @@ export type AlertType =
   | 'alert-error';
 
 interface Props {
-  text: ReactNode;
+  content: ReactNode;
   type?: AlertType;
   icon?: ReactNode;
-  additionalContent?: ReactNode;
+  isSkippable?: boolean;
+  skipButtonText?: string;
+  setAlertProps?: (props?: ComponentProps<typeof Alert>) => void;
 }
 
-const Alert: FC<Props> = ({ text, type = '', icon, additionalContent }) => {
+const Alert: FC<Props> = ({
+  content,
+  type = '',
+  icon,
+  isSkippable = false,
+  skipButtonText,
+  setAlertProps,
+}) => {
+  const areConditionsMet = isSkippable && skipButtonText && setAlertProps;
   const iconToDisplay: Record<AlertType, ReactNode> = {
     'alert-info': icon ?? (
       <svg
@@ -80,7 +92,7 @@ const Alert: FC<Props> = ({ text, type = '', icon, additionalContent }) => {
   return (
     <div
       role='alert'
-      className={`alert rounded-md p-sm-control-padding text-tiny border-base-content ${type}`}
+      className={`alert rounded-md p-sm-control-padding text-tiny shadow-classic-sm ${type}`}
     >
       {type === ''
         ? iconToDisplay['alert-info']
@@ -90,9 +102,17 @@ const Alert: FC<Props> = ({ text, type = '', icon, additionalContent }) => {
           wordBreak: 'break-word',
         }}
       >
-        {text}
+        {content}
       </span>
-      {additionalContent}
+      {areConditionsMet && (
+        <button
+          type='button'
+          className='btn btn-sm btn-ghost border border-neutral hover:border-neutral'
+          onClick={() => setAlertProps(undefined)}
+        >
+          {skipButtonText}
+        </button>
+      )}
     </div>
   );
 };

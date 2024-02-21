@@ -39,6 +39,16 @@
           "placeholder": "Type your password",
           "error-text": "The password must have at least 12 characters, 1 number, 1 special character, 1 uppercase letter and 1 lowercase letter"
         },
+        "new-password-input": {
+          "label": "New password",
+          "placeholder": "Type your new password",
+          "error-text": "The password must have at least 12 characters, 1 number, 1 special character, 1 uppercase letter and 1 lowercase letter"
+        },
+        "recovery-code-input": {
+          "label": "Recovery code",
+          "placeholder": "Type the code we sent you",
+          "error-text": "The recovery code must be a string"
+        },
         "confirm-password-input": {
           "label": "Confirm password",
           "placeholder": "Confirm your password"
@@ -49,6 +59,10 @@
         "terms-and-conditions-text": "I read the <Link>terms and conditions policy</Link> and I agree with it",
         "login-button-text": "Login to your account",
         "sign-up-button-text": "Sign up for an account",
+        "forgot-password-text": "I forgot my password",
+        "forgot-password-alert-text": "A code will be send to the specified email. If you don't receive it please refresh the page and restart the process",
+        "forgot-password-step-1-button": "Send code",
+        "forgot-password-step-2-button": "Recover my account",
         "alert": {
           "exceptions": {
             "UsernameExistsException": "There is already an account with that email",
@@ -67,6 +81,8 @@
           "passwords-mismatch-text": "Passwords do not match",
           "login-success-text": "You have logged in successfully",
           "sign-up-success-text": "Account created successfully",
+          "account-confirmation-success-text": "Account confirmed successfully",
+          "account-recovery-success-text": "Account recovered successfully",
           "confirm-button": "Confirm"
         }
       }
@@ -80,6 +96,13 @@
     }
   },
   "footer": {},
+  "global-alert": {
+    "login-success-text": "You have logged in successfully",
+    "sign-up-success-text": "Account created successfully",
+    "change-password-success-text": "Password was changed successfully",
+    "account-deletion-success-text": "Account deleted successfully",
+    "skip-button-text": "Ok"
+  },
   "home-page": {
     "advantages-section": {
       "premium-products-section": {
@@ -159,7 +182,8 @@
         "exceptions": {
           "UnknownException": "Unknown error please talk to support and give them the following error code: {exception}"
         },
-        "passwords-mismatch-text": "Passwords do not match"
+        "passwords-mismatch-text": "Passwords do not match",
+        "change-password-success-text": "Password was changed successfully"
       }
     },
     "delete-my-account-section": {
@@ -173,7 +197,8 @@
           "exceptions": {
             "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}",
             "InvalidTextException": "The provided text does not match \"I want to delete my account\""
-          }
+          },
+          "account-deletion-success-text": "Account deleted successfully"
         }
       }
     }

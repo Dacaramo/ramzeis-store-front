@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import Alert from '../Alert/Alert';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { updatePassword } from 'aws-amplify/auth';
+import { useStore } from '@/src/zustand/store';
 interface Props {}
 
 const ChangePasswordForm: FC<Props> = ({}) => {
@@ -36,6 +37,9 @@ const ChangePasswordForm: FC<Props> = ({}) => {
     resolver: valibotResolver(changePasswordFormDataSchema),
   });
   const theme = useTheme([]);
+  const setGlobalAlertProps = useStore((state) => {
+    return state.setGlobalAlertProps;
+  });
 
   const inputStyles: CSSProperties = {
     borderColor: colors[theme].error,
@@ -49,13 +53,18 @@ const ChangePasswordForm: FC<Props> = ({}) => {
         oldPassword: data.currentPassword,
         newPassword: data.newPassword,
       });
+
       reset();
+      setGlobalAlertProps({
+        type: 'alert-success',
+        content: t('alert.change-password-success-text'),
+      });
     } catch (error) {
       const e = error as Error;
       reset();
       setAlertProps({
         type: 'alert-error',
-        text: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
+        content: t(`alert.exceptions.${e.name}`).startsWith('alert.exceptions')
           ? t('alert.exceptions.UnknownException', {
               exception: e.name,
             })

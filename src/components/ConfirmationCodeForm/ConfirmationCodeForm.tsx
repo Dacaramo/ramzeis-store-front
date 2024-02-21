@@ -10,6 +10,7 @@ import Alert from '../Alert/Alert';
 import { useTranslations } from 'next-intl';
 import { signOut as amplifySignOut } from 'aws-amplify/auth';
 import useAuth from '@/src/hooks/useAuth';
+import { useStore } from '@/src/zustand/store';
 
 interface Props {
   emailToConfirm: string;
@@ -25,6 +26,9 @@ const ConfirmationCodeForm: FC<Props> = ({ emailToConfirm }) => {
 
   const t = useTranslations();
   const { confirmAccount } = useAuth();
+  const setGlobalAlertProps = useStore((state) => {
+    return state.setGlobalAlertProps;
+  });
 
   const handleChangeOnConfirmationCodeInput = async (
     e: ReactChangeEvent<HTMLInputElement>
@@ -35,7 +39,13 @@ const ConfirmationCodeForm: FC<Props> = ({ emailToConfirm }) => {
   const handleClickOnConfirmCodeButton = async () => {
     try {
       setIsConfirmationLoading(true);
+
       await confirmAccount(emailToConfirm, confirmationCode);
+
+      setGlobalAlertProps({
+        type: 'alert-success',
+        content: t('unauthenticated.alert.account-confirmation-success-text'),
+      });
     } catch (error) {
       const e = error as Error;
 
@@ -43,7 +53,7 @@ const ConfirmationCodeForm: FC<Props> = ({ emailToConfirm }) => {
 
       setAlertProps({
         type: 'alert-error',
-        text: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
+        content: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
           'unauthenticated.alert.exceptions'
         )
           ? t('unauthenticated.alert.exceptions.UnknownException', {
@@ -59,7 +69,7 @@ const ConfirmationCodeForm: FC<Props> = ({ emailToConfirm }) => {
     <>
       <Alert
         type='alert-warning'
-        text={
+        content={
           <>
             {t.rich('unauthenticated.alert.confirm-account-text', {
               strong: (value) => <strong>{value}</strong>,

@@ -39,6 +39,16 @@
           "placeholder": "Escribe tu contraseña",
           "error-text": "La contraseña debe tener al menos 12 caracteres, 1 número, 1 carácter especial, 1 letra mayúscula y 1 letra minúscula"
         },
+        "new-password-input": {
+          "label": "Nueva contraseña",
+          "placeholder": "Escribe tu nueva contraseña",
+          "error-text": "La contraseña debe tener al menos 12 caracteres, 1 número, 1 carácter especial, 1 letra mayúscula y 1 letra minúscula"
+        },
+        "recovery-code-input": {
+          "label": "Código de recuperación",
+          "placeholder": "El código que te enviamos",
+          "error-text": "El código de recuperación debe ser una cadena de texto"
+        },
         "confirm-password-input": {
           "label": "Confirmar contraseña",
           "placeholder": "Confirma tu contraseña"
@@ -49,6 +59,10 @@
         "terms-and-conditions-text": "He leído la <Link>política de términos y condiciones</Link> y estoy de acuerdo con ella",
         "login-button-text": "Accede a tu cuenta",
         "sign-up-button-text": "Crea tu cuenta",
+        "forgot-password-text": "He olvidado mi contraseña",
+        "forgot-password-alert-text": "Un código será enviado al email especificado. Si no recibes el código por favor refresca la página y vuelve a intentar el proceso",
+        "forgot-password-step-1-button": "Enviar código",
+        "forgot-password-step-2-button": "Recuperar mi cuenta",
         "alert": {
           "exceptions": {
             "UsernameExistsException": "Ya hay un usuario registrado con ese email",
@@ -67,6 +81,8 @@
           "passwords-mismatch-text": "Las contraseñas no coinciden",
           "login-success-text": "Has iniciado sesión exitosamente",
           "sign-up-success-text": "Cuenta creada exitosamente",
+          "account-confirmation-success-text": "Cuenta confirmada de forma exitosa",
+          "account-recovery-success-text": "Cuenta recuperada de forma exitosa",
           "confirm-button": "Confirmar"
         }
       }
@@ -80,6 +96,13 @@
     }
   },
   "footer": {},
+  "global-alert": {
+    "login-success-text": "Has iniciado sesión exitosamente",
+    "sign-up-success-text": "Cuenta creada exitosamente",
+    "change-password-success-text": "La contraseña se ha cambiado de forma exitosa",
+    "account-deletion-success-text": "Has borrado tu cuenta de forma exitosa",
+    "skip-button-text": "Ok"
+  },
   "home-page": {
     "advantages-section": {
       "premium-products-section": {
@@ -159,7 +182,8 @@
         "exceptions": {
           "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}"
         },
-        "passwords-mismatch-text": "Las contraseñas no coinciden"
+        "passwords-mismatch-text": "Las contraseñas no coinciden",
+        "change-password-success-text": "La contraseña se ha cambiado de forma exitosa"
       }
     },
     "delete-my-account-section": {
@@ -173,7 +197,8 @@
           "exceptions": {
             "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}",
             "InvalidTextException": "El texto que a escrito no coincide con \"I want to delete my account\""
-          }
+          },
+          "account-deletion-success-text": "Has borrado tu cuenta de forma exitosa"
         }
       }
     }

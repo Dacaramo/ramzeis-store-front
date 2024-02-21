@@ -2,11 +2,13 @@ import { FC, ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import '../globals.css';
-import { useTranslations } from 'next-intl';
+import { AbstractIntlMessages, useMessages, useTranslations } from 'next-intl';
 import ProvidersWrapper from '@/src/components/ProvidersWrapper/ProvidersWrapper';
 import Header from '@/src/components/Header/Header';
 import { Amplify } from 'aws-amplify';
 import { amplifyConfig } from '@/src/aws/amplifyConfig';
+import GlobalAlert from '@/src/components/GlobalAlert/GlobalAlert';
+import TranslationsProvider from '@/src/components/TranslationsProvider/TranslationsProvider';
 
 Amplify.configure(amplifyConfig, {
   ssr: true,
@@ -34,6 +36,11 @@ interface Props {
 
 const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
   const t = useTranslations('');
+  const messages = useMessages();
+  const globalAlertMessages = messages['global-alert'] as AbstractIntlMessages;
+
+  console.log('@@@@@messages', messages);
+  console.log('@@@@@globalAlertMessages', globalAlertMessages);
 
   return (
     <html
@@ -45,6 +52,9 @@ const RootLayout: FC<Props> = ({ children, params: { locale } }) => {
       >
         <ProvidersWrapper>
           <Header />
+          <TranslationsProvider scopedMessages={globalAlertMessages}>
+            <GlobalAlert />
+          </TranslationsProvider>
           {children}
           <footer className=''></footer>
         </ProvidersWrapper>

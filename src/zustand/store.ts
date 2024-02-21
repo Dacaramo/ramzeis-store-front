@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { Buyer } from '../model/Buyer';
 import { Product, ProductId } from '../model/Product';
+import { ComponentProps } from 'react';
+import Alert from '../components/Alert/Alert';
 
 export interface UserData {
   email: Buyer['pk'];
@@ -28,6 +30,7 @@ interface StoreState {
     details: Buyer['buyerCartDetails'];
     products: Array<Product>;
   };
+  globalAlertProps?: ComponentProps<typeof Alert>;
   setUser: (user: User) => void;
   addProductToCart: (
     detail: Buyer['buyerCartDetails'][string],
@@ -37,6 +40,7 @@ interface StoreState {
   clearCart: () => void;
   setCartDetails: (details: Buyer['buyerCartDetails']) => void;
   setCartProducts: (products: Array<Product>) => void;
+  setGlobalAlertProps: (props?: ComponentProps<typeof Alert>) => void;
 }
 
 export const useStore = create<StoreState>()((set) => {
@@ -50,6 +54,7 @@ export const useStore = create<StoreState>()((set) => {
       details: {},
       products: [],
     },
+    globalAlertProps: undefined,
     setUser: (user: User) => {
       return set((_) => {
         return {
@@ -114,6 +119,13 @@ export const useStore = create<StoreState>()((set) => {
             ...state.cart,
             products,
           },
+        };
+      });
+    },
+    setGlobalAlertProps: (props?: ComponentProps<typeof Alert>) => {
+      return set((_) => {
+        return {
+          globalAlertProps: props,
         };
       });
     },
