@@ -105,6 +105,9 @@
     "account-deletion-success-text": "Has borrado tu cuenta de forma exitosa",
     "skip-button-text": "Ok"
   },
+  "root-layout-loading-component": {
+    "title-text": "CARGANDO"
+  },
   "home-page": {
     "advantages-section": {
       "premium-products-section": {

@@ -105,6 +105,9 @@
     "account-deletion-success-text": "Account deleted successfully",
     "skip-button-text": "Ok"
   },
+  "root-layout-loading-component": {
+    "title-text": "LOADING"
+  },
   "home-page": {
     "advantages-section": {
       "premium-products-section": {
