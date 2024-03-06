@@ -32,8 +32,10 @@ const useAuth = () => {
     phone: string,
     password: string
   ): Promise<void> => {
+    const lowercaseEmail = email.toLowerCase();
+
     const response = await amplifySignUp({
-      username: email,
+      username: lowercaseEmail,
       password: password,
       options: {
         userAttributes: {
@@ -46,7 +48,7 @@ const useAuth = () => {
     });
 
     await createBuyer(
-      email,
+      lowercaseEmail,
       [
         {
           documentName: 'Terms and conditions',
@@ -69,6 +71,7 @@ const useAuth = () => {
   };
 
   const concludeSignIn = async (email: string) => {
+    const lowercaseEmail = email.toLowerCase();
     const { tokens } = await fetchAuthSession();
 
     if (!tokens) {
@@ -77,7 +80,25 @@ const useAuth = () => {
       throw new CustomError('MissingIdToken');
     }
 
-    const buyer = await getBuyer(email);
+    let buyer = await getBuyer(lowercaseEmail);
+
+    if (!buyer) {
+      buyer = await createBuyer(
+        lowercaseEmail,
+        [
+          {
+            documentName: 'Terms and conditions',
+            documentVersion: '1.0.0',
+            acceptanceTimestamp: new Date().toISOString(),
+            acceptanceDeviceDetails: getDeviceDetails() as Record<
+              string,
+              unknown
+            >,
+          },
+        ] as Omit<Buyer['buyerAgreements'], 'acceptanceIP'>,
+        getCartFromLocalStorage()
+      );
+    }
 
     const user: User = {
       isAuthenticated: true,
@@ -98,18 +119,19 @@ const useAuth = () => {
   };
 
   const signIn = async (email: string, password: string): Promise<AuthStep> => {
+    const lowercaseEmail = email.toLowerCase();
     const response = await amplifySignIn({
-      username: email,
+      username: lowercaseEmail,
       password: password,
     });
 
     if (response.nextStep.signInStep === 'CONFIRM_SIGN_UP') {
       resendSignUpCode({
-        username: email,
+        username: lowercaseEmail,
       });
       return 'CONFIRMATION_PENDING';
     } else if (response.nextStep.signInStep === 'DONE') {
-      await concludeSignIn(email);
+      await concludeSignIn(lowercaseEmail);
       return 'DONE';
     }
 
@@ -118,6 +140,9 @@ const useAuth = () => {
 
   const signOut = async () => {
     await amplifySignOut();
+    /**
+     * Everything after this line won't be executed when signOut is called for an user that is authenticated with an auth provider (e.g. Google). This is because on that specific case calling amplifySignOut will immediately after completion redirect the user to the redirect sign out url, there's no time to execute what comes below.
+     */
     setUser({
       isAuthenticated: false,
     });
@@ -125,14 +150,16 @@ const useAuth = () => {
   };
 
   const confirmAccount = async (email: string, confirmationCode: string) => {
+    const lowercaseEmail = email.toLowerCase();
+
     const confirmationResponse = await confirmSignUp({
-      username: email,
+      username: lowercaseEmail,
       confirmationCode,
     });
 
     if (confirmationResponse.nextStep.signUpStep === 'COMPLETE_AUTO_SIGN_IN') {
       await autoSignIn();
-      await concludeSignIn(email);
+      await concludeSignIn(lowercaseEmail);
     }
   };
 
@@ -140,6 +167,7 @@ const useAuth = () => {
     signUp,
     signIn,
     signOut,
+    concludeSignIn,
     confirmAccount,
   };
 };

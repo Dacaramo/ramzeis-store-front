@@ -2,26 +2,17 @@
 
 import 'react-international-phone/style.css';
 
-import {
-  CSSProperties,
-  FC,
-  ComponentProps,
-  useState,
-  ChangeEvent as ReactChangeEvent,
-} from 'react';
+import { CSSProperties, FC, ComponentProps } from 'react';
 import { errorSpanClasses, inputClasses } from '@/src/constants/classes';
 import { colors } from '@/src/constants/colors';
 import useTheme from '@/src/hooks/useTheme';
-import { SignUpFormData, signUpFormDataSchema } from '@/src/model/otherSchemas';
-import { valibotResolver } from '@hookform/resolvers/valibot';
+import { SignUpFormData } from '@/src/model/otherSchemas';
 import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form';
 import ControlledPhoneInput from '../ControlledPhoneInput/ControlledPhoneInput';
-import { signOut as amplifySignOut } from 'aws-amplify/auth';
 import Alert from '../Alert/Alert';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import GoogleIcon from '../icons/GoogleIcon';
-import useAuth from '@/src/hooks/useAuth';
 
 interface Props {
   form: UseFormReturn<SignUpFormData>;
@@ -46,12 +37,6 @@ const SignUpForm: FC<Props> = ({
       'areTermsAndConditionsAccepted',
       !form.getValues().areTermsAndConditionsAccepted
     );
-  };
-
-  const handleClickOnGoogleButton = () => {
-    /**
-     * TODO
-     */
   };
 
   return (
@@ -181,17 +166,6 @@ const SignUpForm: FC<Props> = ({
         </button>
       </form>
       {alertProps && <Alert {...alertProps} />}
-      <>
-        <div className='divider m-0 text-tiny'>{t('divider-text')}</div>
-        <button
-          type='button'
-          className='w-full btn btn-sm text-tiny'
-          onClick={handleClickOnGoogleButton}
-        >
-          {t('google-sign-up-text')}
-          <GoogleIcon />
-        </button>
-      </>
     </>
   );
 };

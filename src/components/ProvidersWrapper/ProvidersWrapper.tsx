@@ -1,13 +1,14 @@
 'use client';
 
-import { FC, ReactNode, useState, useEffect } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { FC, ReactNode, useEffect } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Amplify } from 'aws-amplify';
 import { useStore } from '@/src/zustand/store';
 import useLocalStorage from '@/src/hooks/useLocalStorage';
 import { isTokenExpired } from '@/src/utils/tokens';
 import { amplifyConfig } from '@/src/aws/amplifyConfig';
 import { signOut } from 'aws-amplify/auth';
+import { getQueryClient } from '@/src/utils/reactQuery';
 
 Amplify.configure(amplifyConfig, {
   ssr: true,
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const ProvidersWrapper: FC<Props> = ({ children }) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const queryClient = getQueryClient();
 
   const { getUserFromLocalStorage, removeUserFromLocalStorage } =
     useLocalStorage();

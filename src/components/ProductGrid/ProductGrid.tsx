@@ -56,7 +56,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
     useState<
       Omit<
         ProductFilterValues,
-        'categoryId' | 'subcategoryId' | 'search' | 'exclusiveStartKey'
+        'categoryId' | 'subcategoryId' | 'search' | 'encodedExclusiveStartKey'
       >
     >({
       sort: 'asc',

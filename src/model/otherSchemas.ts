@@ -15,6 +15,7 @@ import {
   boolean,
   value,
 } from 'valibot';
+import { buyerEmailSchema } from './Buyer';
 
 export const tableNameSchema = string(
   'The tableName coming from the env variable must de a defined string',
@@ -67,11 +68,8 @@ export const stripePaymentMethodIdSchema = string(
   'The stripePaymentMethodId must be a string'
 );
 
-export const emailSchema = string('You did not provide an email', [
-  email('This does not look like a valid email format'),
-]);
-
-export const passwordSchema = string('You did not provide a password', [
+export const passwordSchema = string('The password must be a string', [
+  minLength(1, 'You did not provide a password'),
   minLength(12, 'The password must have at least 12 characters'),
   custom(
     (value) => /\d/.test(value),
@@ -93,15 +91,18 @@ export const passwordSchema = string('You did not provide a password', [
 
 export const signUpFormDataSchema = object(
   {
-    email: emailSchema,
-    phone: string('You did not provide a phone number', [
+    email: buyerEmailSchema,
+    phone: string('The phone number must be a string', [
+      minLength(1, 'You did not provide a phone number'),
       regex(
         /^\+(?:[0-9] ?){6,14}[0-9]$/,
         'This does not look like a valid phone number'
       ),
     ]),
     password: passwordSchema,
-    confirmedPassword: string('You did not confirm your password'),
+    confirmedPassword: string('The confirmed password must be a string', [
+      minLength(1, 'You did not confirm the password'),
+    ]),
     areTermsAndConditionsAccepted: boolean([
       value(
         true,
@@ -122,8 +123,10 @@ export const signUpFormDataSchema = object(
 );
 
 export const loginFormDataSchema = object({
-  email: emailSchema,
-  password: string('You did not provide a password'),
+  email: buyerEmailSchema,
+  password: string('The password must be a string', [
+    minLength(1, 'You did not provide a password'),
+  ]),
 });
 
 export const changePasswordFormDataSchema = object(
@@ -145,7 +148,7 @@ export const changePasswordFormDataSchema = object(
 );
 
 export const forgotPasswordStep1FormDataSchema = object({
-  email: emailSchema,
+  email: buyerEmailSchema,
 });
 
 export const forgotPasswordStep2FormDataSchema = object({

@@ -75,7 +75,8 @@
             "CodeDeliveryFailureException": "AWS SES was unable to deliver the code to the specified email, one possible reason may be because the specified email is not verified and the AWS SES service is running on sandbox mode, not production mode",
             "NotAuthorizedException": "Incorrect email or password",
             "UnknownAuthStep": "Unknown step, the only valid steps related to authentication are: CONFIRM_SIGN_UP and DONE",
-            "InvalidParametersException": "Some of the form fields may have invalid values. Maybe the phone you gave is not a valid phone, number, or maybe the email does not have a valid email format"
+            "InvalidParametersException": "Some of the form fields may have invalid values. Maybe the phone you gave is not a valid phone, number, or maybe the email does not have a valid email format",
+            "EmailMissingFromAuthProviderException": "In order to sign in or sign up with an auth provider like Google your account must have an associated email. If you account does not have an email, then you can't authenticate yourself using this method, you would need to create an account with email and password"
           },
           "confirm-account-text": "<strong>Confirm your account</strong>: Type the code we send to",
           "passwords-mismatch-text": "Passwords do not match",
@@ -83,6 +84,7 @@
           "sign-up-success-text": "Account created successfully",
           "account-confirmation-success-text": "Account confirmed successfully",
           "account-recovery-success-text": "Account recovered successfully",
+          "sign-out-success-text": "Signed out successfully",
           "confirm-button": "Confirm"
         }
       }
@@ -152,7 +154,13 @@
     "addresses-link-text": "Addresses",
     "reviews-link-text": "Reviews",
     "orders-link-text": "Orders",
-    "sign-out-link-text": "Sign out"
+    "sign-out-link-text": "Sign out",
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}"
+      },
+      "sign-out-success-text": "Signed out successfully"
+    }
   },
   "manage-my-profile-page": {
     "change-my-password-section": {
@@ -201,6 +209,59 @@
           "account-deletion-success-text": "Account deleted successfully"
         }
       }
+    }
+  },
+  "addresses-page": {
+    "title-text": "My addresses",
+    "description-text": "In this section you will find all of the addresses you have previously linked to your account. Any of the addresses below can be used in any of your future orders. Keep in mind that you can only have 5 addresses linked to your account.",
+    "no-addresses-p-text": "You don't have any addresses linked to your account",
+    "create-address-button-text": "New address",
+    "create-address-modal-title-text": "New address",
+    "create-address-modal-confirm-button-text": "Create address",
+    "update-address-modal-title-text": "Edit address",
+    "update-address-modal-confirm-button-text": "Edit address",
+    "delete-address-modal-title-text": "Delete address",
+    "delete-address-modal-description-text": "Are you sure you want to delete this address?",
+    "delete-address-modal-confirm-button-text": "Delete address",
+    "address-input": {
+      "label": "Full address",
+      "placeholder": "Type the full address"
+    },
+    "country-input": {
+      "label": "Country",
+      "placeholder": "Type the country's name"
+    },
+    "administrative-division-input": {
+      "label": "Administrative subdivision",
+      "placeholder": "State, province, region, etc."
+    },
+    "city-input": {
+      "label": "City",
+      "placeholder": "Type the city's name"
+    },
+    "zip-code-input": {
+      "label": "ZIP code",
+      "placeholder": "ZIP code or equivalent"
+    },
+    "recipient-name-input": {
+      "label": "Recipient's name",
+      "placeholder": "The name of the person who receives"
+    },
+    "recipient-phone-number-input": {
+      "label": "Recipient's phone number",
+      "placeholder": "Type the phone number"
+    },
+    "delivery-instructions-input": {
+      "label": "Delivery instructions",
+      "placeholder": "Type any additional instructions that are relevant for delivering to this address"
+    },
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}"
+      },
+      "address-creation-success-text": "The new address was created successfully",
+      "address-edition-success-text": "The address was updated successfully",
+      "address-deletion-success-text": "The address was deleted successfully"
     }
   }
 }

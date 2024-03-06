@@ -2,14 +2,14 @@
 
 import { FC, CSSProperties } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import useTheme from '@/src/hooks/useTheme';
 import { xRootPaddingClasses } from '@/src/constants/classes';
 import { colors } from '@/src/constants/colors';
 import { useTranslations } from 'next-intl';
-import { signOut } from 'aws-amplify/auth';
-import useLocalStorage from '@/src/hooks/useLocalStorage';
+import useAuth from '@/src/hooks/useAuth';
 import { useStore } from '@/src/zustand/store';
+import { displayError } from '@/src/utils/errors';
 
 interface Props {}
 
@@ -17,14 +17,16 @@ const ProfilePageNav: FC<Props> = ({}) => {
   const t = useTranslations();
   const currentPathname = usePathname();
   const theme = useTheme([]);
-  const { removeUserFromLocalStorage } = useLocalStorage();
-  const setUser = useStore((state) => {
-    return state.setUser;
+  const { signOut } = useAuth();
+  const router = useRouter();
+  const setGlobalAlertProps = useStore((state) => {
+    return state.setGlobalAlertProps;
   });
 
   const currentPathnameParts = currentPathname.split('/');
   const currentPageName = currentPathnameParts[currentPathnameParts.length - 1];
   const linkClasses = `${xRootPaddingClasses} py-[15px] border-b hover:text-base-200 hover:bg-base-content transition-all`;
+  const exceptionsNamespace = 'alert.exceptions';
 
   const getLinkStyles = (pageName: string): CSSProperties => {
     if (pageName === currentPageName) {
@@ -37,11 +39,13 @@ const ProfilePageNav: FC<Props> = ({}) => {
   };
 
   const handleClickOnSignOutLink = async () => {
-    await signOut();
-    setUser({
-      isAuthenticated: false,
-    });
-    removeUserFromLocalStorage();
+    try {
+      await signOut();
+      router.push('/');
+    } catch (error) {
+      const e = error as Error;
+      displayError(e, t, exceptionsNamespace, setGlobalAlertProps);
+    }
   };
 
   return (
@@ -81,13 +85,13 @@ const ProfilePageNav: FC<Props> = ({}) => {
       >
         {t('orders-link-text')}
       </Link>
-      <Link
-        href='/'
-        className={`${linkClasses} text-error hover:bg-error hover:text-base-200`}
+      <button
+        type='button'
+        className={`${linkClasses} text-start text-error hover:bg-error hover:text-base-200`}
         onClick={handleClickOnSignOutLink}
       >
         {t('sign-out-link-text')}
-      </Link>
+      </button>
     </nav>
   );
 };

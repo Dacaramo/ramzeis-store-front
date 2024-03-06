@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, FC, useState, useRef } from 'react';
+import { ComponentProps, FC, useState, useRef, useEffect } from 'react';
 import ToggleButtonGroup, {
   ToggleButtonDefinition,
 } from '../ToggleButtonGroup/ToggleButtonGroup';
@@ -25,19 +25,26 @@ import {
   signOut as amplifySignOut,
   confirmResetPassword,
   resetPassword,
+  signInWithRedirect,
+  fetchUserAttributes,
 } from 'aws-amplify/auth';
 import Alert from '../Alert/Alert';
 import ConfirmationCodeForm from '../ConfirmationCodeForm/ConfirmationCodeForm';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import ForgotPasswordStep1Form from '../ForgotPasswordStep1Form/ForgotPasswordStep1Form';
 import ForgotPasswordStep2Form from '../ForgotPasswordStep2Form/ForgotPasswordStep2Form';
+import GoogleIcon from '../icons/GoogleIcon';
+import { Hub } from 'aws-amplify/utils';
+import useLocalStorage from '@/src/hooks/useLocalStorage';
+import { displayError } from '@/src/utils/errors';
 
-type AuthDropdownAction = 'login' | 'sign-up';
+type AuthAction = 'login' | 'sign-up';
+type AuthProvider = 'Google';
 
 interface Props {}
 
 const AuthDropdown: FC<Props> = ({}) => {
-  const [action, setAction] = useState<AuthDropdownAction>('login');
+  const [action, setAction] = useState<AuthAction>('login');
   const [isConfirmationGoing, setIsConfirmationGoing] =
     useState<boolean>(false);
   const [isForgotPasswordStep, setIsForgotPasswordStep] = useState<
@@ -50,10 +57,18 @@ const AuthDropdown: FC<Props> = ({}) => {
   const detailsRef = useRef<HTMLDetailsElement | null>(null);
 
   const t = useTranslations();
-  const [isAuthenticated, setGlobalAlertProps] = useStore((state) => {
-    return [state.user.isAuthenticated, state.setGlobalAlertProps];
-  });
-  const { signUp, signIn } = useAuth();
+  const [isAuthenticated, setGlobalAlertProps, user, setUser] = useStore(
+    (state) => {
+      return [
+        state.user.isAuthenticated,
+        state.setGlobalAlertProps,
+        state.user,
+        state.setUser,
+      ];
+    }
+  );
+  const { signUp, signIn, concludeSignIn, signOut } = useAuth();
+  const { removeUserFromLocalStorage } = useLocalStorage();
   const signUpForm = useForm<SignUpFormData>({
     defaultValues: {
       areTermsAndConditionsAccepted: false,
@@ -69,6 +84,8 @@ const AuthDropdown: FC<Props> = ({}) => {
   const forgotPasswordStep2Form = useForm<ForgotPasswordStep2FormData>({
     resolver: valibotResolver(forgotPasswordStep2FormDataSchema),
   });
+
+  const exceptionsNamespace = 'unauthenticated.alert.exceptions';
 
   const resetEverything = () => {
     setAlertProps(undefined);
@@ -86,7 +103,7 @@ const AuthDropdown: FC<Props> = ({}) => {
 
   const handleClickOnToggleButton = (clickedButton: ToggleButtonDefinition) => {
     if (clickedButton.key !== action) {
-      setAction(clickedButton.key as AuthDropdownAction);
+      setAction(clickedButton.key as AuthAction);
       resetEverything();
     }
   };
@@ -107,19 +124,8 @@ const AuthDropdown: FC<Props> = ({}) => {
       }
     } catch (error) {
       const e = error as Error;
-
       await amplifySignOut();
-
-      setAlertProps({
-        type: 'alert-error',
-        content: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('unauthenticated.alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`unauthenticated.alert.exceptions.${e.name}`),
-      });
+      displayError(e, t, exceptionsNamespace, setAlertProps);
     }
   };
 
@@ -142,24 +148,29 @@ const AuthDropdown: FC<Props> = ({}) => {
       setIsConfirmationGoing(true);
     } catch (error) {
       const e = error as Error;
-
-      setAlertProps({
-        type: 'alert-error',
-        content: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('unauthenticated.alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`unauthenticated.alert.exceptions.${e.name}`),
-      });
+      displayError(e, t, exceptionsNamespace, setAlertProps);
     }
   };
 
-  const handleClickOnGoogleButton = () => {
-    /**
-     * TODO
-     */
+  const handleClickOnAuthProviderButton = async (
+    provider: AuthProvider,
+    purpose: AuthAction
+  ) => {
+    try {
+      await signInWithRedirect({
+        provider,
+        customState: purpose,
+      });
+    } catch (error) {
+      const e = error as Error;
+
+      await amplifySignOut();
+
+      if (!detailsRef.current) return;
+      detailsRef.current.removeAttribute('open');
+
+      displayError(e, t, exceptionsNamespace, setGlobalAlertProps);
+    }
   };
 
   const handleForgotPasswordStep1FormSubmit: SubmitHandler<
@@ -178,17 +189,7 @@ const AuthDropdown: FC<Props> = ({}) => {
       }
     } catch (error) {
       const e = error as Error;
-
-      setAlertProps({
-        type: 'alert-error',
-        content: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('unauthenticated.alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`unauthenticated.alert.exceptions.${e.name}`),
-      });
+      displayError(e, t, exceptionsNamespace, setAlertProps);
     }
   };
 
@@ -196,34 +197,95 @@ const AuthDropdown: FC<Props> = ({}) => {
     ForgotPasswordStep2FormData
   > = async (data: ForgotPasswordStep2FormData) => {
     try {
-      if (!detailsRef.current) return;
-
       await confirmResetPassword({
         username: forgotPasswordStep1Form.getValues().email, // PUEDE NO SERVIR
         confirmationCode: data.code,
         newPassword: data.newPassword,
       });
 
+      if (!detailsRef.current) return;
       detailsRef.current.removeAttribute('open');
+
       setGlobalAlertProps({
         type: 'alert-success',
         content: t('unauthenticated.alert.account-recovery-success-text'),
       });
     } catch (error) {
       const e = error as Error;
-
-      setAlertProps({
-        type: 'alert-error',
-        content: t(`unauthenticated.alert.exceptions.${e.name}`).startsWith(
-          'unauthenticated.alert.exceptions'
-        )
-          ? t('unauthenticated.alert.exceptions.UnknownException', {
-              exception: e.name,
-            })
-          : t(`unauthenticated.alert.exceptions.${e.name}`),
-      });
+      displayError(e, t, exceptionsNamespace, setAlertProps);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = Hub.listen('auth', async ({ payload }) => {
+      try {
+        switch (payload.event) {
+          case 'signInWithRedirect':
+            /**
+             * Will get here if the call to signInWithRedirect was successful and none custom state was passed to the function
+             */
+            break;
+          case 'signInWithRedirect_failure':
+            setGlobalAlertProps({
+              type: 'alert-error',
+              content: t(
+                `unauthenticated.alert.exceptions.${payload.data.error?.name}`
+              ).startsWith(exceptionsNamespace)
+                ? t('unauthenticated.alert.exceptions.UnknownException', {
+                    exception: payload.data.error?.name,
+                  })
+                : t(
+                    `unauthenticated.alert.exceptions.${payload.data.error?.name}`
+                  ),
+            });
+            break;
+          case 'customOAuthState':
+            /**
+             * Will get here if the call to signInWithRedirect was successful and a custom state was passed to the function. the custom state value will be received inside payload.data
+             */
+            const attributes = await fetchUserAttributes();
+
+            if (!attributes.email) {
+              setGlobalAlertProps({
+                type: 'alert-error',
+                content: t(
+                  `unauthenticated.alert.exceptions.EmailMissingFromAuthProviderException`
+                ),
+              });
+            } else {
+              await concludeSignIn(attributes.email);
+
+              setGlobalAlertProps({
+                type: 'alert-success',
+                content: t('unauthenticated.alert.login-success-text'),
+              });
+            }
+            break;
+          case 'signedOut':
+            /**
+             * The signOut function coming from the useAuth hook, already makes what's coming below, but it's mandatory to also do it here, since for all users that are authenticated with an auth provider (e.g. Google) the browser will redirect the user to the redirect sign out url, so not all of the code that is inside signOut will be executed.
+             */
+            setUser({
+              isAuthenticated: false,
+            });
+            removeUserFromLocalStorage();
+            setGlobalAlertProps({
+              type: 'alert-success',
+              content: t('unauthenticated.alert.sign-out-success-text'),
+            });
+            break;
+        }
+      } catch (error) {
+        const e = error as Error;
+
+        await amplifySignOut();
+
+        displayError(e, t, exceptionsNamespace, setGlobalAlertProps);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <>
@@ -273,17 +335,32 @@ const AuthDropdown: FC<Props> = ({}) => {
               {action === 'login' &&
                 !isConfirmationGoing &&
                 isForgotPasswordStep === 'unstarted' && (
-                  <LoginForm
-                    form={loginForm}
-                    alertProps={alertProps}
-                    forgotPasswordButtonText={t(
-                      'unauthenticated.forgot-password-text'
-                    )}
-                    onSubmit={handleLoginFormSubmit}
-                    onForgotPasswordButtonClick={
-                      handleClickOnForgotPasswordButton
-                    }
-                  />
+                  <>
+                    <LoginForm
+                      form={loginForm}
+                      alertProps={alertProps}
+                      forgotPasswordButtonText={t(
+                        'unauthenticated.forgot-password-text'
+                      )}
+                      onSubmit={handleLoginFormSubmit}
+                      onForgotPasswordButtonClick={
+                        handleClickOnForgotPasswordButton
+                      }
+                    />
+                    <div className='divider m-0 text-tiny'>
+                      {t('unauthenticated.divider-text')}
+                    </div>
+                    <button
+                      type='button'
+                      className='w-full btn btn-sm text-tiny'
+                      onClick={() =>
+                        handleClickOnAuthProviderButton('Google', 'login')
+                      }
+                    >
+                      {t('unauthenticated.google-login-text')}
+                      <GoogleIcon />
+                    </button>
+                  </>
                 )}
               {action === 'login' &&
                 !isConfirmationGoing &&

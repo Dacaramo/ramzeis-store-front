@@ -15,10 +15,12 @@ import {
   isoTimestamp,
   ip,
   unknown,
+  minLength,
 } from 'valibot';
 
-export const buyerEmailSchema = string('The buyerEmail must be a string', [
-  email('The buyerEmail must be a valid email address'),
+export const buyerEmailSchema = string('The email must be a string', [
+  minLength(1, 'You did not provide an email'),
+  email('The email must be a valid email address'),
 ]);
 
 export const buyerStripeCustomerIdSchema = string(

@@ -10,8 +10,9 @@ export const amplifyConfig: ResourcesConfig | LegacyConfig = {
       signUpVerificationMethod: 'code',
       loginWith: {
         oauth: {
+          providers: ['Google'],
           domain: process.env.NEXT_PUBLIC_COGNITO_DOMAIN!,
-          scopes: ['email', 'phone', 'openid'],
+          scopes: ['openid', 'email', 'aws.cognito.signin.user.admin'],
           redirectSignIn: [
             process.env.NEXT_PUBLIC_COGNITO_REDIRECT_SIGN_IN_URL!,
           ],

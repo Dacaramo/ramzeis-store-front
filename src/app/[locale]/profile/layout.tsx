@@ -2,6 +2,11 @@ import { FC, ReactNode } from 'react';
 import { AbstractIntlMessages, useMessages } from 'next-intl';
 import ProfilePageNav from '@/src/components/ProfilePageNav/ProfilePageNav';
 import TranslationsProvider from '@/src/components/TranslationsProvider/TranslationsProvider';
+import {
+  gapForBetweenSectionsClasses,
+  xRootPaddingClasses,
+  yRootProfilePageClasses,
+} from '@/src/constants/classes';
 
 interface Props {
   children: ReactNode;
@@ -19,7 +24,11 @@ const layout: FC<Props> = ({ children, params }) => {
       <TranslationsProvider scopedMessages={profilePageNavMessages}>
         <ProfilePageNav />
       </TranslationsProvider>
-      {children}
+      <div
+        className={`w-full flex flex-col ${xRootPaddingClasses} ${yRootProfilePageClasses} ${gapForBetweenSectionsClasses}`}
+      >
+        {children}
+      </div>
     </main>
   );
 };

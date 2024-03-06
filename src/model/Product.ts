@@ -22,9 +22,9 @@ import {
 import { encodedExclusiveStartKeySchema, limitSchema } from './otherSchemas';
 import { localeIdSchema } from './Locale';
 
-export const productIdSchema = special<`product|${string}`>(
-  (value) => (value as string).startsWith('product|'),
-  "The productId must starts with 'product|'"
+export const productIdSchema = special<`product-${string}`>(
+  (value) => (value as string).startsWith('product-'),
+  "The productId must starts with 'product-'"
 );
 
 export const productPriceSchema = number('The price must be a number', [

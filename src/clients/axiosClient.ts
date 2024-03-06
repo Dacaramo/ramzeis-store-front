@@ -7,6 +7,7 @@ import {
   ProductFilterValues,
 } from '../model/Product';
 import { Buyer } from '../model/Buyer';
+import { Address, AddressFilterValues, AddressPatch } from '../model/Address';
 
 export const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -25,7 +26,9 @@ export const createBuyer = async (
   return data;
 };
 
-export const getBuyer = async (buyerEmail: Buyer['pk']): Promise<Buyer> => {
+export const getBuyer = async (
+  buyerEmail: Buyer['pk']
+): Promise<Buyer | null> => {
   const { data } = await axiosClient.get<Buyer>(`/buyers/${buyerEmail}`);
   return data;
 };
@@ -60,4 +63,39 @@ export const getProductCategories = async (): Promise<
 export const getProductColors = async (): Promise<Array<ProductColor>> => {
   const { data } = await axiosClient.get('/product-colors');
   return data;
+};
+
+export const getAddresses = async (
+  buyerEmail: Buyer['pk'],
+  addressFilterValues: AddressFilterValues
+): Promise<ListResponse<Address>> => {
+  const { data } = await axiosClient.get(`/buyers/${buyerEmail}/addresses`, {
+    params: addressFilterValues,
+  });
+  return data;
+};
+
+export const createAddress = async (
+  buyerEmail: Buyer['pk'],
+  address: Omit<Address, 'pk' | 'sk'>
+): Promise<void> => {
+  await axiosClient.post(`/buyers/${buyerEmail}/addresses`, address);
+};
+
+export const deleteAddress = async (
+  buyerEmail: Buyer['pk'],
+  addressId: Address['sk']
+): Promise<void> => {
+  await axiosClient.delete(`/buyers/${buyerEmail}/addresses/${addressId}`);
+};
+
+export const updateAddress = async (
+  buyerEmail: Buyer['pk'],
+  addressId: Address['sk'],
+  patch: AddressPatch
+): Promise<void> => {
+  await axiosClient.patch(
+    `/buyers/${buyerEmail}/addresses/${addressId}`,
+    patch
+  );
 };

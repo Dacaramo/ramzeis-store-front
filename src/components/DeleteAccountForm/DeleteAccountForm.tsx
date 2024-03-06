@@ -57,12 +57,12 @@ const DeleteAccountForm: FC<Props> = ({}) => {
         isAuthenticated: false,
       });
 
+      router.push('/');
       setGlobalAlertProps({
         type: 'alert-success',
         content: t('alert.account-deletion-success-text'),
       });
       setIsDeletionLoading(false);
-      router.push('/');
     } catch (error) {
       const e = error as Error;
       setAlertProps({

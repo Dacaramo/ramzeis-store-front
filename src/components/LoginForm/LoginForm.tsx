@@ -8,7 +8,6 @@ import { colors } from '@/src/constants/colors';
 import { errorSpanClasses, inputClasses } from '@/src/constants/classes';
 import { useTranslations } from 'next-intl';
 import Alert from '../Alert/Alert';
-import GoogleIcon from '../icons/GoogleIcon';
 
 interface Props {
   form: UseFormReturn<LoginFormData>;
@@ -30,12 +29,6 @@ const LoginForm: FC<Props> = ({
 
   const inputStyles: CSSProperties = {
     borderColor: colors[theme].error,
-  };
-
-  const handleClickOnGoogleButton = () => {
-    /**
-     * TODO
-     */
   };
 
   return (
@@ -105,15 +98,6 @@ const LoginForm: FC<Props> = ({
         onClick={handleClickOnForgotPasswordButton}
       >
         {forgotPasswordButtonText}
-      </button>
-      <div className='divider m-0 text-tiny'>{t('divider-text')}</div>
-      <button
-        type='button'
-        className='w-full btn btn-sm text-tiny'
-        onClick={handleClickOnGoogleButton}
-      >
-        {t('google-login-text')}
-        <GoogleIcon />
       </button>
     </>
   );

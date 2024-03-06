@@ -11,17 +11,23 @@ import CountryCodeDropdown from '../CountryCodeDropdown/CountryCodeDropdown';
 type Props = {
   control: any;
   name: string;
+  defaultValue?: string;
   style?: CSSProperties;
 };
 
-const ControlledPhoneInput: React.FC<Props> = ({ control, name, style }) => {
+const ControlledPhoneInput: React.FC<Props> = ({
+  control,
+  name,
+  defaultValue,
+  style,
+}) => {
   const {
     field: { value, onChange, ref },
     fieldState: { error },
   } = useController({
     name,
     control,
-    defaultValue: '',
+    defaultValue,
   });
   const { inputValue, handlePhoneValueChange, country, setCountry } =
     usePhoneInput({

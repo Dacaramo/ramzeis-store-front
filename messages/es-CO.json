@@ -75,7 +75,8 @@
             "CodeDeliveryFailureException": "AWS SES no fue capaz de enviar el código al email especificado, una posible razón es que el email especificado no esté verificado y que AWS SES esté corriendo en modo sandbox y no en modo de producción",
             "NotAuthorizedException": "Email o contraseña incorrectos",
             "UnknownAuthStep": "Etapa desconocida, las únicas etapas válidas relacionadas con autenticación son: CONFIRM_SIGN_UP y DONE",
-            "InvalidParametersException": "Algunos de los campos del formulario pueden tener valores no válidos. Tal vez el teléfono que proporcionó no sea un número de teléfono válido o tal vez el email no tenga un formato de email válido."
+            "InvalidParametersException": "Algunos de los campos del formulario pueden tener valores no válidos. Tal vez el teléfono que proporcionó no sea un número de teléfono válido o tal vez el email no tenga un formato de email válido.",
+            "EmailMissingFromAuthProviderException": "Para iniciar sesión o registrarse con un proveedor de autenticación como Google, su cuenta debe tener un correo electrónico asociado. Si su cuenta no tiene un correo electrónico, entonces no puede autenticarse usando este método, necesitará crear una cuenta con correo electrónico y contraseña."
           },
           "confirm-account-text": "<strong>Confirma tu cuenta</strong>: Escribe el código que te enviamos a",
           "passwords-mismatch-text": "Las contraseñas no coinciden",
@@ -83,6 +84,7 @@
           "sign-up-success-text": "Cuenta creada exitosamente",
           "account-confirmation-success-text": "Cuenta confirmada de forma exitosa",
           "account-recovery-success-text": "Cuenta recuperada de forma exitosa",
+          "sign-out-success-text": "Has salido de tu cuenta de forma exitosa",
           "confirm-button": "Confirmar"
         }
       }
@@ -152,7 +154,13 @@
     "addresses-link-text": "Direcciones",
     "reviews-link-text": "Reseñas",
     "orders-link-text": "Ordenes",
-    "sign-out-link-text": "Salir"
+    "sign-out-link-text": "Salir",
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}"
+      },
+      "sign-out-success-text": "Has salido de tu cuenta de forma exitosa"
+    }
   },
   "manage-my-profile-page": {
     "change-my-password-section": {
@@ -201,6 +209,59 @@
           "account-deletion-success-text": "Has borrado tu cuenta de forma exitosa"
         }
       }
+    }
+  },
+  "addresses-page": {
+    "title-text": "Mis direcciones",
+    "description-text": "En esta sección encontrarás todas las direcciones que has vinculado previamente a tu cuenta. Cualquiera de las direcciones a continuación puede ser utilizada en tus pedidos futuros. Ten en cuenta que solo puedes tener 5 direcciones vinculadas a tu cuenta.",
+    "no-addresses-p-text": "No tienes ninguna dirección vinculada a tu cuenta",
+    "create-address-button-text": "Nueva dirección",
+    "create-address-modal-title-text": "Nueva dirección",
+    "create-address-modal-confirm-button-text": "Crear dirección",
+    "update-address-modal-title-text": "Editar dirección",
+    "update-address-modal-confirm-button-text": "Editar dirección",
+    "delete-address-modal-title-text": "Borrar dirección",
+    "delete-address-modal-description-text": "¿Estás completamente seguro de que quieres borrar esta dirección?",
+    "delete-address-modal-confirm-button-text": "Borrar dirección",
+    "address-input": {
+      "label": "Dirección completa",
+      "placeholder": "Escribe la dirección"
+    },
+    "country-input": {
+      "label": "País",
+      "placeholder": "Escribe el nombre del país"
+    },
+    "administrative-division-input": {
+      "label": "Subdivisión administrativa",
+      "placeholder": "Estado, provincia, región, etc."
+    },
+    "city-input": {
+      "label": "Ciudad",
+      "placeholder": "Escribe el nombre de la ciudad"
+    },
+    "zip-code-input": {
+      "label": "Código postal",
+      "placeholder": "Código postal o equivalente"
+    },
+    "recipient-name-input": {
+      "label": "Nombre del destinatario",
+      "placeholder": "El nombre de la persona que recibe"
+    },
+    "recipient-phone-number-input": {
+      "label": "Número de teléfono del destinatario",
+      "placeholder": "Escribe el número de teléfono"
+    },
+    "delivery-instructions-input": {
+      "label": "Instrucciones de entrega",
+      "placeholder": "Escribe cualquier instrucción adicional relevante para la entrega en esta dirección"
+    },
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Error desconocido por favor comuníquese con soporte y deles este código de error: {exception}"
+      },
+      "address-creation-success-text": "La nueva dirección fue creada de forma exitosa",
+      "address-edition-success-text": "La dirección fue actualizada de forma exitosa",
+      "address-deletion-success-text": "La dirección fue borrada de forma exitosa"
     }
   }
 }
