@@ -8,6 +8,7 @@ import {
 } from '../model/Product';
 import { Buyer } from '../model/Buyer';
 import { Address, AddressFilterValues, AddressPatch } from '../model/Address';
+import { PaymentMethod } from '@stripe/stripe-js';
 
 export const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -98,4 +99,50 @@ export const updateAddress = async (
     `/buyers/${buyerEmail}/addresses/${addressId}`,
     patch
   );
+};
+
+export const getStripePublishableKey = async (): Promise<string> => {
+  const {
+    data: { publishableKey },
+  } = await axiosClient.get<{ publishableKey: string }>(
+    '/stripe-publishable-key'
+  );
+  return publishableKey;
+};
+
+export const createSetupIntent = async (
+  buyerStripeCustomerId: string,
+  stripePaymentMethodId: string
+): Promise<string> => {
+  const {
+    data: { clientSecret },
+  } = await axiosClient.post<{ clientSecret: string }>(
+    `/stripe-customers/${buyerStripeCustomerId}/payment-methods`,
+    {
+      stripePaymentMethodId,
+    }
+  );
+  return clientSecret;
+};
+
+export const getPaymentMethodsPerBuyer = async (
+  buyerStripeCustomerId: string,
+  paymentMethodFilterValues: {
+    limit?: number | undefined;
+    encodedExclusiveStartKey?: string | undefined;
+  }
+): Promise<ListResponse<PaymentMethod>> => {
+  const { data } = await axiosClient.get<ListResponse<PaymentMethod>>(
+    `/stripe-customers/${buyerStripeCustomerId}/payment-methods`,
+    {
+      params: paymentMethodFilterValues,
+    }
+  );
+  return data;
+};
+
+export const detachPaymentMethod = async (
+  stripePaymentMethodId: string
+): Promise<void> => {
+  await axiosClient.delete(`/payment-methods/${stripePaymentMethodId}`);
 };

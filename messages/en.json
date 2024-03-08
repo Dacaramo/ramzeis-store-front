@@ -160,7 +160,7 @@
     "sign-out-link-text": "Sign out",
     "alert": {
       "exceptions": {
-        "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}"
+        "UnknownException": "Unknown error while trying to logout, please talk to support and give them the following error code: {exception}"
       },
       "sign-out-success-text": "Signed out successfully"
     }
@@ -191,7 +191,7 @@
       "button-text": "Change password",
       "alert": {
         "exceptions": {
-          "UnknownException": "Unknown error please talk to support and give them the following error code: {exception}"
+          "UnknownException": "Unknown error while trying to change your password please talk to support and give them the following error code: {exception}"
         },
         "passwords-mismatch-text": "Passwords do not match",
         "change-password-success-text": "Password was changed successfully"
@@ -260,11 +260,36 @@
     },
     "alert": {
       "exceptions": {
-        "UnknownException": "Unknown error while trying to delete your account, please talk to support and give them the following error code: {exception}"
+        "UnknownException": "Unknown error while trying to do the operation, please talk to support and give them the following error code: {exception}"
       },
       "address-creation-success-text": "The new address was created successfully",
       "address-edition-success-text": "The address was updated successfully",
       "address-deletion-success-text": "The address was deleted successfully"
+    }
+  },
+  "payment-methods-page": {
+    "title-text": "My payment methods",
+    "description-text": "In this section you will find all of the payment methods you have previously linked to your account. Any of the payment methods below can be used in any of your purchases.",
+    "no-payment-methods-p-text": "You don't have any payment methods linked to your account",
+    "create-payment-method-button-text": "New payment method",
+    "create-payment-method-modal-title-text": "New payment method",
+    "create-payment-method-modal-confirm-button-text": "Create payment method",
+    "update-payment-method-modal-title-text": "Edit payment method",
+    "update-payment-method-modal-confirm-button-text": "Edit payment method",
+    "delete-payment-method-modal-title-text": "Delete payment method",
+    "delete-payment-method-modal-description-text": "Are you sure you want to delete this payment method?",
+    "delete-payment-method-modal-confirm-button-text": "Delete payment method",
+    "card-details-bridge-span-text": "ending in",
+    "card-country-span-text": "Country: ",
+    "card-expiration-span-text": "Valid thru ",
+    "payment-method-creation-date-span-text": "Linked on ",
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Unknown error while trying to do the operation, please talk to support and give them the following error code: {exception}"
+      },
+      "payment-method-creation-success-text": "The new payment method was created successfully",
+      "payment-method-edition-success-text": "The payment method was updated successfully",
+      "payment-method-deletion-success-text": "The payment method was deleted successfully"
     }
   }
 }

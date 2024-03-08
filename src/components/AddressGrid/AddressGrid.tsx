@@ -79,9 +79,6 @@ const AddressGrid: FC<Props> = ({}) => {
     undefined
   );
 
-  console.log('createAddressForm', createAddressForm.formState.isSubmitting);
-  console.log('updateAddressForm', updateAddressForm.formState.isSubmitting);
-
   const queryClient = useQueryClient();
   const result = useInfiniteQuery({
     queryKey: ['addresses', addressFilterValues],

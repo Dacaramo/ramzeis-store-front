@@ -266,5 +266,30 @@
       "address-edition-success-text": "La dirección fue actualizada de forma exitosa",
       "address-deletion-success-text": "La dirección fue borrada de forma exitosa"
     }
+  },
+  "payment-methods-page": {
+    "title-text": "Mis métodos de pago",
+    "description-text": "En esta sección encontrarás todos los métodos de pago que has vinculado anteriormente a tu cuenta. Cualquiera de los métodos de pago a continuación se puede utilizar en cualquiera de tus compras.",
+    "no-payment-methods-p-text": "No tienes ningún método de pago vinculado a tu cuenta",
+    "create-payment-method-button-text": "Nuevo método de pago",
+    "create-payment-method-modal-title-text": "Nuevo método de pago",
+    "create-payment-method-modal-confirm-button-text": "Crear método de pago",
+    "update-payment-method-modal-title-text": "Editar método de pago",
+    "update-payment-method-modal-confirm-button-text": "Editar método de pago",
+    "delete-payment-method-modal-title-text": "Eliminar método de pago",
+    "delete-payment-method-modal-description-text": "¿Estás seguro de que quieres eliminar este método de pago?",
+    "delete-payment-method-modal-confirm-button-text": "Eliminar método de pago",
+    "card-details-bridge-span-text": "terminada en",
+    "card-country-span-text": "País: ",
+    "card-expiration-span-text": "Valida hasta ",
+    "payment-method-creation-date-span-text": "Vinculada en ",
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Error desconocido al intentar realizar la operación, por favor contacta a soporte y dales el siguiente código de error: {exception}"
+      },
+      "payment-method-creation-success-text": "El nuevo método de pago se creó correctamente",
+      "address-edition-success-text": "El método de pago se actualizó correctamente",
+      "address-deletion-success-text": "El método de pago se eliminó correctamente"
+    }
   }
 }
