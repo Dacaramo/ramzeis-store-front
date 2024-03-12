@@ -180,7 +180,7 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
 
   return (
     <div className={`flex flex-col ${gapForBetweenSectionsClasses}`}>
-      <form className='w-full flex flex-row justify-start text-tiny'>
+      <form className='w-full flex sm:flex-row flex-col sm:justify-start justify-center text-tiny'>
         <PriceFilter
           generalLabel={t['price-filter']['general-label']}
           minAllowedPrice={minAllowedPrice}
@@ -190,9 +190,9 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
           onPriceRangeValueChange={handlePriceRangeValueChange}
           onToggleButtonClick={handleClickOnRangeButton}
         />
-        <div className='divider lg:divider-horizontal' />
+        <div className='divider sm:divider-horizontal divider-vertical' />
         <fieldset
-          className={`flex flex-col justify-between ${gapForBetweenFilterComponents}`}
+          className={`sm:w-fit w-full flex flex-col justify-between ${gapForBetweenFilterComponents}`}
         >
           <span>{t['price-sort']['general-label']}</span>
           <ToggleButtonGroup
@@ -202,9 +202,9 @@ const ProductGrid: FC<Props> = ({ products, filterSectionTranslations: t }) => {
             onButtonClicked={handleClickOnSortButton}
           />
         </fieldset>
-        <div className='divider lg:divider-horizontal' />
+        <div className='divider sm:divider-horizontal divider-vertical' />
         <div
-          className='divider lg:divider-horizontal'
+          className='divider sm:divider-horizontal sm:flex hidden'
           style={{
             marginLeft: 'auto',
           }}

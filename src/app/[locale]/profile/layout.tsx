@@ -20,7 +20,7 @@ const layout: FC<Props> = ({ children, params }) => {
   ] as AbstractIntlMessages;
 
   return (
-    <main className={`min-h-[calc(100vh-82.5px)] flex flex-row border-t`}>
+    <main className={`sm:min-h-[calc(100vh-82.5px)] flex flex-row border-t`}>
       <TranslationsProvider scopedMessages={profilePageNavMessages}>
         <ProfilePageNav />
       </TranslationsProvider>

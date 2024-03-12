@@ -1,11 +1,11 @@
 {
   "header": {
     "category-dropdown": {
-      "placeholder": "Compra por categoría"
+      "placeholder": "Categoría"
     },
     "separator-span": "O",
     "search-bar": {
-      "placeholder": "Comprar por nombre de producto"
+      "placeholder": "Nombre de producto"
     },
     "auth-dropdown": {
       "authenticated": {
@@ -95,6 +95,9 @@
         "global": "Global <EarthGlobeIcon></EarthGlobeIcon>",
         "colombia": "Colombia <ColombianFlagIcon></ColombianFlagIcon>"
       }
+    },
+    "hamburger-menu": {
+      "home-link-text": "Inicio"
     }
   },
   "footer": {},

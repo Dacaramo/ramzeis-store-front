@@ -4,7 +4,7 @@ import React from 'react';
 const loading = () => {
   return (
     <div className='w-full flex flex-col gap-4'>
-      <div className='flex sm:flex-row flex-col sm:justify-between items-center'>
+      <div className='flex sm:flex-row flex-col sm:justify-between items-center gap-2'>
         <div className='skeleton h-[30px] w-[120px]' />
         <div className='skeleton h-[32px] w-[120px]' />
       </div>

@@ -49,7 +49,9 @@ const ProfilePageNav: FC<Props> = ({}) => {
   };
 
   return (
-    <nav className={`min-w-[280px] flex flex-col border-r text-tiny font-bold`}>
+    <nav
+      className={`min-w-[280px] sm:flex hidden flex-col border-r text-tiny font-bold`}
+    >
       <Link
         href='/profile/manage-my-profile'
         style={getLinkStyles('manage-my-profile')}

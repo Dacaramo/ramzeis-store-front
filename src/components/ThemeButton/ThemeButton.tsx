@@ -6,9 +6,11 @@ import LightIcon from '../icons/LightIcon';
 import { ColorTheme } from '@/src/constants/colors';
 import { themeChangeEvent } from '@/src/events/themeEvents';
 
-interface Props {}
+interface Props {
+  containerClasses?: string;
+}
 
-const ThemeButton: FC<Props> = () => {
+const ThemeButton: FC<Props> = ({ containerClasses = '' }) => {
   const [theme, setTheme] = useState<ColorTheme>('fantasy');
 
   const handleClick = () => {
@@ -24,7 +26,7 @@ const ThemeButton: FC<Props> = () => {
 
   return (
     <button
-      className='btn btn-sm btn-circle'
+      className={`btn btn-sm btn-circle ${containerClasses}`}
       data-toggle-theme='fantasy,night'
       data-act-class='ACTIVECLASS'
     >

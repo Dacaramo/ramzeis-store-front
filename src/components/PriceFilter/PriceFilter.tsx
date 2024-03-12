@@ -34,7 +34,7 @@ const PriceFilter: FC<Props> = ({
 
   return (
     <fieldset
-      className={`w-[280px] flex flex-col items-start text-tiny ${gapForBetweenFilterComponents}`}
+      className={`sm:w-[280px] w-full flex flex-col items-start text-tiny ${gapForBetweenFilterComponents}`}
     >
       <Slider.Root
         className='w-full flex flex-col gap-2'

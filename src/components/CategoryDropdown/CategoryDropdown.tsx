@@ -7,9 +7,13 @@ import cn from 'classnames';
 
 interface Props {
   placeholder: ReactNode;
+  containerClasses?: string;
 }
 
-const CategoryDropdown: FC<Props> = ({ placeholder }) => {
+const CategoryDropdown: FC<Props> = ({
+  placeholder,
+  containerClasses = '',
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClickOnCategory = () => {
@@ -17,11 +21,11 @@ const CategoryDropdown: FC<Props> = ({ placeholder }) => {
   };
 
   return (
-    <div className={'dropdown dropdown-hover'}>
+    <div className={`dropdown dropdown-hover ${containerClasses}`}>
       <div
         tabIndex={0}
         role='button'
-        className='btn btn-sm max-w-[280px] font-normal bg-base-200'
+        className='btn btn-sm max-w-[280px] font-normal bg-base-200 flex-nowrap'
         onMouseOver={() => setIsOpen(true)}
       >
         {placeholder}
@@ -29,7 +33,7 @@ const CategoryDropdown: FC<Props> = ({ placeholder }) => {
       <ul
         tabIndex={0}
         className={cn({
-          'dropdown-content z-[1] menu p-2 max-w-[280px] bg-base-100 rounded-box shadow-classic-sm':
+          'dropdown-content z-[1] menu p-2 w-[200px] max-h-[400px] bg-base-100 rounded-box shadow-classic-sm flex-nowrap whitespace-nowrap overflow-auto':
             true,
           hidden: !isOpen,
         })}

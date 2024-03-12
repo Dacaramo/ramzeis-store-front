@@ -13,9 +13,10 @@ import Link from 'next/link';
 
 interface Props {
   placeholder: string;
+  containerClasses?: string;
 }
 
-const SearchBar: FC<Props> = ({ placeholder }) => {
+const SearchBar: FC<Props> = ({ placeholder, containerClasses = '' }) => {
   const [search, setSearch] = useState<string>('');
   const [isLinkHovered, setIsLinkHovered] = useState<boolean>(false);
 
@@ -45,9 +46,9 @@ const SearchBar: FC<Props> = ({ placeholder }) => {
   };
 
   return (
-    <div className='relative text-tiny'>
+    <div className={`relative text-tiny ${containerClasses}`}>
       <input
-        className='input input-sm pr-[100px] w-[250px] hover:w-[280px] focus:w-[280px] transition-all bg-base-200 outline-none'
+        className='input input-sm pr-[100px] w-full sm:w-[250px] sm:hover:w-[280px] sm:focus:w-[280px] transition-all bg-base-200 outline-none'
         style={{
           paddingRight: 26,
           width: isLinkHovered ? 280 : undefined,

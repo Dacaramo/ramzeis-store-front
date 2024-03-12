@@ -204,7 +204,9 @@ const PaymentMethodGrid: FC<Props> = ({}) => {
   return (
     <>
       <div className={`flex flex-col ${gapForBetweenSectionsClasses}`}>
-        <div className='flex sm:flex-row flex-col sm:justify-between items-center'>
+        <div
+          className={`flex sm:flex-row flex-col sm:justify-between items-center gap-2`}
+        >
           <h1 className=''>{t('title-text')}</h1>
           <button
             className='btn btn-sm btn-secondary'
@@ -214,9 +216,11 @@ const PaymentMethodGrid: FC<Props> = ({}) => {
             <PlusIcon />
           </button>
         </div>
-        <p className={`text-tiny`}>{t('description-text')}</p>
+        <p className={`text-tiny sm:text-start text-center`}>
+          {t('description-text')}
+        </p>
         <ul
-          className={`grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] ${gapForBetweenSectionsClasses}`}
+          className={`grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] ${gapForBetweenSectionsClasses} mb-[25px]`}
         >
           {result.isLoading &&
             [...new Array(5)].map((_, i) => {

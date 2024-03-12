@@ -82,20 +82,20 @@ const DeleteAccountForm: FC<Props> = ({}) => {
 
   return (
     <form
-      className='flex flex-row gap-4'
+      className='flex flex-row flex-wrap gap-4'
       onSubmit={handleSubmit}
     >
       {alertProps && <Alert {...alertProps} />}
       <input
         type='text'
-        className={`${inputClasses} max-w-[280px] ml-auto`}
+        className={`${inputClasses} sm:w-fit w-full sm:ml-auto`}
         placeholder={t('input-placeholder')}
         onChange={handleChangeOnConfirmationText}
         onPaste={handlePasteOnInput}
       />
       <button
         type='submit'
-        className='w-[280px] btn btn-sm btn-error'
+        className='btn btn-sm btn-error sm:w-fit w-full'
         disabled={isButtonDisabled || isDeletionLoading}
       >
         {isDeletionLoading ? (

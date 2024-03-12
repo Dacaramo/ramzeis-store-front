@@ -90,7 +90,7 @@ const FloatingPurchaseControls: FC<Props> = ({ product }) => {
 
   return (
     <div
-      className={`fixed bottom-0 right-0 p-[20px] flex flex-row justify-center items-end gap-4 rounded-t-2xl sm:rounded-tl-2xl sm:rounded-tr-none shadow-classic-sm bg-base-100 sm:w-auto w-full`}
+      className={`fixed bottom-0 right-0 p-[20px] flex flex-row justify-center items-end gap-4 rounded-t-3xl sm:rounded-tl-3xl sm:rounded-tr-none shadow-classic-sm glass sm:w-auto w-full`}
     >
       {product.availableSizes !== undefined && (
         <div className='flex flex-col items-center'>

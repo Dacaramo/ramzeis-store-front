@@ -26,10 +26,12 @@ const ColorFilter: FC<Props> = ({
 
   return (
     <fieldset
-      className={`max-w-[280px] flex flex-col ${gapForBetweenFilterComponents}`}
+      className={`sm:max-w-[280px] sm:w-fit w-full flex flex-col ${gapForBetweenFilterComponents}`}
     >
       <span>{generalLabel}</span>
-      <div className={`w-full flex flex-row ${gapForBetweenFilterComponents}`}>
+      <div
+        className={`w-full flex flex-row flex-wrap ${gapForBetweenFilterComponents}`}
+      >
         {colors.map((color) => {
           return (
             <button

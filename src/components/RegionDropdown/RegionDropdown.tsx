@@ -3,11 +3,18 @@ import { FC, ReactNode } from 'react';
 interface Props {
   placeholder: ReactNode;
   options: Array<{ text: string; href: string }>;
+  containerClasses?: string;
 }
 
-const RegionDropdown: FC<Props> = ({ placeholder, options }) => {
+const RegionDropdown: FC<Props> = ({
+  placeholder,
+  options,
+  containerClasses = '',
+}) => {
   return (
-    <div className='dropdown dropdown-bottom dropdown-end dropdown-hover'>
+    <div
+      className={`dropdown dropdown-bottom dropdown-end dropdown-hover ${containerClasses}`}
+    >
       <div
         tabIndex={0}
         role='button'

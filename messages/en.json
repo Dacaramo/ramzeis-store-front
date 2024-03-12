@@ -1,11 +1,11 @@
 {
   "header": {
     "category-dropdown": {
-      "placeholder": "Shop by category"
+      "placeholder": "Category"
     },
     "separator-span": "OR",
     "search-bar": {
-      "placeholder": "Shop by product name"
+      "placeholder": "Product name"
     },
     "auth-dropdown": {
       "authenticated": {
@@ -95,6 +95,9 @@
         "global": "Global <EarthGlobeIcon></EarthGlobeIcon>",
         "colombia": "Colombia <ColombianFlagIcon></ColombianFlagIcon>"
       }
+    },
+    "hamburger-menu": {
+      "home-link-text": "Home"
     }
   },
   "footer": {},
