@@ -1,5 +1,5 @@
 import { Buyer } from '../model/Buyer';
-import { Product, ProductId } from '../model/Product';
+import { Product } from '../model/Product';
 import { User } from '../zustand/store';
 
 type valueof<T> = T[keyof T];
@@ -67,6 +67,10 @@ const useLocalStorage = () => {
     localStorage.setItem('cart', JSON.stringify(cartDetails));
   };
 
+  const clearLocalStorageCart = () => {
+    localStorage.setItem('cart', '{}');
+  };
+
   return {
     setUserInLocalStorage,
     getUserFromLocalStorage,
@@ -75,6 +79,7 @@ const useLocalStorage = () => {
     addProductToLocalStorageCart,
     updateLocaleStorageCartProduct,
     removeProductFromLocalStorageCart,
+    clearLocalStorageCart,
   };
 };
 

@@ -291,5 +291,22 @@
       "payment-method-edition-success-text": "The payment method was updated successfully",
       "payment-method-deletion-success-text": "The payment method was deleted successfully"
     }
+  },
+  "product-page": {
+    "size-label-text": "Size",
+    "quantity-label-text": "Quantity",
+    "add-to-cart-button-text": "Add to cart",
+    "details-button-text": "Details",
+    "reviews-button-text": "Reviews",
+    "review-written-by-text": "Written by",
+    "reviews-coming-soon-text": "Pretty soon you will be able to view and write reviews",
+    "out-of-stock-text": "Out of stock",
+    "already-in-cart-text": "Already in cart",
+    "alert": {
+      "exceptions": {
+        "UnknownException": "Unknown error while adding the product to the cart please talk to support and give them the following error code: {exception}"
+      },
+      "product-added-success-text": "Product added to the cart successfully"
+    }
   }
 }

@@ -11,6 +11,7 @@ import EarthGlobeIcon from '../icons/EarthGlobeIcon';
 import ThemeButton from '../ThemeButton/ThemeButton';
 import AuthDropdown from '../AuthDropdown/AuthDropdown';
 import TranslationsProvider from '../TranslationsProvider/TranslationsProvider';
+import CartButton from '../CartButton/CartButton';
 
 interface Props {}
 
@@ -68,6 +69,7 @@ const Header: FC<Props> = ({}) => {
             },
           ]}
         />
+        <CartButton />
         <ThemeButton />
       </div>
     </header>

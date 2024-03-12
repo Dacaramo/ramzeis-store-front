@@ -2,6 +2,7 @@ import { Product } from '@/src/model/Product';
 import Image from 'next/image';
 import { FC } from 'react';
 import { borderRadiusClasses } from '@/src/constants/classes';
+import Link from 'next/link';
 
 interface Props {
   product: Product;
@@ -9,8 +10,13 @@ interface Props {
 
 const ProductCard: FC<Props> = ({ product }) => {
   return (
-    <li
-      role='button'
+    <Link
+      href={{
+        pathname: `/products/${product.pk}`,
+        query: {
+          data: JSON.stringify(product),
+        },
+      }}
       className='flex flex-col items-center gap-2 cursor-pointer'
     >
       <div
@@ -48,7 +54,7 @@ const ProductCard: FC<Props> = ({ product }) => {
         <h1 className='font-bold text-mid leading-tight'>{product.name}</h1>
         <span className='text-mid'>{`$${product.price}`}</span>
       </div>
-    </li>
+    </Link>
   );
 };
 

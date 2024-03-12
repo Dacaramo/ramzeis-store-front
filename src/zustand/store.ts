@@ -26,20 +26,21 @@ export interface User {
 
 interface StoreState {
   user: User;
-  cart: {
-    details: Buyer['buyerCartDetails'];
-    products: Array<Product>;
-  };
+  cartDetails: Buyer['buyerCartDetails'];
   globalAlertProps?: ComponentProps<typeof Alert>;
   setUser: (user: User) => void;
   addProductToCart: (
-    detail: Buyer['buyerCartDetails'][string],
-    product: Product
+    productId: Product['pk'],
+    detail: Buyer['buyerCartDetails'][string]
   ) => void;
   removeProductFromCart: (productId: ProductId) => void;
   clearCart: () => void;
-  setCartDetails: (details: Buyer['buyerCartDetails']) => void;
-  setCartProducts: (products: Array<Product>) => void;
+  updateCartDetail: (
+    productId: ProductId,
+    detailPropName: keyof Buyer['buyerCartDetails'][string],
+    detailPropValue: Buyer['buyerCartDetails'][string][keyof Buyer['buyerCartDetails'][string]]
+  ) => void;
+  setCartDetails: (cartDetails: Buyer['buyerCartDetails']) => void;
   setGlobalAlertProps: (props?: ComponentProps<typeof Alert>) => void;
 }
 
@@ -50,10 +51,7 @@ export const useStore = create<StoreState>()((set) => {
       data: undefined,
       tokens: undefined,
     },
-    cart: {
-      details: {},
-      products: [],
-    },
+    cartDetails: {},
     globalAlertProps: undefined,
     setUser: (user: User) => {
       return set((_) => {
@@ -63,62 +61,55 @@ export const useStore = create<StoreState>()((set) => {
       });
     },
     addProductToCart: (
-      detail: Buyer['buyerCartDetails'][string],
-      product: Product
+      productId: Product['pk'],
+      detail: Buyer['buyerCartDetails'][string]
     ) => {
       return set((state) => {
         return {
-          cart: {
-            details: {
-              ...state.cart.details,
-              [product.pk]: detail,
-            },
-            products: [...state.cart.products, product],
+          cartDetails: {
+            ...state.cartDetails,
+            [productId]: detail,
           },
         };
       });
     },
     removeProductFromCart: (productId: ProductId) => {
       return set((state) => {
-        const newDetails = { ...state.cart.details };
+        const newDetails = { ...state.cartDetails };
         delete newDetails[productId];
         return {
-          cart: {
-            details: newDetails,
-            products: state.cart.products.filter((product) => {
-              return product.pk !== productId;
-            }),
-          },
+          cartDetails: newDetails,
         };
       });
     },
     clearCart: () => {
       return set((_) => {
         return {
-          cart: {
-            details: {},
-            products: [],
-          },
+          cartDetails: {},
         };
       });
     },
-    setCartDetails: (details: Buyer['buyerCartDetails']) => {
-      return set((_) => {
-        return {
-          cart: {
-            details,
-            products: [],
-          },
-        };
-      });
-    },
-    setCartProducts: (products: Array<Product>) => {
+    updateCartDetail: (
+      productId: ProductId,
+      detailPropName: keyof Buyer['buyerCartDetails'][string],
+      detailPropValue: Buyer['buyerCartDetails'][string][keyof Buyer['buyerCartDetails'][string]]
+    ) => {
       return set((state) => {
         return {
-          cart: {
-            ...state.cart,
-            products,
+          cartDetails: {
+            ...state.cartDetails,
+            [productId]: {
+              ...state.cartDetails[productId],
+              [detailPropName]: detailPropValue,
+            },
           },
+        };
+      });
+    },
+    setCartDetails: (cartDetails: Buyer['buyerCartDetails']) => {
+      return set((_) => {
+        return {
+          cartDetails,
         };
       });
     },

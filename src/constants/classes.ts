@@ -1,4 +1,4 @@
-export const xRootPaddingClasses = 'px-[50px]';
+export const xRootPaddingClasses = 'sm:px-[50px] px-[25px]';
 export const yRootProfilePageClasses = 'py-[15px]';
 export const navbarGapClasses = 'gap-4';
 export const borderRadiusClasses = 'rounded';

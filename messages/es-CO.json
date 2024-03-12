@@ -291,5 +291,16 @@
       "address-edition-success-text": "El método de pago se actualizó correctamente",
       "address-deletion-success-text": "El método de pago se eliminó correctamente"
     }
+  },
+  "product-page": {
+    "size-label-text": "Tamaño",
+    "quantity-label-text": "Cantidad",
+    "add-to-cart-button-text": "Añadir al carrito",
+    "details-button-text": "Detalles",
+    "reviews-button-text": "Reseñas",
+    "review-written-by-text": "Escrito por",
+    "reviews-coming-soon-text": "Muy pronto podrás ver y escribir reseñas.",
+    "out-of-stock-text": "Agotado",
+    "already-in-cart-text": "Ya agregado"
   }
 }

@@ -2,7 +2,7 @@ import { Product } from '../model/Product';
 
 const testProducts: Array<Product> = [
   {
-    pk: 'product|123',
+    pk: 'product-123',
     name: 'Flexible office lamp',
     slides: [
       {
@@ -44,11 +44,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'keyboards',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|456',
+    pk: 'product-456',
     name: 'Ergonomic wireless mouse',
     slides: [
       {
@@ -90,11 +90,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'mouses',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|789',
+    pk: 'product-789',
     name: 'Spacious & Stylish Backpack',
     slides: [
       {
@@ -136,20 +136,24 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'accessories',
     stock: 200,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|012',
+    pk: 'product-012',
     name: 'Noise cancelling wireless headphones',
     slides: [
       {
-        productSlide: 'https://m.media-amazon.com/images/28',
-        effectSlide: 'https://m.media-amazon.com/images/29',
+        productSlide:
+          'https://thegoodguys.sirv.com/products/50087511/50087511_876025.PNG',
+        effectSlide:
+          'https://static.vecteezy.com/system/resources/previews/022/906/073/original/holi-powder-splash-colorful-colorful-powder-explosion-effect-on-transparent-background-generative-ai-free-png.png',
       },
       {
-        productSlide: 'https://m.media-amazon.com/images/30',
-        effectSlide: 'https://m.media-amazon.com/images/31',
+        productSlide:
+          'https://assets.bosecreative.com/transform/5bf50d2f-3e08-40a3-aee5-182de9c68c8b/QCH24_CypressGreen_EarCups_RGB',
+        effectSlide:
+          'https://www.pngkey.com/png/full/258-2584634_color-multicolor-effect-splash-blots-purple-spray-paint.png',
       },
     ],
     details: [
@@ -157,19 +161,22 @@ const testProducts: Array<Product> = [
         title: 'Immerse Yourself in Sound',
         description:
           'Escape the hustle and bustle of everyday life with the Noise-Cancelling Wireless Headphones. Advanced active noise cancellation technology effectively blocks out ambient noise, letting you focus on your music, audiobooks, or podcasts. Enjoy rich, immersive sound thanks to high-quality audio drivers and support for aptX codecs.',
-        image: 'https://m.media-amazon.com/images/32',
+        image:
+          'https://i.pcmag.com/imagery/reviews/03HLHxYwmSDm61yAH840Kdt-10.fit_lim.size_1050x.jpg',
       },
       {
         title: 'Crystal-Clear Calls',
         description:
           'Make clear and seamless calls, even in noisy environments. The Noise-Cancelling Wireless Headphones feature built-in microphones with noise reduction technology that ensures your voice is heard loud and clear on the other end of the line.',
-        image: 'https://m.media-amazon.com/images/33',
+        image:
+          'https://sm.pcmag.com/pcmag_me/photo/default/03hlhxywmsdm61yah840kdt-8_eyh4.jpg',
       },
       {
         title: 'All-Day Comfort',
         description:
           'Listen in comfort for hours on end. The Noise-Cancelling Wireless Headphones feature soft, memory foam ear cushions and a lightweight, adjustable headband that provides a secure and comfortable fit. The headphones also boast long battery life, allowing you to enjoy your music or calls without interruption.',
-        image: 'https://m.media-amazon.com/images/34',
+        image:
+          'https://www.techhive.com/wp-content/uploads/2023/10/Bose-QuietComfort-2023-c-1.jpg?quality=50&strip=all',
       },
     ],
     previewImages: [
@@ -182,11 +189,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|345',
+    pk: 'product-345',
     name: 'Smartwatch with fitness tracking',
     slides: [
       {
@@ -228,11 +235,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'accessories',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|678',
+    pk: 'product-678',
     name: 'Portable instant coffee maker',
     slides: [
       {
@@ -274,11 +281,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|901',
+    pk: 'product-901',
     name: 'Wireless charging stand',
     slides: [
       {
@@ -320,11 +327,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|555',
+    pk: 'product-555',
     name: 'Travel Toiletry Bag',
     slides: [
       {
@@ -366,11 +373,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|890',
+    pk: 'product-890',
     name: 'Instant pot pressure cooker',
     slides: [
       {
@@ -412,11 +419,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|999',
+    pk: 'product-999',
     name: 'Air Purifier with HEPA Filter',
     slides: [
       {
@@ -458,11 +465,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|888',
+    pk: 'product-888',
     name: 'Mechanical keyboard',
     slides: [
       {
@@ -504,11 +511,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'keyboards',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|098',
+    pk: 'product-098',
     name: 'Fitness tracker with heart rate monitor',
     slides: [
       {
@@ -550,11 +557,11 @@ const testProducts: Array<Product> = [
     categoryId: 'wearables',
     subcategoryId: 'fitness',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|99976',
+    pk: 'product-99976',
     name: 'Cozy Cat Hoodie',
     slides: [
       {
@@ -596,11 +603,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'hoodies',
     stock: 150,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1001',
+    pk: 'product-1001',
     name: 'Cozy sherpa blanket',
     slides: [
       {
@@ -642,11 +649,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: 200,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1002',
+    pk: 'product-1002',
     name: 'Motivational water bottle',
     slides: [
       {
@@ -688,11 +695,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'accessories',
     stock: 120,
-    supportedLocales: ['en'],
+    supportedLocaleIds: ['en'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1003',
+    pk: 'product-1003',
     name: 'Cozy fleece hooded sweatshirt',
     slides: [
       {
@@ -734,11 +741,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'sweatshirts',
     stock: 80,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1004',
+    pk: 'product-1004',
     name: 'Minimalist desk organizer',
     slides: [
       {
@@ -780,11 +787,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'other',
     stock: 50,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1006',
+    pk: 'product-1006',
     name: 'Motivational sticky notes',
     slides: [
       {
@@ -826,11 +833,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'stickers',
     stock: 250,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1009',
+    pk: 'product-1009',
     name: 'Moon Lamp with Constellation Projector',
     slides: [
       {
@@ -872,11 +879,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-the-ambience',
     subcategoryId: 'other',
     stock: 200,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: false,
   },
   {
-    pk: 'product|1010',
+    pk: 'product-1010',
     name: 'Portable Stainless Steel Water Bottle with Infuser',
     slides: [
       {
@@ -918,11 +925,11 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-style',
     subcategoryId: 'accessories',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
   {
-    pk: 'product|1011',
+    pk: 'product-1011',
     name: 'Miniature Zen Garden',
     slides: [
       {
@@ -964,7 +971,7 @@ const testProducts: Array<Product> = [
     categoryId: 'for-my-setup',
     subcategoryId: 'other',
     stock: -1,
-    supportedLocales: ['en', 'es-CO'],
+    supportedLocaleIds: ['en', 'es-CO'],
     isForDropshipping: true,
   },
 ];

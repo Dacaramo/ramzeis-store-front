@@ -6,9 +6,10 @@ import {
   ProductColor,
   ProductFilterValues,
 } from '../model/Product';
-import { Buyer } from '../model/Buyer';
+import { Buyer, BuyerPatch } from '../model/Buyer';
 import { Address, AddressFilterValues, AddressPatch } from '../model/Address';
 import { PaymentMethod } from '@stripe/stripe-js';
+import { Review, ReviewFilterValues } from '../model/Review';
 
 export const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -145,4 +146,24 @@ export const detachPaymentMethod = async (
   stripePaymentMethodId: string
 ): Promise<void> => {
   await axiosClient.delete(`/payment-methods/${stripePaymentMethodId}`);
+};
+
+export const getReviewsPerProduct = async (
+  productId: Product['pk'],
+  reviewFilterValues: ReviewFilterValues
+): Promise<ListResponse<Review>> => {
+  const { data } = await axiosClient.get<ListResponse<Review>>(
+    `/products/${productId}/reviews`,
+    {
+      params: reviewFilterValues,
+    }
+  );
+  return data;
+};
+
+export const updateBuyer = async (
+  buyerEmail: Buyer['pk'],
+  patch: BuyerPatch
+): Promise<void> => {
+  await axiosClient.patch(`/buyers/${buyerEmail}`, patch);
 };

@@ -14,6 +14,9 @@ interface Props {
   icon?: ReactNode;
   isSkippable?: boolean;
   skipButtonText?: string;
+  hasAction?: boolean;
+  actionButtonText?: string;
+  onActionButtonClick?: () => void;
   setAlertProps?: (props?: ComponentProps<typeof Alert>) => void;
 }
 
@@ -23,9 +26,14 @@ const Alert: FC<Props> = ({
   icon,
   isSkippable = false,
   skipButtonText,
+  hasAction = false,
+  actionButtonText,
+  onActionButtonClick: handleActionButtonClick,
   setAlertProps,
 }) => {
-  const areConditionsMet = isSkippable && skipButtonText && setAlertProps;
+  const areSkipConditionsMet = isSkippable && skipButtonText && setAlertProps;
+  const areActionConditionsMet =
+    hasAction && actionButtonText && handleActionButtonClick;
   const iconToDisplay: Record<AlertType, ReactNode> = {
     'alert-info': icon ?? (
       <svg
@@ -104,11 +112,20 @@ const Alert: FC<Props> = ({
       >
         {content}
       </span>
-      {areConditionsMet && (
+      {areSkipConditionsMet && (
         <button
           type='button'
           className='btn btn-sm btn-ghost border border-neutral hover:border-neutral'
           onClick={() => setAlertProps(undefined)}
+        >
+          {skipButtonText}
+        </button>
+      )}
+      {areActionConditionsMet && (
+        <button
+          type='button'
+          className='btn btn-sm btn-ghost border border-neutral hover:border-neutral'
+          onClick={handleActionButtonClick}
         >
           {skipButtonText}
         </button>
